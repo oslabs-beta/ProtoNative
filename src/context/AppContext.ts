@@ -6,7 +6,7 @@ interface AppContextTypes {
   setOriginals: any
   copies: {}
   setCopies: any
-  currentComponent: number
+  currentComponent: number | null
   setCurrentComponent: any
 }
 
