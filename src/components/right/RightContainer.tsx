@@ -5,7 +5,7 @@ import CodeBlock from './CodeBlock';
 
 const RightContainer = (): JSX.Element => {
   return (
-    <div>
+    <div id='right-container'>
       <ComponentDetails />
       <CodeBlock />
     </div>
