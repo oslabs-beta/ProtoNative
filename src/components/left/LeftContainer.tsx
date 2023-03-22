@@ -6,7 +6,7 @@ import AddChild from './AddChild';
 
 const LeftContainer = (): JSX.Element => {
   return (
-    <div>
+    <div id='left-container'>
       <AddComponent />
       <ComponentList />
       <AddChild />

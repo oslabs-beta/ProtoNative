@@ -6,7 +6,7 @@ import RightContainer from '../right/RightContainer'
 
 const MainContainer = (): JSX.Element => {
   return (
-    <div>
+    <div id='main-container'>
       <LeftContainer />
       <AppCanvas />
       <RightContainer />
