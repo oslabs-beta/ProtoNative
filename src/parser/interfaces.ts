@@ -45,6 +45,7 @@ export interface Parent {
 }
 
 export interface CopyNativeEl {
+  name: string;
   type: NativeElements;
   parent: Parent;
   // depends on names of copies in copies context
@@ -52,6 +53,7 @@ export interface CopyNativeEl {
 }
 
 export interface CopyCustomComp {
+  name: string;
   type: 'custom';
   // depends on key names in copies context
   parent: string; 

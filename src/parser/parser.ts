@@ -64,5 +64,5 @@ import {
 } from './interfaces';
 
 const generateReactNativeCode = () => {
-
+  
 }
