@@ -3,11 +3,20 @@ import ReactDOM from 'react-dom';
 import AppContext from './context/AppContext';
 import MainContainer from './components/containers/MainContainer';
 import NavBarContainer from './components/top/NavBarContainer';
+import {
+  NativeElements,
+  OrigNativeEl,
+  AppInterface,
+  OrigCustomComp,
+  Parent,
+  CopyNativeEl,
+  CopyCustomComp
+} from './parser/interfaces';
 
 const App = () => {
   const [originals, setOriginals] = React.useState({
     app: { type: 'app', children: [], index: 0 },
-    view: { type: 'view', children: [], index: 0 },
+    view: { type: 'view', children: [], index: 0 } as OrigNativeEl,
     button: { type: 'button', children: [], index: 0 },
     text: { type: 'text', children: [], index: 0 },
     image: { type: 'image', children: [], index: 0 },
@@ -48,10 +57,10 @@ const App = () => {
       type: 'custom',
       parent: 'app',
       pointer: 'testComponent',
-      children: () => {
+      children: function() {
         return originals[this.pointer].children;
       },
-      state: () => {
+      state: function() {
         return originals[this.pointer].state;
       }
     },
