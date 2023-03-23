@@ -36,6 +36,20 @@ module.exports = [
           exclude: /node_modules/,
           use: [{ loader: 'ts-loader' }],
         },
+        { 
+          test: /\.jsx?/, 
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                '@babel/preset-react'
+              ],
+              exclude: [
+                /node_modules/
+              ],
+            }
+          }
+        },
         {
           test: /.(css|scss)$/,
           exclude: /node_modules/,
@@ -48,7 +62,11 @@ module.exports = [
       filename: 'bundle.js',
     },
     resolve: {
+<<<<<<< HEAD
       extensions: ['.ts', '.tsx'],
+=======
+      extensions: ['.ts', '.tsx', '.js', '.jsx'],
+>>>>>>> dev
     },
     plugins: [
       new HtmlWebpackPlugin({
