@@ -47,36 +47,43 @@ const App = () => {
   });
   const [copies, setCopies] = React.useState({
     button0: {
+      name: 'button0',
       type: 'button',
       parent: { origin: 'original', key: 'testComponent' },
       children: [],
     } as CopyNativeEl,
     text0: {
+      name: 'text0',
       type: 'text',
       parent: { origin: 'copies', key: 'view0' },
       children: ['button1'],
     } as CopyNativeEl,
     view0: {
+      name: 'view0',
       type: 'view',
       parent: { origin: 'original', key: 'testComponent' },
       children: ['text0'],
     } as CopyNativeEl,
     button1: {
+      name: 'button1',
       type: 'button',
       parent: { origin: 'original', key: 'text0' },
       children: [],
     } as CopyNativeEl,
     view1: {
+      name: 'view1',
       type: 'view',
       parent: { origin: 'original', key: 'coolComponent' },
       children: ['text0'],
     } as CopyNativeEl,
     button2: {
+      name: 'button2',
       type: 'button',
       parent: { origin: 'original', key: 'coolComponent' },
       children: [],
     } as CopyNativeEl,
     testComponent0: {
+      name: 'testComponent0',
       type: 'custom',
       parent: 'app',
       pointer: 'testComponent',
@@ -88,6 +95,7 @@ const App = () => {
       }
     } as CopyCustomComp,
     coolComponent0: {
+      name: 'coolComponent0',
       type: 'custom',
       parent: 'app',
       pointer: 'coolComponent',
