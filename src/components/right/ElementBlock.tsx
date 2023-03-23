@@ -3,7 +3,7 @@ import React from 'react';
 const ElementBlock = (componentName: string, components: {}): JSX.Element => {
   const componentDef = components[componentName];
 
-  const childElements: any = componentDef.children.length ? componentDef.children.map((childName: string) => {
+  const childElements: JSX.Element[] | null = componentDef.children.length ? componentDef.children.map((childName: string) => {
     if(components[childName].type !== 'custom') {
       return ElementBlock(childName, components)
     }
