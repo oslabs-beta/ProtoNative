@@ -56,6 +56,7 @@ console.log(copies.testComponent0.children());
 import {
   NativeElements,
   OrigNativeEl,
+  AppInterface,
   OrigCustomComp,
   Parent,
   CopyNativeEl,
