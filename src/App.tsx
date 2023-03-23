@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import AppContext from './context/AppContext';
 import MainContainer from './components/containers/MainContainer';
 import NavBarContainer from './components/top/NavBarContainer';
+import './styles/main.scss';
 
 const App = () => {
   const [originals, setOriginals] = React.useState({
@@ -48,10 +49,10 @@ const App = () => {
       type: 'custom',
       parent: 'app',
       pointer: 'testComponent',
-      children: () => {
+      children: function() {
         return originals[this.pointer].children;
       },
-      state: () => {
+      state: function() {
         return originals[this.pointer].state;
       }
     },

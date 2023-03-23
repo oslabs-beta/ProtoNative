@@ -1,0 +1,32 @@
+#addChild {
+  border: 1px solid black;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  h2 {
+    margin-bottom: 20px;
+  }
+}
+
+#addableElementsContainer {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 10px;
+  height: 80%;
+  overflow-y: auto;
+}
+
+.addableElement {
+  border: 1px solid black;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  &:hover {
+    background-color: #e6e6e6;
+  }
+}
