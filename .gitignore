@@ -1,4 +1,8 @@
 node_modules
 build
+<<<<<<< HEAD
+package-lock.json
+=======
 .vscode
 package-lock.json
+>>>>>>> dev
