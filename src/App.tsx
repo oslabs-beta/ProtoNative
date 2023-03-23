@@ -12,6 +12,7 @@ import {
   CopyNativeEl,
   CopyCustomComp
 } from './parser/interfaces';
+import './styles/main.scss'
 
 const App = () => {
   const [originals, setOriginals] = React.useState({
@@ -30,12 +31,21 @@ const App = () => {
     statusBar: { type: 'statusBar', children: [], index: 0 },
     activityIndicator: { type: 'activityIndicator', children: [], index: 0 },
     testComponent: {
+      name: 'testComponent',
       type: 'custom',
-      children: ['button1', 'view1'],
+      children: ['button0', 'view0', 'coolComponent0'],
       state: [],
       index: 1,
       copies: ['testComponent0'],
     },
+    coolComponent: {
+      name: 'coolComponent',
+      type: 'custom',
+      children: ['button2', 'view1'],
+      state: [],
+      index: 1,
+      copies: ['testComponent0'],
+    }
   });
   const [copies, setCopies] = React.useState({
     button0: {
@@ -45,13 +55,28 @@ const App = () => {
     },
     text0: {
       type: 'text',
-      parent: { origin: 'copies', key: 'view1' },
-      children: [],
+      parent: { origin: 'copies', key: 'view0' },
+      children: ['button1'],
     },
     view0: {
       type: 'view',
       parent: { origin: 'original', key: 'testComponent' },
-      children: ['text1'],
+      children: ['text0'],
+    },
+    button1: {
+      type: 'button',
+      parent: { origin: 'original', key: 'text0' },
+      children: [],
+    },
+    view1: {
+      type: 'view',
+      parent: { origin: 'original', key: 'coolComponent' },
+      children: ['text0'],
+    },
+    button2: {
+      type: 'button',
+      parent: { origin: 'original', key: 'coolComponent' },
+      children: [],
     },
     testComponent0: {
       type: 'custom',
@@ -65,7 +90,7 @@ const App = () => {
       }
     },
   });
-  const [currentComponent, setCurrentComponent] = React.useState(null);
+  const [currentComponent, setCurrentComponent] = React.useState('testComponent');
   return (
     <AppContext.Provider
       value={{
