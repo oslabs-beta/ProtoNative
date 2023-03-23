@@ -22,7 +22,7 @@ export interface OrigNativeEl {
   index: number;
 }
 
-export interface App {
+export interface AppInterface {
   type: 'app';
   children: string[];
   state: string[];
