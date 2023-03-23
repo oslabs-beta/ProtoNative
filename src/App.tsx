@@ -7,7 +7,7 @@ import './styles/main.scss'
 
 const App = () => {
   const [originals, setOriginals] = React.useState({
-    app: { type: 'app', children: [], index: 0 },
+    app: { type: 'app', children: ['testComponent0', 'coolComponent0', 'view0'], index: 0 },
     view: { type: 'view', children: [], index: 0 },
     button: { type: 'button', children: [], index: 0 },
     text: { type: 'text', children: [], index: 0 },
