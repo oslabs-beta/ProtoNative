@@ -1,11 +1,12 @@
 import {
-  NativeElements,
+  NativeElement,
   OrigNativeEl,
   AppInterface,
   OrigCustomComp,
   Parent,
   CopyNativeEl,
-  CopyCustomComp
+  CopyCustomComp,
+  DoubleTagElement
 } from './interfaces';
 
 const originals = {
@@ -107,6 +108,22 @@ const copies = {
 console.log(copies.testComponent0.children());
 
 /*
+  --- view: <View> </View>
+  button: <Button />
+  text: <Text />
+  image: <Image />
+  textInput: <TextInput />
+  --- scrollView: <ScrollView> </ScrollView>
+  flatList: <FlatList />
+  sectionList: <SectionList />
+  switch: <Switch />
+  --- touchableHighlight: <TouchableHighlight> </TouchableHighlight>
+  --- touchableOpacity: <TouchableOpacity> </TouchableOpacity>
+  statusBar: <StatusBar />
+  activityIndicator: <ActivityIndicator />
+*/
+
+/*
 ---OUTPUT FOR TEST COMPONENT---
 
 import React from 'react';
@@ -117,18 +134,51 @@ const testComponent = () => {
   const [testState, setTestState] = React.useState(null);
 
   return (
-    <>
+    <div>
       <Button />
       <View>
         <Text>
           <Button />
         </Text>
       </View>
-    </>
+    </div>
   )
 };
 */
 
-const generateCustomComponentCode = (component) => {
-  
+/*
+1. import statments
+2. state variables
+3. return statement
+  -> div, button, view, text, button
+4. wrap 2-3 in function
+*/
+
+const addIndent = (spacing: number = 2):string => {
+  let indent = '';
+  for (let i = 0; i < spacing; i++) indent += ' ';
+  return indent;
+}
+
+const addNewLine = ():string => '\n';
+const importReact = ():string => `import React from 'react';`;
+const addImportStatement = ():string => {
+
+  return '';
+}
+
+// note: technically passing element name, but keeping argument as element for now for readability
+const isDoubleTagElement = (element: string): element is DoubleTagElement => {
+  if (element as DoubleTagElement) {
+    return true;
+  }
+  return false;
+}
+
+const generateCustomComponentCode = (componentName: string):string => {
+  let importStatements = '';
+  const component: OrigCustomComp = originals[componentName];
+  const componentChildren: string[] =  component.children;
+  const componentState: string[] = component.state;
+  return '';
 }

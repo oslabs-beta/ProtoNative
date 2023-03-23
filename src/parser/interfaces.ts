@@ -1,5 +1,4 @@
-export type NativeElements =
-  | 'app'
+export type NativeElement =
   | 'view'
   | 'button'
   | 'text'
@@ -14,9 +13,14 @@ export type NativeElements =
   | 'statusBar'
   | 'activityIndicator';
 
+export type DoubleTagElement =
+  | 'view'
+  | 'scrollView'
+  | 'touchableHighlight'
+  | 'touchableOpacity';
 
 export interface OrigNativeEl {
-  type: NativeElements;
+  type: NativeElement;
   // depends on key names in copies context
   children: string[];
   index: number;
@@ -42,12 +46,12 @@ export interface OrigCustomComp {
 export interface Parent {
   origin: 'original' | 'copies';
   // depends on user's custom component names in originals
-  key: NativeElements | string; 
+  key: NativeElement | string;
 }
 
 export interface CopyNativeEl {
   name: string;
-  type: NativeElements;
+  type: NativeElement;
   parent: Parent;
   // depends on names of copies in copies context
   children: string[];
@@ -57,9 +61,9 @@ export interface CopyCustomComp {
   name: string;
   type: 'custom';
   // depends on key names in copies context
-  parent: string; 
+  parent: string;
   // ALL depend on user's custom component names in originals
-  pointer: NativeElements | string; 
-  children(): (NativeElements | string)[];
-  state(): (NativeElements | string)[];
+  pointer: NativeElement | string;
+  children(): (NativeElement | string)[];
+  state(): (NativeElement | string)[];
 }
