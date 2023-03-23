@@ -87,6 +87,17 @@ const App = () => {
         return originals[this.pointer].state;
       }
     } as CopyCustomComp,
+    coolComponent0: {
+      type: 'custom',
+      parent: 'app',
+      pointer: 'coolComponent',
+      children: function() {
+        return originals[this.pointer].children;
+      },
+      state: function() {
+        return originals[this.pointer].state;
+      }
+    } as CopyCustomComp,
   });
   const [currentComponent, setCurrentComponent] = React.useState('testComponent');
   return (

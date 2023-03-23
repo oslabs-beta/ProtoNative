@@ -28,7 +28,7 @@ const ComponentDetails = (): JSX.Element => {
     <div id='component-details-container'>
       <h2>Component Details</h2>
       
-      {currentComponent !== 'app' && <div style={{border: '1px solid black'}} id='component-box'>
+      {currentComponent !== 'app' && currentComponent && <div style={{border: '1px solid black'}} id='component-box'>
         <p>{currentComponent}</p>
         {childElements}
       </div>}
