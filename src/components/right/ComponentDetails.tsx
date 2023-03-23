@@ -28,11 +28,10 @@ const ComponentDetails = (): JSX.Element => {
     <div id='component-details-container'>
       <h2>Component Details</h2>
       
-      <div style={{border: '1px solid black'}} id='component-box'>
-        {currentComponent !== 'app' && <p>{currentComponent}</p>}
+      {currentComponent !== 'app' && currentComponent && <div style={{border: '1px solid black'}} id='component-box'>
+        <p>{currentComponent}</p>
         {childElements}
-      </div>
-
+      </div>}
     </div>
   );
 };
