@@ -14,13 +14,14 @@ const ElementBlock = (componentName, components): JSX.Element => {
     })
     childElements = arr;
   }
-  // const childElements = componentDef.children.length
-  //   ? componentDef.children.map(childName => ElementBlock(childName, components))
-  //   : null;
+
+  let elementTitle;
+  if (components[componentName].type === 'custom') elementTitle = components[componentName].pointer;
+  else elementTitle = components[componentName].type
 
   return (
     <div style={{border: '1px solid black'}} className='element'>
-      <p>{components[componentName].type}</p>
+      <p>{elementTitle}</p>
       {childElements}
     </div>
   );
