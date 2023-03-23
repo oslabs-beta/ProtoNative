@@ -14,7 +14,7 @@ import './styles/main.scss'
 
 const App = () => {
   const [originals, setOriginals] = React.useState({
-    app: { type: 'app', children: ['testComponent0', 'coolComponent0', 'view0'], state: [] } as AppInterface,
+    app: { type: 'app', children: ['coolerComponent0', 'view0'], state: [] } as AppInterface,
     view: { type: 'view', children: [], index: 0 } as OrigNativeEl,
     button: { type: 'button', children: [], index: 0 } as OrigNativeEl,
     text: { type: 'text', children: [], index: 0 } as OrigNativeEl,
@@ -43,7 +43,16 @@ const App = () => {
       state: [],
       index: 1,
       copies: ['testComponent0'],
+    } as OrigCustomComp,
+    coolerComponent: {
+      name: 'coolerComponent',
+      type: 'custom',
+      children: ['coolComponent0', 'view0'],
+      state: [],
+      index: 1,
+      copies: ['coolerComponent0'],
     } as OrigCustomComp
+
   });
   const [copies, setCopies] = React.useState({
     button0: {
@@ -80,6 +89,28 @@ const App = () => {
       type: 'custom',
       parent: 'app',
       pointer: 'testComponent',
+      children: function() {
+        return originals[this.pointer].children;
+      },
+      state: function() {
+        return originals[this.pointer].state;
+      }
+    } as CopyCustomComp,
+    coolComponent0: {
+      type: 'custom',
+      parent: 'app',
+      pointer: 'coolComponent',
+      children: function() {
+        return originals[this.pointer].children;
+      },
+      state: function() {
+        return originals[this.pointer].state;
+      }
+    } as CopyCustomComp,
+    coolerComponent0: {
+      type: 'custom',
+      parent: 'app',
+      pointer: 'coolerComponent',
       children: function() {
         return originals[this.pointer].children;
       },
