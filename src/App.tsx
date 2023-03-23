@@ -14,7 +14,7 @@ import './styles/main.scss'
 
 const App = () => {
   const [originals, setOriginals] = React.useState({
-    app: { type: 'app', children: [], state: [] } as AppInterface,
+    app: { type: 'app', children: ['testComponent0', 'coolComponent0', 'view0'], state: [] } as AppInterface,
     view: { type: 'view', children: [], index: 0 } as OrigNativeEl,
     button: { type: 'button', children: [], index: 0 } as OrigNativeEl,
     text: { type: 'text', children: [], index: 0 } as OrigNativeEl,
