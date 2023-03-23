@@ -4,11 +4,9 @@ import AppContext from './context/AppContext';
 import MainContainer from './components/containers/MainContainer';
 import NavBarContainer from './components/top/NavBarContainer';
 import {
-  NativeElements,
   OrigNativeEl,
   AppInterface,
   OrigCustomComp,
-  Parent,
   CopyNativeEl,
   CopyCustomComp
 } from './parser/interfaces';
@@ -16,20 +14,20 @@ import './styles/main.scss'
 
 const App = () => {
   const [originals, setOriginals] = React.useState({
-    app: { type: 'app', children: [], index: 0 },
+    app: { type: 'app', children: [], state: [] } as AppInterface,
     view: { type: 'view', children: [], index: 0 } as OrigNativeEl,
-    button: { type: 'button', children: [], index: 0 },
-    text: { type: 'text', children: [], index: 0 },
-    image: { type: 'image', children: [], index: 0 },
-    textInput: { type: 'textInput', children: [], index: 0 },
-    scrollView: { type: 'scrollView', children: [], index: 0 },
-    flatList: { type: 'flatList', children: [], index: 0 },
-    sectionList: { type: 'sectionList', children: [], index: 0 },
-    switch: { type: 'switch', children: [], index: 0 },
-    touchableHighlight: { type: 'touchableHighlight', children: [], index: 0 },
-    touchableOpacity: { type: 'touchableOpacity', children: [], index: 0 },
-    statusBar: { type: 'statusBar', children: [], index: 0 },
-    activityIndicator: { type: 'activityIndicator', children: [], index: 0 },
+    button: { type: 'button', children: [], index: 0 } as OrigNativeEl,
+    text: { type: 'text', children: [], index: 0 } as OrigNativeEl,
+    image: { type: 'image', children: [], index: 0 } as OrigNativeEl,
+    textInput: { type: 'textInput', children: [], index: 0 } as OrigNativeEl,
+    scrollView: { type: 'scrollView', children: [], index: 0 } as OrigNativeEl,
+    flatList: { type: 'flatList', children: [], index: 0 } as OrigNativeEl,
+    sectionList: { type: 'sectionList', children: [], index: 0 } as OrigNativeEl,
+    switch: { type: 'switch', children: [], index: 0 } as OrigNativeEl,
+    touchableHighlight: { type: 'touchableHighlight', children: [], index: 0 } as OrigNativeEl,
+    touchableOpacity: { type: 'touchableOpacity', children: [], index: 0 } as OrigNativeEl,
+    statusBar: { type: 'statusBar', children: [], index: 0 } as OrigNativeEl,
+    activityIndicator: { type: 'activityIndicator', children: [], index: 0 } as OrigNativeEl,
     testComponent: {
       name: 'testComponent',
       type: 'custom',
@@ -37,7 +35,7 @@ const App = () => {
       state: [],
       index: 1,
       copies: ['testComponent0'],
-    },
+    } as OrigCustomComp,
     coolComponent: {
       name: 'coolComponent',
       type: 'custom',
@@ -45,39 +43,39 @@ const App = () => {
       state: [],
       index: 1,
       copies: ['testComponent0'],
-    }
+    } as OrigCustomComp
   });
   const [copies, setCopies] = React.useState({
     button0: {
       type: 'button',
       parent: { origin: 'original', key: 'testComponent' },
       children: [],
-    },
+    } as CopyNativeEl,
     text0: {
       type: 'text',
       parent: { origin: 'copies', key: 'view0' },
       children: ['button1'],
-    },
+    } as CopyNativeEl,
     view0: {
       type: 'view',
       parent: { origin: 'original', key: 'testComponent' },
       children: ['text0'],
-    },
+    } as CopyNativeEl,
     button1: {
       type: 'button',
       parent: { origin: 'original', key: 'text0' },
       children: [],
-    },
+    } as CopyNativeEl,
     view1: {
       type: 'view',
       parent: { origin: 'original', key: 'coolComponent' },
       children: ['text0'],
-    },
+    } as CopyNativeEl,
     button2: {
       type: 'button',
       parent: { origin: 'original', key: 'coolComponent' },
       children: [],
-    },
+    } as CopyNativeEl,
     testComponent0: {
       type: 'custom',
       parent: 'app',
@@ -88,7 +86,7 @@ const App = () => {
       state: function() {
         return originals[this.pointer].state;
       }
-    },
+    } as CopyCustomComp,
   });
   const [currentComponent, setCurrentComponent] = React.useState('testComponent');
   return (
