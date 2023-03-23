@@ -29,6 +29,7 @@ export interface AppInterface {
 }
 
 export interface OrigCustomComp {
+  name: string;
   type: 'custom';
   // depends on key names in copies context
   children: string[];
