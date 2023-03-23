@@ -1,7 +1,6 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import AppContext from '../../context/AppContext';
 import ElementBlock from '../right/ElementBlock';
-
 
 const AppCanvas = () => {
   
@@ -22,9 +21,8 @@ const AppCanvas = () => {
       <div id='phone-screen-container'>
         {appComponents}
       </div>
-
     </div>
-  )
-}
+  );
+};
 
 export default AppCanvas;

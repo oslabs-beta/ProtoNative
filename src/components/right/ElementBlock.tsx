@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 const ElementBlock = (componentName, components, location): JSX.Element => {
   const componentDef = components[componentName];
   
@@ -35,6 +36,7 @@ const ElementBlock = (componentName, components, location): JSX.Element => {
           ?components[componentName].pointer
           :components[componentName].type}
       </p>
+
       {childElements}
     </div>
   );
