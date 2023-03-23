@@ -5,11 +5,10 @@ import AddableChild from './AddableChild';
 const AddChild = () => {
 
   // Grab the original element list from the context
-  const {originals, copies} = useContext(context);
+  const { originals } = useContext(context);
 
   // Create a state variable to hold the list of elements that can be added
   const [addableChildren, setAddableChildren] = useState([]);
-  console.log(copies['testComponent0'].children())
   // Create a list of elements that can be added to the map
   useEffect(() => {
     const children = [];
