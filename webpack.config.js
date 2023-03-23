@@ -62,11 +62,7 @@ module.exports = [
       filename: 'bundle.js',
     },
     resolve: {
-<<<<<<< HEAD
-      extensions: ['.ts', '.tsx'],
-=======
       extensions: ['.ts', '.tsx', '.js', '.jsx'],
->>>>>>> dev
     },
     plugins: [
       new HtmlWebpackPlugin({
