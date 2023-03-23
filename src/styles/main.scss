@@ -1,12 +1,15 @@
-@import './componentDetails.scss';
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 
 body {
   display: flex;
   flex-direction: column;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
 }
+
 
 #main-container {
   display: flex;
@@ -20,5 +23,9 @@ body {
 #left-container {
   display: flex;
   flex-direction: column;
+  width: 33%;
 }
 
+
+@import './componentDetails.scss';
+@import 'addChild.scss';
