@@ -1,23 +1,15 @@
 import React from 'react';
 
-const ElementBlock = (componentName, components): JSX.Element => {
+const ElementBlock = (componentName: string, components: {}): JSX.Element => {
   const componentDef = components[componentName];
-  
-  let childElements = null;;
 
-  if (componentDef.children.length) {
-    const arr = [];
-    componentDef.children.forEach((childName) => {
-      if (components[childName].type !== 'custom') {
-        arr.push(ElementBlock(childName, components));
-      }
-    })
-    childElements = arr;
-  }
+  const childElements: any = componentDef.children.length ? componentDef.children.map((childName: string) => {
+    if(components[childName].type !== 'custom') {
+      return ElementBlock(childName, components)
+    }
+  }) : null
 
-  let elementTitle;
-  if (components[componentName].type === 'custom') elementTitle = components[componentName].pointer;
-  else elementTitle = components[componentName].type
+  const elementTitle: string = components[componentName].type === 'custom' ? components[componentName].pointer : components[componentName].type;
 
   return (
     <div style={{border: '1px solid black'}} className='element'>

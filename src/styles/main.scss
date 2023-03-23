@@ -18,6 +18,7 @@ body {
 #right-container {
   display: flex;
   flex-direction: column;
+  width: 33%
 }
 
 #left-container {
@@ -26,6 +27,9 @@ body {
   width: 33%;
 }
 
+#app-canvas {
+  width: 33%;
+}
 
 @import './componentDetails.scss';
 @import 'addChild.scss';
