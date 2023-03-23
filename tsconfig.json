@@ -4,6 +4,7 @@
     "esModuleInterop": true,
     "target": "es6",
     "allowJs": true,
+    "noImplicitThis": true,
   },
   "include": ["src"]
 }
