@@ -120,15 +120,31 @@ const copies = {
   } as CopyCustomComp,
 };
 
+/**
+ * @method capitalizeFirst
+ * @description - capitalizes first letter of input string
+ * @input - string
+ * @output - string with capitalized first letter
+ */
 const capitalizeFirst = (str: string): string => {
   if (str.length === 0) return '';
   return str[0].toUpperCase() + str.slice(1);
 };
 
+/**
+ * @method importReact
+ * @description - returns the main react import statement
+ */
 const importReact = (): string => `import React from 'react';\n`;
 
+/**
+ * @method isDoubleTagElement
+ * @description - checks whether element is a double tag element (i.e. if it can have children)
+ * @input - string of the name of element
+ * @output - boolean -> true if element is a double tag element, false if not
+ */
 const isDoubleTagElement = (elementName: string): boolean => {
-  const DOUBLE_TAG_ELEMENTS = {
+  const DOUBLE_TAG_ELEMENTS: {} = {
     view: true,
     text: true,
     scrollView: true,
@@ -138,12 +154,25 @@ const isDoubleTagElement = (elementName: string): boolean => {
   return DOUBLE_TAG_ELEMENTS[elementName] !== undefined;
 };
 
+/**
+ * @method isCopyCustomComp
+ * @description - checks whether of interface CopyCustomComp
+ * @input - either CopyNativeEl or CopyCustomComp
+ * @output - boolean -> true if input is of interface CopyCustomComp
+ * (technically, output is a type guard)
+ */
 const isCopyCustomComp = (comp: CopyNativeEl | CopyCustomComp): comp is CopyCustomComp => {
   return comp.type === 'custom';
 }
 
+/**
+ * @method addState
+ * @description - generates the strings for state variables
+ * @input - array of string names of the state variables
+ * @output - all strings for the state variables
+ */
 const addState = (stateNames: string[]): string => {
-  let stateVariables = '';
+  let stateVariables: string = '';
   for (const stateVar of stateNames) {
     stateVariables += `const [${stateVar}, set${capitalizeFirst(
       stateVar
@@ -152,6 +181,12 @@ const addState = (stateNames: string[]): string => {
   return stateVariables;
 };
 
+/**
+ * @method getNativeImports
+ * @description - recursively gathers all native core components to be imported starting at native element and going through its children
+ * @input - native element of interface CopyNativeEl
+ * @output - array of strings containing which native core components need to be imported
+ */
 const getNativeImports = (nativeElement: CopyNativeEl): string[] => {
   const toImport: string[] = [];
   const allNativeImports = (nativeElement: CopyNativeEl): void => {
@@ -168,6 +203,12 @@ const getNativeImports = (nativeElement: CopyNativeEl): string[] => {
   return toImport;
 }
 
+/**
+ * @method addNativeImports
+ * @description - generates the import statement for importing native core components
+ * @input - object containing the native core components to be imported
+ * @output - import statement for importing the native core components passed in 
+ */
 const addNativeImports = (toImport: {}): string => {
   let componentsToImport: string = '';
   for (const nativeElement in toImport) {
@@ -177,12 +218,24 @@ const addNativeImports = (toImport: {}): string => {
   return `import { ${componentsToImport.slice(0, -1)} } from 'react-native';\n`;
 };
 
+/**
+ * @method addCustomCompImport
+ * @description - generates the import statement for importing custom components
+ * @input - string name of the custom component
+ * @output - import statement for importing the custom component 
+ */
 const addCustomCompImport = (toImport: string): string => {
   return `import ${toImport} from './${toImport}';\n`;
 };
 
+/**
+ * @method generateComponentCode
+ * @description - generates the necessary code for a custom component or native core component in copies context, recursively goes through its children
+ * @input - component of interface CopyNativeEl or CopyCustomComp
+ * @output - string of the code necessary for the component passed in
+ */
 const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
-  const currElement = isCopyCustomComp(comp) ? comp.pointer : comp.type;
+  const currElement: string = isCopyCustomComp(comp) ? comp.pointer : comp.type;
   if (comp.children.length === 0) {
     return isDoubleTagElement(comp.name)
       ? `</${capitalizeFirst(currElement)}>\n`
@@ -190,7 +243,7 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
   }
 
   let childrenNodes: string = '';
-  const componentChildren = isCopyCustomComp(comp) ? comp.children() : comp.children;
+  const componentChildren: string[] = isCopyCustomComp(comp) ? comp.children() : comp.children;
   for (const child of componentChildren) {
     childrenNodes += `${generateComponentCode(copies[child])}\n`;
   }
@@ -200,19 +253,27 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
           </${capitalizedType}>\n`;
 };
 
+/**
+ * @method generateCustomComponentCode
+ * @description - generates the necessary code for a custom component in originals context
+ * @input - name of the custom component to generate the code for
+ * @output - string of the code necessary for the custom component passed in
+ */
 const generateCustomComponentCode = (componentName: string): string => {
+  // store to save all native core components to be imported
   const importNative: {} = {};
+  // store to save all the custom components to be imported
   const importCustom: {} = {};
+  // returnedComponentCode will contain everything that goes into the return statement of component
   let returnedComponentCode: string = '';
   const component: OrigCustomComp = originals[componentName];
-
   // generate stuff in return statement
   // keep track of what native/ custom components we need
   for (const child of component.children) {
     // find the child in copies context
     const foundChild: CopyNativeEl | CopyCustomComp = copies[child];
     // if type of found child is custom
-    if (foundChild.type === 'custom') {
+    if (isCopyCustomComp(foundChild)) {
       // add the name of original component
       importCustom[foundChild.pointer] = true;
     } else { // if type of found child is native
@@ -253,13 +314,15 @@ const formatCode = (code: string): string => {
   const { format } = require('prettier');
   return format(code, {
     parser: 'babel',
-    bracketSpacing: true,
+    jsxBracketSameLine: true,
     singleQuote: true
   });
 }
 
 const customComponent = generateCustomComponentCode('testComponent');
 console.log(formatCode(customComponent));
+const customComponent2 = generateCustomComponentCode('coolComponent');
+console.log(formatCode(customComponent2));
 
 
 /*
