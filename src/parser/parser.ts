@@ -1,3 +1,4 @@
+import { Component } from 'react';
 import {
   NativeElement,
   OrigNativeEl,
@@ -144,6 +145,10 @@ const isDoubleTagElement = (elementName: string): boolean => {
   return DOUBLE_TAG_ELEMENTS[elementName] !== undefined;
 };
 
+const isCopyCustomComp = (comp: CopyNativeEl | CopyCustomComp): comp is CopyCustomComp => {
+  return comp.type === 'custom';
+}
+
 const addState = (stateNames: string[]): string => {
   let stateVariables = '';
   for (const stateVar of stateNames) {
@@ -171,79 +176,66 @@ const getNativeImports = (nativeElement: CopyNativeEl): string[] => {
 }
 
 const addNativeImports = (toImport: {}): string => {
-  console.log('NATIVE', toImport);
   let componentsToImport = '';
-  // toImport.forEach(nativeEl => {
-  //   // componentsToImport += `${capitalizeFirst(nativeEl)}, `;
-  //   console.log('NATIVE EL',nativeEl, typeof nativeEl);
-  // })
   for (const nativeElement in toImport) {
-    componentsToImport += `${capitalizeFirst(nativeElement)}, `;
+    componentsToImport += `${capitalizeFirst(nativeElement)},`;
   }
   // take off last comma
-  componentsToImport = componentsToImport.substring(
-    0,
-    componentsToImport.length - 1
-  );
-  return `import { ${componentsToImport} } from 'react-native';\n`;
+  return `import { ${componentsToImport.slice(0, -1)} } from 'react-native';\n`;
 };
 
 const addCustomCompImport = (toImport: string): string => {
   return `import ${toImport} from './${toImport}';\n`;
 };
 
-const generateNativeElementCode = (nativeElement): string => {
-  if (nativeElement.children.length === 0) {
-    return isDoubleTagElement(nativeElement.name)
-      ? `</${capitalizeFirst(nativeElement.type)}>\n`
-      : `<${capitalizeFirst(nativeElement.type)}/>\n`;
+const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
+  const currElement = isCopyCustomComp(comp) ? comp.pointer : comp.type;
+  if (comp.children.length === 0) {
+    return isDoubleTagElement(comp.name)
+      ? `</${capitalizeFirst(currElement)}>\n`
+      : `<${capitalizeFirst(currElement)}/>\n`;
   }
 
   let childrenNodes = '';
-  for (const child of nativeElement.children) {
-    childrenNodes += `${generateNativeElementCode(copies[child])}\n`;
+  const componentChildren = isCopyCustomComp(comp) ? comp.children() : comp.children;
+  for (const child of componentChildren) {
+    childrenNodes += `${generateComponentCode(copies[child])}\n`;
   }
-  const capitalizedType = capitalizeFirst(nativeElement.type);
+  const capitalizedType = capitalizeFirst(currElement);
   return  `<${capitalizedType}> 
               ${childrenNodes} 
           </${capitalizedType}>\n`;
 };
 
 const generateCustomComponentCode = (componentName: string): string => {
-  const importNative: {} = {}; // [button, view]
-  const importCustom: {} = {}; // [custom]
-  let returnedComponent: string = '';
+  const importNative: {} = {};
+  const importCustom: {} = {};
+  let returnedComponentCode: string = '';
   const component: OrigCustomComp = originals[componentName];
-  // const componentChildren: string[] = component.children;
-  
+
   // generate stuff in return statement
   // keep track of what native/ custom components we need
   for (const child of component.children) {
     // find the child in copies context
-    const foundChild = copies[child];
-    // console.log('CHILD: ', foundChild);
+    const foundChild: CopyNativeEl | CopyCustomComp = copies[child];
     // if type of found child is custom
     if (foundChild.type === 'custom') {
       // add the name of original component
       importCustom[foundChild.pointer] = true;
     } else { // if type of found child is native
       // add the type of native element
-      // importNative[foundChild.type] = true;
       const nativeImports: string[] = getNativeImports(foundChild);
-      console.log('IMPORTS', nativeImports);
       for (const nativeImport of nativeImports) {
         importNative[nativeImport] = true;
       }
     }
-    // TODO: make this work for regular CopyNativeEl and CopyCustomComp
-    returnedComponent += generateNativeElementCode(foundChild);
+    returnedComponentCode += generateComponentCode(foundChild);
   }
   // generate all import statements
   let importStatements: string = '';
   importStatements += importReact();
   // get import statements for native components
   importStatements += addNativeImports(importNative);
-  console.log('IMPORT STATEMENTS', importStatements);
   // get import statements for custom components
   for (const customComponent in importCustom) {
     importStatements += addCustomCompImport(customComponent);
@@ -257,7 +249,7 @@ const generateCustomComponentCode = (componentName: string): string => {
         ${stateVariables}
         return (
           <div>
-            ${returnedComponent}
+            ${returnedComponentCode}
           </div>
         );
       };
