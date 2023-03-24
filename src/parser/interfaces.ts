@@ -13,12 +13,6 @@ export type NativeElement =
   | 'statusBar'
   | 'activityIndicator';
 
-export type DoubleTagElement =
-  | 'view'
-  | 'scrollView'
-  | 'touchableHighlight'
-  | 'touchableOpacity';
-
 export interface OrigNativeEl {
   type: NativeElement;
   // depends on key names in copies context

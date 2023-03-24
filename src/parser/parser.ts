@@ -6,7 +6,6 @@ import {
   Parent,
   CopyNativeEl,
   CopyCustomComp,
-  DoubleTagElement
 } from './interfaces';
 
 const originals = {
@@ -110,7 +109,7 @@ console.log(copies.testComponent0.children());
 /*
   --- view: <View> </View>
   button: <Button />
-  text: <Text />
+  --- text: <Text> </Text>
   image: <Image />
   textInput: <TextInput />
   --- scrollView: <ScrollView> </ScrollView>
@@ -141,8 +140,9 @@ const testComponent = () => {
           <Button />
         </Text>
       </View>
+      <CoolComponent />
     </div>
-  )
+  );
 };
 */
 
@@ -150,9 +150,16 @@ const testComponent = () => {
 1. import statments
 2. state variables
 3. return statement
-  -> div, button, view, text, button
+  1. button - no children, append text for button, move to next child
+  2. view - children, go to its children
+  3. coolcomponent - no children, append text
 4. wrap 2-3 in function
 */
+
+const capitalizeFirst = (str: string): string => {
+  if (str.length === 0) return '';
+  return str[0].toUpperCase() + str.slice(1);
+}
 
 const addIndent = (spacing: number = 2):string => {
   let indent = '';
@@ -160,25 +167,53 @@ const addIndent = (spacing: number = 2):string => {
   return indent;
 }
 
-const addNewLine = ():string => '\n';
-const importReact = ():string => `import React from 'react';`;
-const addImportStatement = ():string => {
 
+const importReact = ():string => `import React from 'react';\n`;
+
+
+const isDoubleTagElement = (elementName: string): boolean => {
+  const DOUBLE_TAG_ELEMENTS = {
+    'view': true,
+    'text': true,
+    'scrollView': true,
+    'touchableHighlight': true,
+    'touchableOpacity': true,
+  }
+  return DOUBLE_TAG_ELEMENTS[elementName] !== undefined;
+}
+
+const addImportStatement = ():string => {
+  
   return '';
 }
 
-// note: technically passing element name, but keeping argument as element for now for readability
-const isDoubleTagElement = (element: string): element is DoubleTagElement => {
-  if (element as DoubleTagElement) {
-    return true;
+const generateNativeElementCode = (copyElementName: string):string => {
+  const nativeElement = copies[copyElementName];
+
+  if (nativeElement.children.length === 0) {
+    return `</${capitalizeFirst(nativeElement.type)}>`;
   }
-  return false;
+  
+  const capitalizedType = capitalizeFirst(nativeElement.type);
+  let childrenNodes = '';
+  for (const child of nativeElement.children) {
+    childrenNodes += `${generateNativeElementCode(child)}\n`;
+  }
+  return `<${capitalizedType}> 
+            ${childrenNodes} 
+          </${capitalizedType}>`;
 }
+console.log(generateNativeElementCode('view0'));
 
 const generateCustomComponentCode = (componentName: string):string => {
   let importStatements = '';
+  let stateVariables = '';
+  let returnedComponent = '';
   const component: OrigCustomComp = originals[componentName];
   const componentChildren: string[] =  component.children;
+  for (let i = 0; i < componentChildren.length; i++) {
+
+  }
   const componentState: string[] = component.state;
   return '';
 }
