@@ -4,8 +4,9 @@
   justify-content: space-between;
   align-items: center;
   height: 80px;
-  background-color: skyblue;
+  background-color: $primary-color;
   padding: 0 1.5rem;
+  color: white;
 }
 
 #master-button-container{
@@ -17,4 +18,6 @@
 .master-button{
   width: 75px;
   padding: 7.5px;
+  border: none;
+  border-radius: 5px;
 }
