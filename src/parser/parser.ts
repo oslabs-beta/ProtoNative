@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import {
   NativeElement,
   OrigNativeEl,
@@ -126,12 +125,6 @@ const capitalizeFirst = (str: string): string => {
   return str[0].toUpperCase() + str.slice(1);
 };
 
-const addIndent = (spacing: number = 2): string => {
-  let indent = '';
-  for (let i = 0; i < spacing; i++) indent += ' ';
-  return indent;
-};
-
 const importReact = (): string => `import React from 'react';\n`;
 
 const isDoubleTagElement = (elementName: string): boolean => {
@@ -176,7 +169,7 @@ const getNativeImports = (nativeElement: CopyNativeEl): string[] => {
 }
 
 const addNativeImports = (toImport: {}): string => {
-  let componentsToImport = '';
+  let componentsToImport: string = '';
   for (const nativeElement in toImport) {
     componentsToImport += `${capitalizeFirst(nativeElement)},`;
   }
@@ -196,7 +189,7 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
       : `<${capitalizeFirst(currElement)}/>\n`;
   }
 
-  let childrenNodes = '';
+  let childrenNodes: string = '';
   const componentChildren = isCopyCustomComp(comp) ? comp.children() : comp.children;
   for (const child of componentChildren) {
     childrenNodes += `${generateComponentCode(copies[child])}\n`;
@@ -256,7 +249,18 @@ const generateCustomComponentCode = (componentName: string): string => {
   `;
 };
 
-console.log(generateCustomComponentCode('testComponent'));
+const formatCode = (code: string): string => {
+  const { format } = require('prettier');
+  return format(code, {
+    parser: 'babel',
+    bracketSpacing: true,
+    singleQuote: true
+  });
+}
+
+const customComponent = generateCustomComponentCode('testComponent');
+console.log(formatCode(customComponent));
+
 
 /*
   --- view: <View> </View>
