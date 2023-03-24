@@ -1,0 +1,20 @@
+#navbar-container{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  background-color: skyblue;
+  padding: 0 1.5rem;
+}
+
+#master-button-container{
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.master-button{
+  width: 75px;
+  padding: 7.5px;
+}

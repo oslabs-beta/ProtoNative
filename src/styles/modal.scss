@@ -17,6 +17,7 @@
   width: 500px;
   height: 200px;
   border-radius: 10px;
+
 }
 
 #close-button{
@@ -27,5 +28,25 @@
 
 #close-button:hover{
   cursor: pointer;
+}
+
+#modal-delete-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+#modal-delete-button-container{
+  margin-top: 1rem;
+  display: flex;
+  width: 125px;
+  justify-content: space-between;
+}
+
+.modal-delete-button{
+  width: 50px;
 }
 
