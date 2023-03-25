@@ -123,9 +123,9 @@ const App = () => {
         <NavBar/>
         <MainContainer />
       </div>
-      < /AppContext.Provider>
+      </AppContext.Provider>
       );
-};
+    };
 
       ReactDOM.render(<App />, document.getElementById('root'));
 
