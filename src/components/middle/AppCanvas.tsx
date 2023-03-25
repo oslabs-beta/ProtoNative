@@ -11,12 +11,26 @@ const AppCanvas = (): JSX.Element => {
   console.log('AppCanvas copies: ', copies)
   const [appComponents, setAppComponents] = useState([]);
   useEffect(() => {
-    let appChildren: JSX.Element[] = App.children.map(child => {
+    let appChildren: JSX.Element[] = App.children.map((child, index) => {
       if (copies[child].type === 'custom'){
-        return ElementBlock(child, copies, 'app')
+        return (<ElementBlock
+        key={index}
+        componentName={child}
+        components={copies}
+        index={index}
+        moveItem={() => console.log('hi')}
+        location={'app'}
+      />)
       }
       else{
-        return ElementBlock(child, copies, 'details')
+        return (<ElementBlock
+          key={index}
+          componentName={child}
+          components={copies}
+          index={index}
+          moveItem={() => console.log('hi')}
+          location={'details'}
+        />)
       }
     });
     setAppComponents(appChildren);
