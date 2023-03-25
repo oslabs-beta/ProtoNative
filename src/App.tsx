@@ -130,7 +130,7 @@ const App = () => {
         </DndProvider>
       </AppContext.Provider>
     </React.StrictMode>
-      );
+  );
 };
 
       // use create root instead of render
