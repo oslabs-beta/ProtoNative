@@ -18,12 +18,16 @@ export interface OrigNativeEl {
   // depends on key names in copies context
   children: string[];
   index: number;
+  state?: string[];
 }
 
 export interface AppInterface {
   type: 'app';
   children: string[];
   state: string[];
+  // name?: string;
+  // index?: number;
+  // copies?: string[];
 }
 
 export interface OrigCustomComp {
@@ -55,9 +59,13 @@ export interface CopyCustomComp {
   name: string;
   type: 'custom';
   // depends on key names in copies context
-  parent: string;
+  parent: Parent;
   // ALL depend on user's custom component names in originals
   pointer: NativeElement | string;
   children(): (NativeElement | string)[];
   state(): (NativeElement | string)[];
 }
+
+export interface Originals { [key: string]: AppInterface | OrigNativeEl | OrigCustomComp }
+
+export interface Copies { [key: string]: CopyNativeEl | CopyCustomComp }

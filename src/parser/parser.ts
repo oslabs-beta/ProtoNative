@@ -6,9 +6,13 @@ import {
   Parent,
   CopyNativeEl,
   CopyCustomComp,
+  Originals,
+  Copies
 } from './interfaces';
 
-const originals = {
+const { format } = require('prettier');
+
+const originals: Originals = {
   app: {
     type: 'app',
     children: ['testComponent0', 'coolComponent0', 'view0'],
@@ -57,7 +61,7 @@ const originals = {
   } as OrigCustomComp,
 };
 
-const copies = {
+const copies: Copies = {
   button0: {
     name: 'button0',
     type: 'button',
@@ -97,7 +101,7 @@ const copies = {
   testComponent0: {
     name: 'testComponent0',
     type: 'custom',
-    parent: 'app',
+    parent: { origin: 'original', key: 'app' },
     pointer: 'testComponent',
     children: function () {
       return originals[this.pointer].children;
@@ -109,7 +113,7 @@ const copies = {
   coolComponent0: {
     name: 'coolComponent0',
     type: 'custom',
-    parent: 'app',
+    parent: { origin: 'original', key: 'coolComponent' },
     pointer: 'coolComponent',
     children: function () {
       return originals[this.pointer].children;
@@ -120,16 +124,16 @@ const copies = {
   } as CopyCustomComp,
 };
 
-/**
- * @method capitalizeFirst
- * @description - capitalizes first letter of input string
- * @input - string
- * @output - string with capitalized first letter
- */
-const capitalizeFirst = (str: string): string => {
-  if (str.length === 0) return '';
-  return str[0].toUpperCase() + str.slice(1);
-};
+// /**
+//  * @method capitalizeFirst
+//  * @description - capitalizes first letter of input string
+//  * @input - string
+//  * @output - string with capitalized first letter
+//  */
+// // const capitalizeFirst = (str: string): string => {
+// //   if (str.length === 0) return '';
+// //   return str[0].toUpperCase() + str.slice(1);
+// // };
 
 /**
  * @method importReact
@@ -144,7 +148,7 @@ const importReact = (): string => `import React from 'react';\n`;
  * @output - boolean -> true if element is a double tag element, false if not
  */
 const isDoubleTagElement = (elementName: string): boolean => {
-  const DOUBLE_TAG_ELEMENTS: {} = {
+  const DOUBLE_TAG_ELEMENTS: {[key: string]: boolean} = {
     view: true,
     text: true,
     scrollView: true,
@@ -174,9 +178,7 @@ const isCopyCustomComp = (comp: CopyNativeEl | CopyCustomComp): comp is CopyCust
 const addState = (stateNames: string[]): string => {
   let stateVariables: string = '';
   for (const stateVar of stateNames) {
-    stateVariables += `const [${stateVar}, set${capitalizeFirst(
-      stateVar
-    )}] = React.useState(null);\n`;
+    stateVariables += `const [${stateVar}, set${stateVar}] = React.useState(null);\n`;
   }
   return stateVariables;
 };
@@ -196,7 +198,7 @@ const getNativeImports = (nativeElement: CopyNativeEl): string[] => {
     }
     toImport.push(nativeElement.type);
     for (const child of nativeElement.children) {
-      allNativeImports(copies[child]);
+      allNativeImports(copies[child] as CopyNativeEl);
     }
   }
   allNativeImports(nativeElement);
@@ -212,7 +214,7 @@ const getNativeImports = (nativeElement: CopyNativeEl): string[] => {
 const addNativeImports = (toImport: {}): string => {
   let componentsToImport: string = '';
   for (const nativeElement in toImport) {
-    componentsToImport += `${capitalizeFirst(nativeElement)},`;
+    componentsToImport += `${nativeElement},`;
   }
   // take off last comma
   return `import { ${componentsToImport.slice(0, -1)} } from 'react-native';\n`;
@@ -229,6 +231,16 @@ const addCustomCompImport = (toImport: string): string => {
 };
 
 /**
+ * @method addCustomCompExport
+ * @description - generates the export statement for exporting custom components
+ * @input - string name of the custom component
+ * @output - export statement for exporting the custom component 
+ */
+const addCustomCompExport = (toExport: string): string => {
+  return `export default ${toExport};\n`;
+};
+
+/**
  * @method generateComponentCode
  * @description - generates the necessary code for a custom component or native core component in copies context, recursively goes through its children
  * @input - component of interface CopyNativeEl or CopyCustomComp
@@ -238,8 +250,8 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
   const currElement: string = isCopyCustomComp(comp) ? comp.pointer : comp.type;
   if (comp.children.length === 0) {
     return isDoubleTagElement(comp.name)
-      ? `</${capitalizeFirst(currElement)}>\n`
-      : `<${capitalizeFirst(currElement)}/>\n`;
+      ? `</${currElement}>\n`
+      : `<${currElement}/>\n`;
   }
 
   let childrenNodes: string = '';
@@ -247,10 +259,9 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
   for (const child of componentChildren) {
     childrenNodes += `${generateComponentCode(copies[child])}\n`;
   }
-  const capitalizedType = capitalizeFirst(currElement);
-  return  `<${capitalizedType}> 
+  return  `<${currElement}> 
               ${childrenNodes} 
-          </${capitalizedType}>\n`;
+          </${currElement}>\n`;
 };
 
 /**
@@ -259,14 +270,14 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
  * @input - name of the custom component to generate the code for
  * @output - string of the code necessary for the custom component passed in
  */
-const generateCustomComponentCode = (componentName: string): string => {
+const generateCustomComponentCode = (component: OrigCustomComp): string => {
   // store to save all native core components to be imported
-  const importNative: {} = {};
+  const importNative: {[key: string]: boolean} = {};
   // store to save all the custom components to be imported
-  const importCustom: {} = {};
+  const importCustom: {[key: string]: boolean} = {};
   // returnedComponentCode will contain everything that goes into the return statement of component
   let returnedComponentCode: string = '';
-  const component: OrigCustomComp = originals[componentName];
+  // const component: OrigCustomComp | OrigNativeEl| AppInterface = originals[componentName];
   // generate stuff in return statement
   // keep track of what native/ custom components we need
   for (const child of component.children) {
@@ -306,12 +317,12 @@ const generateCustomComponentCode = (componentName: string): string => {
             ${returnedComponentCode}
           </div>
         );
-      };
+      };\n      
+      ${addCustomCompExport(component.name)}
   `;
 };
 
 const formatCode = (code: string): string => {
-  const { format } = require('prettier');
   return format(code, {
     parser: 'babel',
     jsxBracketSameLine: true,
@@ -319,9 +330,9 @@ const formatCode = (code: string): string => {
   });
 }
 
-const customComponent = generateCustomComponentCode('testComponent');
+const customComponent = generateCustomComponentCode(originals['testComponent'] as OrigCustomComp);
 console.log(formatCode(customComponent));
-const customComponent2 = generateCustomComponentCode('coolComponent');
+const customComponent2 = generateCustomComponentCode(originals['coolComponent'] as OrigCustomComp);
 console.log(formatCode(customComponent2));
 
 
@@ -363,6 +374,8 @@ const testComponent = () => {
     </div>
   );
 };
+
+export default testComponent;
 */
 
 /*
