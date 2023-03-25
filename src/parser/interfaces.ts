@@ -1,5 +1,4 @@
-export type NativeElements =
-  | 'app'
+export type NativeElement =
   | 'view'
   | 'button'
   | 'text'
@@ -14,18 +13,21 @@ export type NativeElements =
   | 'statusBar'
   | 'activityIndicator';
 
-
 export interface OrigNativeEl {
-  type: NativeElements;
+  type: NativeElement;
   // depends on key names in copies context
   children: string[];
   index: number;
+  state?: string[];
 }
 
 export interface AppInterface {
   type: 'app';
   children: string[];
   state: string[];
+  // name?: string;
+  // index?: number;
+  // copies?: string[];
 }
 
 export interface OrigCustomComp {
@@ -42,12 +44,12 @@ export interface OrigCustomComp {
 export interface Parent {
   origin: 'original' | 'copies';
   // depends on user's custom component names in originals
-  key: NativeElements | string;
+  key: NativeElement | string;
 }
 
 export interface CopyNativeEl {
   name: string;
-  type: NativeElements;
+  type: NativeElement;
   parent: Parent;
   // depends on names of copies in copies context
   children: string[];
@@ -59,7 +61,11 @@ export interface CopyCustomComp {
   // depends on key names in copies context
   parent: Parent;
   // ALL depend on user's custom component names in originals
-  pointer: NativeElements | string;
-  children(): (NativeElements | string)[];
-  state(): (NativeElements | string)[];
+  pointer: NativeElement | string;
+  children(): (NativeElement | string)[];
+  state(): (NativeElement | string)[];
 }
+
+export interface Originals { [key: string]: AppInterface | OrigNativeEl | OrigCustomComp }
+
+export interface Copies { [key: string]: CopyNativeEl | CopyCustomComp }
