@@ -54,6 +54,7 @@ export interface CopyNativeEl {
   parent: Parent;
   // depends on names of copies in copies context
   children: string[];
+  pointer?: string
 }
 
 export interface CopyCustomComp {
