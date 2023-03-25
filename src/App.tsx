@@ -110,6 +110,11 @@ const App = () => {
     } as CopyCustomComp,
   });
   const [currentComponent, setCurrentComponent] = React.useState('testComponent');
+
+  // FIXME: Turn off strict mode when unnecesary
+  // FIXME: Turn off strict mode when unnecesary
+  // FIXME: Turn off strict mode when unnecesary
+  // FIXME: Turn off strict mode when unnecesary
   return (
     <React.StrictMode>
       <AppContext.Provider

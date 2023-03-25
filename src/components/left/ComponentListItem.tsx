@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import AppContext from '../../context/AppContext';
 import { CopyCustomComp, CopyNativeEl, OrigCustomComp, AppInterface } from '../../parser/interfaces';
 
@@ -12,9 +12,9 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 	const { currentComponent, setCurrentComponent, originals, setOriginals, copies, setCopies } = useContext(AppContext);
 	const [ComponentItem, setComponentItem] = useState(null);
 
-	const handleHighlight = (): void => {
-		setCurrentComponent(name);
-	}
+	const handleHighlight = useCallback((): void => {
+		if (currentComponent !== name) setCurrentComponent(name);
+	}, [currentComponent]);
 	
 	// if the name is 'app', do not render the delete button and do not allow the user to click on the component
 	useEffect(() => {
