@@ -3,6 +3,7 @@
   padding: 30px;
   border-radius: 10px;
   text-align: center;
+  height: 100%;
   h2 {
     margin-bottom: 20px;
   }
@@ -10,7 +11,6 @@
 
 #addableElementsContainer {
   display: flex;
-  flex-direction: row;
   border: 1px solid black;
   flex-wrap: wrap;
   justify-content: center;
@@ -18,12 +18,17 @@
   border-radius: 10px;
   height: 80%;
   overflow-y: auto;
+  align-content: flex-start;
 }
 
 .addableElement {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
   border: 1px solid black;
-  margin: 5px;
-  padding: 10px;
+  height: 40px;
+  margin: 8px;
+  padding: 20px;
   border-radius: 10px;
   cursor: pointer;
   &:hover {

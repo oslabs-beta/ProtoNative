@@ -4,7 +4,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: $main-font;
+  // outline: 1px solid lime;
 }
 
 
@@ -16,8 +16,7 @@ body {
 
 #main-container {
   display: flex;
-  padding: 3rem;
-  height: 90vh;
+  height: 100vh;
 }
 
 #right-container {
@@ -30,18 +29,16 @@ body {
   display: grid;
   grid-template-rows: .2fr 1fr 1fr;
   width: 33%;
+  gap: 12px;
 }
 
 #app-canvas {
   width: 33%;
 }
 
-
+@import '_variables.scss';
 @import 'addChild.scss';
-@import 'appCanvas.scss';
 @import 'addComponent.scss';
+@import 'appCanvas.scss';
 @import 'componentDetails.scss';
 @import 'componentList.scss';
-@import 'modal.scss';
-@import 'navbar.scss';
-

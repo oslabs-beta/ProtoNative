@@ -8,27 +8,46 @@ import AppContext from '../../context/AppContext';
 // then when user drags into app or wherever, then it gets copied into copies
 
 
-const AddComponent = (name) => {
+const AddComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [componentName, setComponentName] = useState('');
   const { originals, setOriginals, setCurrentComponent } = useContext(AppContext);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (/^[a-z]+(?:[A-Z][a-z]*)*$/.test(componentName)) {
-      setOriginals({ ...originals, [componentName]: { type: 'custom' } });
+    if (/^[A-Z]+(?:[a-z][A-Z]*)*$/.test(componentName)) {
+      if (componentName in originals) return alert('Component name already exists!');
+      setOriginals((previous: typeof originals): typeof originals => {
+        return {
+          ...originals,
+          [componentName]: {
+            name: componentName,
+            type: 'custom',
+            children: [],
+            state: [],
+            index: 0,
+            copies: [],
+          }
+        };
+      });
       setComponentName('');
       setIsOpen(false);
     } else {
-      alert('Component name should be in camelCase format!');
+      alert('Component name should be in PascalCase format!');
     }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setComponentName(event.target.value);
   };
+
+  const handleClose = () => {
+    setComponentName('');
+    setIsOpen(false);
+  };
+
   return (
-    <>
-      <button onClick={() => {
+    <div id='addComponentContainer'>
+      <button id='addComponent' onClick={() => {
         console.log('are we in OnClick?');
         setIsOpen(true)
       }
@@ -43,12 +62,12 @@ const AddComponent = (name) => {
                 <input type="text" value={componentName} onChange={handleInputChange} />
               </label>
               <button type="submit">Add</button>
-              <button onClick={() => setIsOpen(false)}>Cancel</button>
+              <button onClick={() => handleClose()}>Cancel</button>
             </form>
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

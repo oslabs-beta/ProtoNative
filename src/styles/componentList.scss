@@ -1,3 +1,12 @@
+#componentList {
+  text-align: center;
+  border: 1px solid black;
+  padding: 30px;
+  border-radius: 10px;
+  height: 40vh;
+  h2 {
+    margin-bottom: 20px;
+  }
 #componentListContainer {
     display: flex;
     flex-direction: column;
@@ -19,27 +28,62 @@
     }
 }
 
-#componentsList {
-    display: flex;
-    flex-direction: row;
-    border: 1px solid black;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 10px;
-    border-radius: 10px;
-    height: 80%;
-    overflow-y: auto;
+#customComps {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 10px;
+  height: 30vh;
+  overflow-y: auto;
+  gap: 16px;
 }
 
-
-
 .componentListItem {
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  min-height: 50px;
+  border-radius: 10px;
+  font-size: 20px;
+  span {
+    text-align: left;
     display: flex;
-    text-align: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding-left: 14px;
+  }
+  button {
+    font-size: 16px;
+    margin-right: 14px;
+    width: 200px;
+    height: 60%;
+    border-radius: 8px;
+  }
 }
 
 .highlightedComponentListItem {
-    background-color: #e6e6e6;
+  background-color: rgba(255, 0, 0, 0.2);
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  min-height: 50px;
+  border-radius: 10px;
+  font-size: 20px;
+  span {
+    text-align: left;
     display: flex;
-    text-align: center;
-}
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding-left: 14px;
+  }
+  button {
+    font-size: 16px;
+    margin-right: 14px;
+    width: 200px;
+    height: 60%;
+    border-radius: 8px;
+  }
+}}

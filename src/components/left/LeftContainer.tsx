@@ -1,10 +1,10 @@
 import React from 'react';
 import AddComponent from './AddComponent';
 import ComponentList from './ComponentList';
-import AddChild from './AddChild.jsx';
+import AddChild from './AddChild';
 
 
-const LeftContainer = () => {
+const LeftContainer = (): JSX.Element => {
   return (
     <div id='left-container'>
       <AddComponent />
