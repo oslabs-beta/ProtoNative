@@ -79,11 +79,11 @@ const App = () => {
     view0: {
       type: 'view',
       parent: { origin: 'original', key: 'testComponent' },
-      children: [],
+      children: ['button1'],
     } as CopyNativeEl,
     button1: {
       type: 'button',
-      parent: { origin: 'copies', key: 'text0' },
+      parent: { origin: 'copies', key: 'view0' },
       children: [],
     } as CopyNativeEl,
     view1: {
