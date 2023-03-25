@@ -21,7 +21,38 @@ const ComponentDetails = (): JSX.Element => {
   const { currentComponent, originals, setOriginals, copies, setCopies } =
     useContext(AppContext);
   const displayedComponent = originals[currentComponent];
-  // const [childComponents, setChildComponents] = useState([]);
+  const [childrenOfCurrent, setChildrenOfCurrent] = useState(
+    displayedComponent.children
+  );
+
+  const moveItem = (dragIndex, hoverIndex) => {
+    const item = displayedComponent.children[dragIndex];
+    const copy = [...displayedComponent.children];
+    copy.splice(dragIndex, 1);
+    copy.splice(hoverIndex, 0, item);
+    setOriginals((prevState) => {
+      let newPrevState = { ...prevState };
+      newPrevState[currentComponent].children = copy;
+      return newPrevState;
+    });
+    setChildrenOfCurrent(copy);
+    setChildElements((prev) => {
+      console.log(copy);
+      return copy.map((childName: string, index: number) => {
+        if (currentComponent !== 'app' && currentComponent !== null) {
+          return ElementBlock(childName, copies, index, moveItem, 'details');
+        }
+      });
+    });
+  };
+
+  const [childElements, setChildElements] = useState(
+    displayedComponent.children.map((childName: string, index: number) => {
+      if (currentComponent !== 'app' && currentComponent !== null) {
+        return ElementBlock(childName, copies, index, moveItem, 'details');
+      }
+    })
+  );
 
   // const [{ isOver }, drop] = useDrop(() => ({
   //   accept: 'element',
@@ -31,26 +62,10 @@ const ComponentDetails = (): JSX.Element => {
   //     isOver: monitor.isOver(),
   //   }),
   // }));
-  // useEffect(() => {
-  // }, [originals]);
-  const moveItem = (dragIndex, hoverIndex) => {
-    const item = displayedComponent.children[dragIndex];
-    const copy = [...displayedComponent.children];
-    copy.splice(dragIndex, 1);
-    copy.splice(hoverIndex, 0, item);
-    console.log(copy);
-    setOriginals((prevState) => {
-      let newPrevState = { ...prevState };
-      newPrevState[currentComponent].children = copy;
-      return newPrevState;
-    });
-  };
 
-  let childElements = displayedComponent.children.map((childName, index) => {
-    if (currentComponent !== 'app' && currentComponent !== null) {
-      return ElementBlock(childName, copies, index, moveItem, 'details');
-    }
-  });
+  // useEffect(() => {
+  //   console.log(childrenOfCurrent);
+  // }, [childrenOfCurrent]);
 
   return (
     <div id='component-details-container'>

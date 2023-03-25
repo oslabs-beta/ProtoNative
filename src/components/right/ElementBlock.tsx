@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react';
-import AppContext from '../../context/AppContext';
 import { useDrag, useDrop } from 'react-dnd';
 
 const ElementBlock = (
@@ -17,18 +16,13 @@ const ElementBlock = (
 
   const [, drop] = useDrop({
     accept: 'elements',
-    // collect(monitor) {
-    //   return {
-    //     handlerId: monitor.getHandlerId(),
-    //   };
+    // drop: (item, monitor) => {
+    //   const didDrop = monitor.didDrop();
+    //   if (didDrop) {
+    //     return;
+    //   }
     // },
     drop: (item, monitor) => {
-      const didDrop = monitor.didDrop();
-      if (didDrop) {
-        return;
-      }
-    },
-    hover(item, monitor) {
       if (!ref.current) return;
 
       if (!monitor.canDrop()) {
@@ -39,19 +33,17 @@ const ElementBlock = (
       const hoverIndex = index;
       if (dragIndex === hoverIndex) return;
 
-      const mousePosition = monitor.getClientOffset();
-      const hoveredRect = ref.current.getBoundingClientRect();
-      const hoverMiddleY = (hoveredRect.bottom - hoveredRect.top) / 2;
-      const hoverClientY = mousePosition.y - hoveredRect.top;
+      // const mousePosition = monitor.getClientOffset();
+      // const hoveredRect = ref.current.getBoundingClientRect();
+      // const hoverMiddleY = (hoveredRect.bottom - hoveredRect.top) / 2;
+      // const hoverClientY = mousePosition.y - hoveredRect.top;
 
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
+      // if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
 
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
+      // if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
 
       moveItem(dragIndex, hoverIndex);
       item.index = hoverIndex;
-      console.log('new item index', item.index);
-      console.log(hoverIndex);
     },
   });
 
@@ -103,13 +95,10 @@ const ElementBlock = (
     });
     childElements = arr;
   }
-  // const childElements = componentDef.children.length
-  //   ? componentDef.children.map(childName => ElementBlock(childName, components))
-  //   : null;
 
   return (
     <div
-      key={componentName}
+      key={index}
       style={{ border: '1px solid black' }}
       className='element'
       ref={ref}

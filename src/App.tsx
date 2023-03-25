@@ -51,7 +51,7 @@ const App = () => {
     testComponent: {
       name: 'testComponent',
       type: 'custom',
-      children: ['button0'],
+      children: ['button0', 'view0', 'coolComponent0'],
       state: [],
       index: 1,
       copies: ['testComponent0'],
