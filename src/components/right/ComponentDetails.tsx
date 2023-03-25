@@ -21,7 +21,7 @@ const ComponentDetails = (): JSX.Element => {
   const displayedComponent = originals[currentComponent];
   let childElements;
   if (currentComponent !== 'app' && currentComponent !== null) {
-    childElements = displayedComponent.children.map(childName => ElementBlock(childName, copies));
+    childElements = displayedComponent.children.map(childName => ElementBlock(childName, copies, 'details'));
   }
 
   return (

@@ -1,0 +1,47 @@
+#componentListContainer {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 10px;
+    height: 80%;
+    overflow-y: auto;
+}
+
+#customComps {
+    border: 1px solid black;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+
+    h2 {
+        margin-bottom: 20px;
+    }
+}
+
+#componentsList {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 10px;
+    height: 80%;
+    overflow-y: auto;
+}
+
+
+
+.componentListItem {
+    display: flex;
+    text-align: center;
+}
+
+.highlightedComponentListItem {
+    background-color: #e6e6e6;
+    display: flex;
+    text-align: center;
+}
