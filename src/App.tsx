@@ -4,6 +4,8 @@ import AppContext from './context/AppContext';
 import MainContainer from './components/containers/MainContainer';
 import NavBarContainer from './components/top/NavBarContainer';
 import {
+  Originals,
+  Copies,
   OrigNativeEl,
   AppInterface,
   OrigCustomComp,
@@ -15,7 +17,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const App = () => {
-  const [originals, setOriginals] = React.useState({
+  const [originals, setOriginals] = React.useState<Originals>({
     App: { type: 'App', children: ['TestComponent0', 'CoolComponent0', 'View0', 'TestComponent1', 'TestComponent2'], state: [] } as AppInterface,
     View: { type: 'View', children: [], index: 2 } as OrigNativeEl,
     Button: { type: 'Button', children: [], index: 3 } as OrigNativeEl,
@@ -47,7 +49,7 @@ const App = () => {
       copies: ['CoolComponent0'],
     } as OrigCustomComp
   });
-  const [copies, setCopies] = React.useState({
+  const [copies, setCopies] = React.useState<Copies>({
     Button0: {
       name: 'Button0',
       type: 'Button',
@@ -90,10 +92,10 @@ const App = () => {
       parent: { origin: 'original', key: 'App' },
       pointer: 'TestComponent',
       children: function () {
-        return originals[this.pointer as keyof typeof originals].children;
+        return originals[this.pointer].children;
       },
       state: function () {
-        return originals[this.pointer as keyof typeof originals].state;
+        return originals[this.pointer].state;
       }
     } as CopyCustomComp,
     TestComponent1: {
@@ -102,10 +104,10 @@ const App = () => {
       parent: { origin: 'original', key: 'App' },
       pointer: 'TestComponent',
       children: function () {
-        return originals[this.pointer as keyof typeof originals].children;
+        return originals[this.pointer].children;
       },
       state: function () {
-        return originals[this.pointer as keyof typeof originals].state;
+        return originals[this.pointer].state;
       }
     } as CopyCustomComp,
     TestComponent2: {
@@ -114,10 +116,10 @@ const App = () => {
       parent: { origin: 'original', key: 'App' },
       pointer: 'TestComponent',
       children: function () {
-        return originals[this.pointer as keyof typeof originals].children;
+        return originals[this.pointer].children;
       },
       state: function () {
-        return originals[this.pointer as keyof typeof originals].state;
+        return originals[this.pointer].state;
       }
     } as CopyCustomComp,
     CoolComponent0: {
@@ -126,10 +128,10 @@ const App = () => {
       parent: { origin: 'original', key: 'App' },
       pointer: 'CoolComponent',
       children: function () {
-        return originals[this.pointer as keyof typeof originals].children;
+        return originals[this.pointer].children;
       },
       state: function () {
-        return originals[this.pointer as keyof typeof originals].state;
+        return originals[this.pointer].state;
       }
     } as CopyCustomComp,
   });

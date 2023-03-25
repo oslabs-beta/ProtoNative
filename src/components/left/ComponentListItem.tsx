@@ -60,6 +60,7 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 			let children: string[];
 
 			// different methods for getting children depending on whether the component is a custom component or a native element
+			console.log('deletedComponent', deletedComponent)
 			deletedComponent.type === 'custom'
 			? children = deletedComponent.children()
 			: children = deletedComponent.children;
@@ -95,7 +96,7 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		// delete all the copies of the custom component from copies
 		console.log(originals)
 		let [newCopies, newOriginals] = [JSON.parse(JSON.stringify(copies)), JSON.parse(JSON.stringify(originals))];
-		originals[name].copies.forEach((copy: string) => [newCopies, newOriginals] = trashCan(copy, newCopies, newOriginals));
+		originals[name].copies.forEach((copyName: string) => [newCopies, newOriginals] = trashCan(copyName, newCopies, newOriginals));
 		
 		// delete the custom component from originals
 		delete newOriginals[name];

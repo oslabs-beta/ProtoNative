@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "jsx": "react",
+    "module": "commonjs",
     "esModuleInterop": true,
     "target": "es6",
     "allowJs": true,

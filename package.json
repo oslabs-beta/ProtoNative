@@ -26,6 +26,7 @@
     "eslint": "^8.36.0",
     "html-webpack-plugin": "^5.5.0",
     "node-loader": "^2.0.0",
+    "prettier": "^2.8.7",
     "sass-loader": "^13.2.1",
     "scss": "^0.2.4",
     "style-loader": "^3.3.2",
@@ -40,6 +41,7 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
-    "sass": "^1.59.3"
+    "sass": "^1.59.3",
+    "ts-node": "^10.9.1"
   }
 }
