@@ -6,12 +6,12 @@ import { ItemTypes } from '../left/AddableChild';
 
 const AppCanvas = (): JSX.Element => {
   
-  const {setCopies, setOriginals, originals, originals: {app}, copies} = useContext(AppContext);
-
+  const {setCopies, setOriginals, originals, originals: {App}, copies} = useContext(AppContext);
+  console.log('AppCanvas originals: ', originals)
+  console.log('AppCanvas copies: ', copies)
   const [appComponents, setAppComponents] = useState([]);
-
   useEffect(() => {
-    let appChildren: JSX.Element[] = app.children.map(child => {
+    let appChildren: JSX.Element[] = App.children.map(child => {
       if (copies[child].type === 'custom'){
         return ElementBlock(child, copies, 'app')
       }
@@ -37,7 +37,7 @@ const AppCanvas = (): JSX.Element => {
         newElement = {
           name: originalElement.name + originalElement.index,
           type: originalElement.type,
-          parent: 'app',
+          parent: {origin: 'original', key: 'App'},
           pointer: item.name,
           children: function() {
             return originals[this.pointer].children;
@@ -45,7 +45,24 @@ const AppCanvas = (): JSX.Element => {
           state: function() {
             return originals[this.pointer].state;
           }
+          
         }
+
+        // increment index of originalElement
+        setOriginals((previous: typeof originals): typeof originals => {
+          const newOriginal = {
+            ...previous[item.name],
+            index: previous[item.name].index + 1,
+            copies: [...previous[item.name].copies, newElement.name],
+          };
+          console.log(newOriginal)
+  
+          return {
+            ...previous,
+            [item.name]: newOriginal,
+          };
+        });
+
         // TODO: check component's ancestry if it were to be added into a component instead of app
         // TODO: dont do this here in the AppCanvas component yet though, do it when adding adding a custom component into another component
         
@@ -55,33 +72,32 @@ const AppCanvas = (): JSX.Element => {
         newElement = {
           name: originalElement.type + originalElement.index,
           type: originalElement.type,
-          parent: 'app',
+          parent: {origin: 'original', key: 'App'},
           children: [],
         }
+        // increment index of originalElement
+        setOriginals((previous: typeof originals): typeof originals => {
+          const newOriginal = {
+            ...previous[item.name],
+            index: previous[item.name].index + 1,
+          };
+  
+          return {
+            ...previous,
+            [item.name]: newOriginal,
+          };
+        });
       }
-
-      // increment index of originalElement
-      setOriginals((previous: typeof originals): typeof originals => {
-        const newOriginal = {
-          ...previous[item.name],
-          index: previous[item.name].index + 1,
-        };
-
-        return {
-          ...previous,
-          [item.name]: newOriginal,
-        };
-      });
       
       // add to children property of app
       setOriginals((previous: typeof originals): typeof originals => {
         const newApp = {
-          ...app,
-          children: [...app.children, newElement.name], // TODO: Put child element in correct location
+          ...App,
+          children: [...App.children, newElement.name], // TODO: Put child element in correct location
         };
         return {
           ...previous,
-          app: newApp,
+          App: newApp,
         };
       })
       

@@ -20,7 +20,7 @@ const ComponentDetails = (): JSX.Element => {
   const { currentComponent, originals, setOriginals, copies, setCopies } = useContext(AppContext);
   const displayedComponent = originals[currentComponent];
   let childElements;
-  if (currentComponent !== 'app' && currentComponent !== null) {
+  if (currentComponent !== 'App' && currentComponent !== null) {
     childElements = displayedComponent.children.map(childName => ElementBlock(childName, copies, 'details'));
   }
 

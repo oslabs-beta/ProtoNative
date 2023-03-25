@@ -16,79 +16,79 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const App = () => {
   const [originals, setOriginals] = React.useState({
-    app: { type: 'app', children: ['testComponent0', 'coolComponent0', 'view0'], state: [] } as AppInterface,
-    view: { type: 'view', children: [], index: 2 } as OrigNativeEl,
-    button: { type: 'button', children: [], index: 3 } as OrigNativeEl,
-    text: { type: 'text', children: [], index: 1 } as OrigNativeEl,
-    image: { type: 'image', children: [], index: 0 } as OrigNativeEl,
-    textInput: { type: 'textInput', children: [], index: 0 } as OrigNativeEl,
-    scrollView: { type: 'scrollView', children: [], index: 0 } as OrigNativeEl,
-    flatList: { type: 'flatList', children: [], index: 0 } as OrigNativeEl,
-    sectionList: { type: 'sectionList', children: [], index: 0 } as OrigNativeEl,
-    switch: { type: 'switch', children: [], index: 0 } as OrigNativeEl,
-    touchableHighlight: { type: 'touchableHighlight', children: [], index: 0 } as OrigNativeEl,
-    touchableOpacity: { type: 'touchableOpacity', children: [], index: 0 } as OrigNativeEl,
-    statusBar: { type: 'statusBar', children: [], index: 0 } as OrigNativeEl,
-    activityIndicator: { type: 'activityIndicator', children: [], index: 0 } as OrigNativeEl,
-    testComponent: {
-      name: 'testComponent',
+    App: { type: 'App', children: ['TestComponent0', 'CoolComponent0', 'View0', 'TestComponent1', 'TestComponent2'], state: [] } as AppInterface,
+    View: { type: 'View', children: [], index: 2 } as OrigNativeEl,
+    Button: { type: 'Button', children: [], index: 3 } as OrigNativeEl,
+    Text: { type: 'Text', children: [], index: 1 } as OrigNativeEl,
+    Image: { type: 'Image', children: [], index: 0 } as OrigNativeEl,
+    TextInput: { type: 'TextInput', children: [], index: 0 } as OrigNativeEl,
+    ScrollView: { type: 'ScrollView', children: [], index: 0 } as OrigNativeEl,
+    FlatList: { type: 'FlatList', children: [], index: 0 } as OrigNativeEl,
+    SectionList: { type: 'SectionList', children: [], index: 0 } as OrigNativeEl,
+    Switch: { type: 'Switch', children: [], index: 0 } as OrigNativeEl,
+    TouchableHighlight: { type: 'TouchableHighlight', children: [], index: 0 } as OrigNativeEl,
+    TouchableOpacity: { type: 'TouchableOpacity', children: [], index: 0 } as OrigNativeEl,
+    StatusBar: { type: 'StatusBar', children: [], index: 0 } as OrigNativeEl,
+    ActivityIndicator: { type: 'ActivityIndicator', children: [], index: 0 } as OrigNativeEl,
+    TestComponent: {
+      name: 'TestComponent',
       type: 'custom',
-      children: ['button0'],
+      children: ['Button0'],
       state: [],
-      index: 1,
-      copies: ['testComponent0'],
+      index: 3,
+      copies: ['TestComponent0', 'TestComponent1', 'TestComponent2'],
     } as OrigCustomComp,
-    coolComponent: {
-      name: 'coolComponent',
+    CoolComponent: {
+      name: 'CoolComponent',
       type: 'custom',
-      children: ['button2', 'view1'],
+      children: ['Button2', 'View1'],
       state: [],
       index: 1,
-      copies: ['coolComponent0'],
+      copies: ['CoolComponent0'],
     } as OrigCustomComp
   });
   const [copies, setCopies] = React.useState({
-    button0: {
-      name: 'button0',
-      type: 'button',
-      parent: { origin: 'original', key: 'testComponent' },
+    Button0: {
+      name: 'Button0',
+      type: 'Button',
+      parent: { origin: 'original', key: 'TestComponent' },
       children: [],
     } as CopyNativeEl,
-    text0: {
-      name: 'text0',
-      type: 'text',
-      parent: { origin: 'copies', key: 'view0' },
-      children: ['button1'],
+    Text0: {
+      name: 'Text0',
+      type: 'Text',
+      parent: { origin: 'copies', key: 'View1' },
+      children: ['Button1'],
     } as CopyNativeEl,
-    view0: {
-      name: 'view0',
-      type: 'view',
-      parent: { origin: 'original', key: 'app' },
-      children: ['text0'],
-    } as CopyNativeEl,
-    button1: {
-      name: 'button1',
-      type: 'button',
-      parent: { origin: 'copies', key: 'text0' },
+    View0: {
+      name: 'View0',
+      type: 'View',
+      parent: { origin: 'original', key: 'App' },
       children: [],
     } as CopyNativeEl,
-    view1: {
-      name: 'view1',
-      type: 'view',
-      parent: { origin: 'original', key: 'coolComponent' },
-      children: ['text0'],
-    } as CopyNativeEl,
-    button2: {
-      name: 'button2',
-      type: 'button',
-      parent: { origin: 'original', key: 'coolComponent' },
+    Button1: {
+      name: 'Button1',
+      type: 'Button',
+      parent: { origin: 'copies', key: 'Text0' },
       children: [],
     } as CopyNativeEl,
-    testComponent0: {
-      name: 'testComponent0',
+    View1: {
+      name: 'View1',
+      type: 'View',
+      parent: { origin: 'original', key: 'CoolComponent' },
+      children: ['Text0'],
+    } as CopyNativeEl,
+    Button2: {
+      name: 'Button2',
+      type: 'Button',
+      parent: { origin: 'original', key: 'CoolComponent' },
+      children: [],
+    } as CopyNativeEl,
+    TestComponent0: {
+      name: 'TestComponent0',
       type: 'custom',
-      parent: { origin: 'original', key: 'app' },
-      pointer: 'testComponent',
+      parent: { origin: 'original', key: 'App' },
+      pointer: 'TestComponent',
       children: function () {
         return originals[this.pointer as keyof typeof originals].children;
       },
@@ -96,11 +96,35 @@ const App = () => {
         return originals[this.pointer as keyof typeof originals].state;
       }
     } as CopyCustomComp,
-    coolComponent0: {
-      name: 'coolComponent0',
+    TestComponent1: {
+      name: 'TestComponent1',
       type: 'custom',
-      parent: { origin: 'original', key: 'app' },
-      pointer: 'coolComponent',
+      parent: { origin: 'original', key: 'App' },
+      pointer: 'TestComponent',
+      children: function () {
+        return originals[this.pointer as keyof typeof originals].children;
+      },
+      state: function () {
+        return originals[this.pointer as keyof typeof originals].state;
+      }
+    } as CopyCustomComp,
+    TestComponent2: {
+      name: 'TestComponent2',
+      type: 'custom',
+      parent: { origin: 'original', key: 'App' },
+      pointer: 'TestComponent',
+      children: function () {
+        return originals[this.pointer as keyof typeof originals].children;
+      },
+      state: function () {
+        return originals[this.pointer as keyof typeof originals].state;
+      }
+    } as CopyCustomComp,
+    CoolComponent0: {
+      name: 'CoolComponent0',
+      type: 'custom',
+      parent: { origin: 'original', key: 'App' },
+      pointer: 'CoolComponent',
       children: function () {
         return originals[this.pointer as keyof typeof originals].children;
       },
@@ -109,14 +133,14 @@ const App = () => {
       }
     } as CopyCustomComp,
   });
-  const [currentComponent, setCurrentComponent] = React.useState('testComponent');
+  const [currentComponent, setCurrentComponent] = React.useState('TestComponent');
 
   // FIXME: Turn off strict mode when unnecesary
   // FIXME: Turn off strict mode when unnecesary
   // FIXME: Turn off strict mode when unnecesary
   // FIXME: Turn off strict mode when unnecesary
   return (
-    <React.StrictMode>
+    // <React.StrictMode>
       <AppContext.Provider
         value={{
           originals,
@@ -134,17 +158,17 @@ const App = () => {
           </div>
         </DndProvider>
       </AppContext.Provider>
-    </React.StrictMode>
+    // </React.StrictMode>
   );
 };
 
       // use create root instead of render
       createRoot(document.getElementById('root')).render(<App />);
 
-      {/* //    coolerComponent0: {
+      {/* //    CoolerComponent0: {
                 type: 'custom',
-            parent: 'app',
-            pointer: 'coolerComponent',
+            parent: 'App',
+            pointer: 'CoolerComponent',
             children: function() {
         return originals[this.pointer].children;
       },

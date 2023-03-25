@@ -14,7 +14,7 @@ const AddChild = (): JSX.Element => {
     const children: JSX.Element[] = [];
     for (const name in originals) {
       const element: any = originals[name as keyof typeof originals];
-      if (element.type !== 'app') {
+      if (element.type !== 'App') {
         children.push(
           <AddableChild name={name} key={name} />
         );

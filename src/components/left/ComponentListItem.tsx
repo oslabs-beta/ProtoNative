@@ -18,96 +18,93 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 	
 	// if the name is 'app', do not render the delete button and do not allow the user to click on the component
 	useEffect(() => {
-		if (name === 'app') {
+		if (name === 'App') {
 			setComponentItem(
 				<div className='componentListItem'>
-					{name}
+					<span> {name} </span>
 				</div>
 			)
 		} else {
 			if (currentComponent === name) {
 				setComponentItem(
-					<div className='highlightedComponentListItem'>
-						<span onClick={() => handleHighlight()}> {name} </span>
-						<button onClick={() => handleStateClick()}>State</button>
-						<button onClick={() => handleDeleteClick()}>Delete</button>
+					<div className='highlightedComponentListItem' onClick={() => handleHighlight()}>
+						<span> {name} </span>
+						<button onClick={(e) => handleStateClick(e)}>State</button>
+						<button onClick={(e) => handleDeleteClick(e)}>Delete</button>
 					</div>
 				)
 			} else {
 				setComponentItem(
-					<div className='componentListItem'>
-						<span onClick={() => handleHighlight()}> {name} </span>
-						<button onClick={() => handleStateClick()}>State</button>
-						<button onClick={() => handleDeleteClick()}>Delete</button>
+					<div className='componentListItem' onClick={() => handleHighlight()}>
+						<span> {name} </span>
+						<button onClick={(e) => handleStateClick(e)}>State</button>
+						<button onClick={(e) => handleDeleteClick(e)}>Delete</button>
 					</div>
 				)
 			}
 		}
 	}, [currentComponent]);
 
-	// TODO: will have two buttons: state and delete
-	const handleStateClick = () => {
-
+	// TODO: Add a modal for the user to input state
+	const handleStateClick = (event: any): void => {
+		event.cancelBubble = true;
+		if(event.stopPropagation) event.stopPropagation();
 	}
 
-	const trashCan = (name: string): void => {
-		const deletedComponent: (CopyNativeEl | CopyCustomComp) = copies[name];
-		let children: string[];
-		if (deletedComponent.type === 'custom') {
-			children = deletedComponent.children();
-		} else {
-			children = deletedComponent.children;
+	// takes in a name and the copies and originals objects and returns a new copies and originals objects with the component and all of its children deleted
+	const trashCan = (name: string, copyCopies: typeof copies, copyOriginals: typeof originals) => {
+
+		// helper function to recursively delete all instances of a component and its children from clone of copies and originals objects
+		const helper = (name: string) => {
+			const deletedComponent: (CopyNativeEl | CopyCustomComp) = copyCopies[name];
+			let children: string[];
+
+			// different methods for getting children depending on whether the component is a custom component or a native element
+			deletedComponent.type === 'custom'
+			? children = deletedComponent.children()
+			: children = deletedComponent.children;
+
+			// recursively call trashCan on all children
+			children.forEach((child: string): void => helper(child));
+
+			// delete the custom component from original's copies array
+			if (deletedComponent.type === 'custom') {
+				copyOriginals[deletedComponent.pointer].copies = copyOriginals[deletedComponent.pointer].copies.filter((copy: string): boolean => copy !== name);
+			}
+
+			// delete the custom component from the parent's children array in ORIGINALS or COPIES
+			deletedComponent.parent.origin === 'original'
+			? copyOriginals[deletedComponent.parent.key].children = copyOriginals[deletedComponent.parent.key].children.filter((child: string): boolean => child !== name)
+			: copyCopies[deletedComponent.parent.key].children = copyCopies[deletedComponent.parent.key].children.filter((child: string): boolean => child !== name);
+
+			// delete the copy from COPIES
+			delete copyCopies[name];
 		}
 
-		children.forEach((child: string): void => {
-			trashCan(child);
-		});
-
-		if (deletedComponent.parent.origin === 'original') {
-			setOriginals((previous: typeof originals): typeof originals => {
-				const newOriginal = {
-					...previous[deletedComponent.parent.key],
-					children: previous[deletedComponent.parent.key].children.filter((child: string): boolean => child !== name),
-				};
-				return {
-					...previous,
-					[deletedComponent.parent.key]: newOriginal,
-				};
-			});
-		} else {
-			setCopies((previous: any): typeof copies => {
-				const newCopy = {
-					...previous[deletedComponent.parent.key],
-					children: previous[deletedComponent.parent.key].children.filter((child: string): boolean => child !== name),
-				};
-				return {
-					...previous,
-					[deletedComponent.parent.key]: newCopy,
-				}
-			});
-		}
-
-		setCopies((previous: typeof copies): typeof copies => {
-			const newCopies = { ...previous };
-			delete newCopies[name as keyof typeof previous];
-			return newCopies;
-		});
+		helper(name);
+		return [copyCopies, copyOriginals];
 	}
 
-	const handleDeleteClick = (): void => {
-		// extract the copies from the originals object
-		const copiesRefs = originals[name].copies;
-		
+
+	// TODO: Add a modal that asks the user if they are sure they want to delete the component
+	const handleDeleteClick = (event: any): void => {
+		// prevent the click from propagating to the parent div
+		event.cancelBubble = true;
+		if (event.stopPropagation) event.stopPropagation();
+
 		// delete all the copies of the custom component from copies
-		for (let i = 0; i < copiesRefs.length; i++) {
-			trashCan(copiesRefs[i]);
-		}
+		console.log(originals)
+		let [newCopies, newOriginals] = [JSON.parse(JSON.stringify(copies)), JSON.parse(JSON.stringify(originals))];
+		originals[name].copies.forEach((copy: string) => [newCopies, newOriginals] = trashCan(copy, newCopies, newOriginals));
+		
 		// delete the custom component from originals
-		setOriginals((previous: typeof originals): typeof originals => {
-			const newOriginals = { ...previous };
-			delete newOriginals[name as keyof typeof previous];
-			return newOriginals;
-		});
+		delete newOriginals[name];
+
+		// set copies and originals to the new copies and originals
+		setCopies(newCopies);
+		setOriginals(newOriginals);
+
+		// if the deleted component is the current component, set current component to null
 		if (currentComponent === name) setCurrentComponent(null);
 	}
 

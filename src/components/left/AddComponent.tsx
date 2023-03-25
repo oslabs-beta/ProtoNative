@@ -46,8 +46,8 @@ const AddComponent = () => {
   };
 
   return (
-    <>
-      <button onClick={() => {
+    <div id='addComponentContainer'>
+      <button id='addComponent' onClick={() => {
         console.log('are we in OnClick?');
         setIsOpen(true)
       }
@@ -67,7 +67,7 @@ const AddComponent = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

@@ -1,18 +1,18 @@
 export type NativeElements =
-  | 'app'
-  | 'view'
-  | 'button'
-  | 'text'
-  | 'image'
-  | 'textInput'
-  | 'scrollView'
-  | 'flatList'
-  | 'sectionList'
-  | 'switch'
-  | 'touchableHighlight'
-  | 'touchableOpacity'
-  | 'statusBar'
-  | 'activityIndicator';
+  | 'App'
+  | 'View'
+  | 'Button'
+  | 'Text'
+  | 'Image'
+  | 'TextInput'
+  | 'ScrollView'
+  | 'FlatList'
+  | 'SectionList'
+  | 'Switch'
+  | 'TouchableHighlight'
+  | 'TouchableOpacity'
+  | 'StatusBar'
+  | 'ActivityIndicator';
 
 
 export interface OrigNativeEl {
@@ -25,7 +25,7 @@ export interface OrigNativeEl {
 }
 
 export interface AppInterface {
-  type: 'app';
+  type: 'App';
   children: string[];
   state: string[];
   copies?: string[];

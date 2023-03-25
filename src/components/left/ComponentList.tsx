@@ -20,7 +20,7 @@ const ComponentList = (): JSX.Element => {
     const newComponents: JSX.Element[] = [];
     for (const name in originals) {
       const element: (OrigCustomComp | AppInterface | OrigNativeEl) = originals[name as keyof typeof originals];
-      if (element.type === 'app' || element.type === 'custom') {
+      if (element.type === 'App' || element.type === 'custom') {
         // push component block elements to array. They have the original context component name in them
         newComponents.push(<ComponentListItem key={name} name={name} />);
       }
@@ -30,11 +30,11 @@ const ComponentList = (): JSX.Element => {
   }, [originals])
 
   return (
-    <div id="componentListContainer">
+    <div id='componentList'>
       <h2>Components</h2>
-      <div id="customComps" >
-        {components}
-      </div>
+        <div id="customComps" >
+          {components}
+        </div>
     </div>
   )
 }

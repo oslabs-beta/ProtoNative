@@ -13,9 +13,7 @@ const ElementBlock = (componentName, components, location): JSX.Element => {
 
   if (children.length) {
     const arr = [];
-
     children.forEach((childName) => {
- 
       if (location === 'app' && components[childName].type === 'custom'){
         arr.push(ElementBlock(childName, components, 'app'));
       }
