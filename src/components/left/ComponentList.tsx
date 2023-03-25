@@ -19,7 +19,7 @@ const ComponentList = (): JSX.Element => {
   useEffect(() => {
     const newComponents: JSX.Element[] = [];
     for (const name in originals) {
-      const element: (OrigCustomComp | AppInterface | OrigNativeEl) = originals[name as keyof typeof originals];
+      const element: (OrigCustomComp | AppInterface | OrigNativeEl) = originals[name];
       if (element.type === 'App' || element.type === 'custom') {
         // push component block elements to array. They have the original context component name in them
         newComponents.push(<ComponentListItem key={name} name={name} />);

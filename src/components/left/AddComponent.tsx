@@ -14,7 +14,9 @@ const AddComponent = () => {
   const { originals, setOriginals, setCurrentComponent } = useContext(AppContext);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (/^[A-Z]+(?:[a-z][A-Z]*)*$/.test(componentName)) {
+     // this regex tests that name is PascalCase:
+    // it looks for CAP Letter followed by lower case & if more words follow same pattern: CAP then lower 
+    if (/^[A-Z][a-z]+(?:[A-Z][a-z]*)*$/.test(componentName)) {
       if (componentName in originals) return alert('Component name already exists!');
       setOriginals((previous: typeof originals): typeof originals => {
         return {

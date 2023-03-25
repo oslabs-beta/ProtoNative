@@ -48,14 +48,14 @@ const AppCanvas = (): JSX.Element => {
           
         }
 
-        // increment index of originalElement
+        // increment index of originalElement and add newElement to copies
         setOriginals((previous: typeof originals): typeof originals => {
           const newOriginal = {
             ...previous[item.name],
             index: previous[item.name].index + 1,
             copies: [...previous[item.name].copies, newElement.name],
           };
-          console.log(newOriginal)
+          console.log('LOOK HERE!!!!: ', newOriginal)
   
           return {
             ...previous,

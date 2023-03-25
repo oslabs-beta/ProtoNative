@@ -1,21 +1,14 @@
 import {createContext} from 'react';
 import {OrigNativeEl, OrigCustomComp, AppInterface, CopyNativeEl, CopyCustomComp} from '../parser/interfaces';
-
-type originals = {
-  [key: string]: OrigNativeEl | OrigCustomComp | AppInterface
-}
-
-type copies = {
-  [key: string]: CopyNativeEl | CopyCustomComp
-}
+import { Originals, Copies } from '../parser/interfaces';
 
 interface AppContextTypes {
-  originals: originals
-  setOriginals: any
-  copies: copies
-  setCopies: any
+  originals: Originals
+  setOriginals: React.Dispatch<React.SetStateAction<Originals>>
+  copies: Copies
+  setCopies: React.Dispatch<React.SetStateAction<Copies>>
   currentComponent: string | null
-  setCurrentComponent: any
+  setCurrentComponent: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 
