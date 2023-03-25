@@ -16,6 +16,8 @@ body {
 
 #main-container {
   display: flex;
+  padding: 3rem;
+  height: 90vh;
 }
 
 #right-container {
@@ -25,8 +27,8 @@ body {
 }
 
 #left-container {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: .2fr 1fr 1fr;
   width: 33%;
 }
 
@@ -34,8 +36,12 @@ body {
   width: 33%;
 }
 
-@import './componentDetails.scss';
+
 @import 'addChild.scss';
 @import 'appCanvas.scss';
+@import 'addComponent.scss';
+@import 'componentDetails.scss';
+@import 'componentList.scss';
 @import 'modal.scss';
 @import 'navbar.scss';
+

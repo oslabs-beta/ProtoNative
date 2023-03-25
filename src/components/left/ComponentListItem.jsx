@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import AppContext from '../../context/AppContext';
+import Modal from './Modal';
 
 
 const ComponentListItem = (props) => {
@@ -7,6 +8,8 @@ const ComponentListItem = (props) => {
     const { currentComponent, setCurrentComponent, originals, setOriginals, copies, setCopies } = useContext(AppContext);
     const [isHighlighted, setIsHighlighted] = useState('componentListItem');
     const [ComponentItem, setComponentItem] = useState(null);
+    const [currentModal, setCurrentModal] = useState('');
+    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
         if (currentComponent === name) {
@@ -21,27 +24,13 @@ const ComponentListItem = (props) => {
         // setCurrentComponent(name);
     }
 
-    useEffect(() => {
-        if (name === 'app') {
-            setComponentItem(
-                <div className={ComponentListItem}>
-                    {name}
-                </div>
-            )
-        } else {
-            setComponentItem(
-                <div className={isHighlighted} onClick={() => handleHighlight()}>
-                    {name}
-                    <button onClick={() => handleStateClick()}>State</button>
-                    <button onClick={() => handleDeleteClick()}>Delete</button>
-                </div>
-            )
-        }
-    }, []);
-
-    // TODO: will have two buttons: state and delete
+    const handleClick = () => {
+        setIsOpen(false)
+        console.log('close button clicked')
+    }
     const handleStateClick = () => {
-
+        setIsOpen(true)
+        console.log('clicked state')
     }
 
     const trashCan = (name) => {
@@ -97,6 +86,9 @@ const ComponentListItem = (props) => {
 
     const handleDeleteClick = () => {
         // extract the copies from the originals object
+        setCurrentModal('delete')
+        setIsOpen(true);
+
         const copiesRefs = originals[name].copies;
 
         // delete the custom component from originals
@@ -112,9 +104,37 @@ const ComponentListItem = (props) => {
         if (currentComponent === name) setCurrentComponent(null);
     }
 
+    useEffect(() => {
+        if (name === 'app') {
+            setComponentItem(
+                <div className={ComponentListItem}>
+                    {name}
+                    <button onClick={() => handleStateClick()}>State</button>
+                </div>
+            )
+        } else {
+            setComponentItem(
+                <div className={isHighlighted} onClick={() => handleHighlight()}>
+                    {name}
+                    <button onClick={() => handleStateClick()}>State</button>
+                    <button onClick={() => handleDeleteClick()}>Delete</button>
+                </div>
+            )
+        }
+    }, []);
+
+    // TODO: will have two buttons: state and delete
     return (
         <>
             {ComponentItem}
+            {isOpen
+                ?
+                <Modal isOpen={isOpen} handleClick={handleClick}>
+                </Modal>
+                :
+                <></>
+
+            }
         </>
 
     )

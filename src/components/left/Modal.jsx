@@ -1,21 +1,13 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 
-const Modal = ({location = 'delete'}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const handleClick = (e) => {
-    console.log('clicked')
-    setIsOpen(!isOpen)
-  }
+const Modal = ({isOpen, handleClick, children}) => {
+
   return (
-    <div id='modal-container' 
-      style={{
-        display: isOpen ? 'none' : 'flex'
-      }}
-    >
+    <div id='modal-container'>
       <div id='actual-modal'>
         <div id='close-button' onClick={handleClick}>X</div>
-        {location === 'delete'
+        {/* {location === 'delete'
         ? 
         <div id='modal-delete-container'>
           <p>Are you sure you want to delete this component?</p>
@@ -29,7 +21,9 @@ const Modal = ({location = 'delete'}) => {
           <p>Edit State:</p>
         </div>
 
-        }
+        } */}
+        {children}
+
       </div>
     </div>
   )

@@ -1,13 +1,11 @@
 #componentListContainer {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
     border: 1px solid black;
-    flex-wrap: wrap;
-    justify-content: center;
     padding: 10px;
     border-radius: 10px;
     height: 80%;
-    overflow-y: auto;
 }
 
 #customComps {
@@ -15,7 +13,7 @@
     padding: 30px;
     border-radius: 10px;
     text-align: center;
-
+    width: 100%;
     h2 {
         margin-bottom: 20px;
     }

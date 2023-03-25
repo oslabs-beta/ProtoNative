@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import AppContext from '../../context/AppContext';
 import ElementBlock from '../right/ElementBlock';
-import Modal from '../left/Modal';
 
 const AppCanvas = () => {
   
@@ -18,7 +17,6 @@ const AppCanvas = () => {
 
   return (
     <div id='app-canvas'>
-      <Modal/>
       <h1>My App</h1>
       <div id='phone-screen-container'>
         {appComponents}
