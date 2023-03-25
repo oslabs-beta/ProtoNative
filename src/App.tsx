@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import AppContext from './context/AppContext';
 import MainContainer from './components/containers/MainContainer';
 import NavBarContainer from './components/top/NavBarContainer';
@@ -111,27 +111,30 @@ const App = () => {
   });
   const [currentComponent, setCurrentComponent] = React.useState('testComponent');
   return (
-    <AppContext.Provider
-      value={{
-        originals,
-        setOriginals,
-        copies,
-        setCopies,
-        currentComponent,
-        setCurrentComponent,
-      }}
-    >
-      <DndProvider backend={HTML5Backend}>
-        <div>
-          <NavBarContainer />
-          < MainContainer />
-        </div>
-      </DndProvider>
-    </AppContext.Provider>
+    <React.StrictMode>
+      <AppContext.Provider
+        value={{
+          originals,
+          setOriginals,
+          copies,
+          setCopies,
+          currentComponent,
+          setCurrentComponent,
+        }}
+      >
+        <DndProvider backend={HTML5Backend}>
+          <div>
+            <NavBarContainer />
+            < MainContainer />
+          </div>
+        </DndProvider>
+      </AppContext.Provider>
+    </React.StrictMode>
       );
 };
 
-      ReactDOM.render(<App />, document.getElementById('root'));
+      // use create root instead of render
+      createRoot(document.getElementById('root')).render(<App />);
 
       {/* //    coolerComponent0: {
                 type: 'custom',
