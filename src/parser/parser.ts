@@ -31,7 +31,7 @@ const originals: Originals = {
     name: 'TestComponent',
     type: 'custom',
     children: ['Button0'],
-    state: [],
+    state: ['state1', 'state2'],
     index: 3,
     copies: ['TestComponent0', 'TestComponent1', 'TestComponent2'],
   } as OrigCustomComp,
@@ -132,16 +132,16 @@ const copies: Copies = {
   } as CopyCustomComp,
 };
 
-// /**
-//  * @method capitalizeFirst
-//  * @description - capitalizes first letter of input string
-//  * @input - string
-//  * @output - string with capitalized first letter
-//  */
-// // const capitalizeFirst = (str: string): string => {
-// //   if (str.length === 0) return '';
-// //   return str[0].toUpperCase() + str.slice(1);
-// // };
+/**
+ * @method capitalizeFirst
+ * @description - capitalizes first letter of input string
+ * @input - string
+ * @output - string with capitalized first letter
+ */
+const capitalizeFirst = (str: string): string => {
+  if (str.length === 0) return '';
+  return str[0].toUpperCase() + str.slice(1);
+};
 
 /**
  * @method importReact
@@ -186,7 +186,7 @@ const isCopyCustomComp = (comp: CopyNativeEl | CopyCustomComp): comp is CopyCust
 const addState = (stateNames: string[]): string => {
   let stateVariables: string = '';
   for (const stateVar of stateNames) {
-    stateVariables += `const [${stateVar}, set${stateVar}] = React.useState(null);\n`;
+    stateVariables += `const [${stateVar}, set${capitalizeFirst(stateVar)}] = React.useState(null);\n`;
   }
   return stateVariables;
 };
