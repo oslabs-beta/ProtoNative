@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import AppContext from '../../context/AppContext';
 import ComponentListItem from './ComponentListItem';
+import { CopyCustomComp, CopyNativeEl, OrigCustomComp, AppInterface, OrigNativeEl } from '../../parser/interfaces';
 
 // these components should be from originals
 // display  with a scroll bar
@@ -10,16 +11,15 @@ import ComponentListItem from './ComponentListItem';
 // current component should be highlighted
 const ComponentList = (): JSX.Element => {
 
-  const { originals } = useContext(AppContext);
+  const { originals, copies } = useContext(AppContext);
 
   // create a state variable to hold list of elements
   const [components, setComponents] = useState<JSX.Element[]>([]);
 
   useEffect(() => {
     const newComponents: JSX.Element[] = [];
-    console.log('originals IN LIST LOOK HERE!!!! ', originals)
     for (const name in originals) {
-      const element = originals[name];
+      const element: (OrigCustomComp | AppInterface | OrigNativeEl) = originals[name as keyof typeof originals];
       if (element.type === 'app' || element.type === 'custom') {
         // push component block elements to array. They have the original context component name in them
         newComponents.push(<ComponentListItem key={name} name={name} />);

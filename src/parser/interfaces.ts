@@ -20,12 +20,16 @@ export interface OrigNativeEl {
   // depends on key names in copies context
   children: string[];
   index: number;
+  state?: string[];
+  copies?: string[];
 }
 
 export interface AppInterface {
   type: 'app';
   children: string[];
   state: string[];
+  copies?: string[];
+  index?: number;
 }
 
 export interface OrigCustomComp {

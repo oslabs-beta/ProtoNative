@@ -11,13 +11,15 @@ import {
   CopyCustomComp
 } from './parser/interfaces';
 import './styles/main.scss'
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const App = () => {
   const [originals, setOriginals] = React.useState({
     app: { type: 'app', children: ['testComponent0', 'coolComponent0', 'view0'], state: [] } as AppInterface,
-    view: { type: 'view', children: [], index: 0 } as OrigNativeEl,
-    button: { type: 'button', children: [], index: 0 } as OrigNativeEl,
-    text: { type: 'text', children: [], index: 0 } as OrigNativeEl,
+    view: { type: 'view', children: [], index: 2 } as OrigNativeEl,
+    button: { type: 'button', children: [], index: 3 } as OrigNativeEl,
+    text: { type: 'text', children: [], index: 1 } as OrigNativeEl,
     image: { type: 'image', children: [], index: 0 } as OrigNativeEl,
     textInput: { type: 'textInput', children: [], index: 0 } as OrigNativeEl,
     scrollView: { type: 'scrollView', children: [], index: 0 } as OrigNativeEl,
@@ -42,7 +44,7 @@ const App = () => {
       children: ['button2', 'view1'],
       state: [],
       index: 1,
-      copies: ['testComponent0'],
+      copies: ['coolComponent0'],
     } as OrigCustomComp
   });
   const [copies, setCopies] = React.useState({
@@ -88,10 +90,10 @@ const App = () => {
       parent: { origin: 'original', key: 'app' },
       pointer: 'testComponent',
       children: function () {
-        return originals[this.pointer].children;
+        return originals[this.pointer as keyof typeof originals].children;
       },
       state: function () {
-        return originals[this.pointer].state;
+        return originals[this.pointer as keyof typeof originals].state;
       }
     } as CopyCustomComp,
     coolComponent0: {
@@ -100,10 +102,10 @@ const App = () => {
       parent: { origin: 'original', key: 'app' },
       pointer: 'coolComponent',
       children: function () {
-        return originals[this.pointer].children;
+        return originals[this.pointer as keyof typeof originals].children;
       },
       state: function () {
-        return originals[this.pointer].state;
+        return originals[this.pointer as keyof typeof originals].state;
       }
     } as CopyCustomComp,
   });
@@ -119,11 +121,13 @@ const App = () => {
         setCurrentComponent,
       }}
     >
-      <div>
-        <NavBarContainer />
-        < MainContainer />
-      </div>
-      < /AppContext.Provider>
+      <DndProvider backend={HTML5Backend}>
+        <div>
+          <NavBarContainer />
+          < MainContainer />
+        </div>
+      </DndProvider>
+    </AppContext.Provider>
       );
 };
 

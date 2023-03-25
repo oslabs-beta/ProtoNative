@@ -8,14 +8,26 @@ import AppContext from '../../context/AppContext';
 // then when user drags into app or wherever, then it gets copied into copies
 
 
-const AddComponent = (name) => {
+const AddComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [componentName, setComponentName] = useState('');
   const { originals, setOriginals, setCurrentComponent } = useContext(AppContext);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (/^[a-z]+(?:[A-Z][a-z]*)*$/.test(componentName)) {
-      setOriginals({ ...originals, [componentName]: { type: 'custom' } });
+      setOriginals((previous: typeof originals): typeof originals => {
+        return {
+          ...originals,
+          [componentName]: {
+            name: componentName,
+            type: 'custom',
+            children: [],
+            state: [],
+            index: 0,
+            copies: [],
+          }
+        };
+      });
       setComponentName('');
       setIsOpen(false);
     } else {

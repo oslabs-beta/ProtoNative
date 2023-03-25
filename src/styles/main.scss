@@ -31,6 +31,9 @@ body {
   width: 33%;
 }
 
-@import './componentDetails.scss';
+@import '_variables.scss';
 @import 'addChild.scss';
+@import 'addComponent.scss';
 @import 'appCanvas.scss';
+@import 'componentDetails.scss';
+@import 'componentList.scss';

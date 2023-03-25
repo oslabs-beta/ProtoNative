@@ -5,7 +5,7 @@
     "target": "es6",
     "allowJs": true,
     "moduleResolution": "node",
-    "noImplicitThis": true
+    "noImplicitThis": true,
   },
   "include": ["src"]
 }

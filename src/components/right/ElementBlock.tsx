@@ -30,7 +30,7 @@ const ElementBlock = (componentName, components, location): JSX.Element => {
   //   : null;
 
   return (
-    <div style={{border: '1px solid black'}} className='element'>
+    <div style={{border: '1px solid black'}} className='element' key={componentName}>
       <p>
         {components[componentName].type === 'custom'
           ?components[componentName].pointer
