@@ -11,13 +11,13 @@ const ComponentDetails = (): JSX.Element => {
     displayedComponent.children
   );
 
-  const moveItem = (dragIndex, hoverIndex) => {
+  const moveItem = (dragIndex: number, hoverIndex: number): void => {
     console.log('drag', dragIndex, 'hover', hoverIndex);
     const item = displayedComponent.children[dragIndex];
     const copy = [...displayedComponent.children];
     copy.splice(dragIndex, 1);
     copy.splice(hoverIndex, 0, item);
-    setOriginals((prevState) => {
+    setOriginals((prevState: any) => {
       prevState[currentComponent].children = copy;
       return prevState;
     });
@@ -74,7 +74,7 @@ const ComponentDetails = (): JSX.Element => {
       })
     );
     console.log(childrenOfCurrent);
-  }, [childrenOfCurrent]);
+  }, [childrenOfCurrent, currentComponent]);
 
   return (
     <div id='component-details-container'>

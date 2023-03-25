@@ -1,5 +1,13 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
+import {Copies} from '../../parser/interfaces';
+type ElementBlockProps = {
+  componentName: string,
+  components: Copies,
+  index: number,
+  moveItem: (dragIndex: number, hoverIndex: number)=> void,
+  location: string
+}
 
 const ElementBlock = ({
   componentName,
@@ -7,10 +15,10 @@ const ElementBlock = ({
   index,
   moveItem,
   location,
-}) => {
+}: ElementBlockProps) => {
   const componentDef = components[componentName];
   let childElements = null;
-  let children = null;
+  let children: any = null;
   const ref = useRef(null);
   const [, drop] = useDrop({
     accept: 'elements',
@@ -49,9 +57,8 @@ const ElementBlock = ({
   }
 
   if (children.length) {
-    const arr = [];
-
-    children.forEach((childName) => {
+    const arr: JSX.Element[] = [];
+    children.forEach((childName: string) => {
       if (location === 'app' && components[childName].type === 'custom') {
         arr.push(
           <ElementBlock
