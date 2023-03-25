@@ -3,7 +3,6 @@ import AppContext from '../../context/AppContext';
 import ElementBlock from '../right/ElementBlock';
 import { useDrop } from 'react-dnd';
 import { ItemTypes } from '../left/AddableChild';
-import { CopyCustomComp, CopyNativeEl, OrigCustomComp, AppInterface, OrigNativeEl } from '../../parser/interfaces';
 
 const AppCanvas = (): JSX.Element => {
   
