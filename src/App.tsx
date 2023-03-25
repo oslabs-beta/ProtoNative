@@ -51,7 +51,7 @@ const App = () => {
     testComponent: {
       name: 'testComponent',
       type: 'custom',
-      children: ['button0', 'view0', 'coolComponent0'],
+      children: ['button0'],
       state: [],
       index: 1,
       copies: ['testComponent0'],
@@ -83,7 +83,7 @@ const App = () => {
     } as CopyNativeEl,
     button1: {
       type: 'button',
-      parent: { origin: 'original', key: 'text0' },
+      parent: { origin: 'copies', key: 'text0' },
       children: [],
     } as CopyNativeEl,
     view1: {
@@ -98,7 +98,7 @@ const App = () => {
     } as CopyNativeEl,
     testComponent0: {
       type: 'custom',
-      parent: 'app',
+      parent: { origin: 'original', key: 'app' },
       pointer: 'testComponent',
       children: function () {
         return originals[this.pointer].children;
@@ -118,7 +118,7 @@ const App = () => {
       state: function () {
         return originals[this.pointer].state;
       },
-    } as CopyCustomComp,
+    },
   });
   const [currentComponent, setCurrentComponent] =
     React.useState('testComponent');
@@ -142,3 +142,18 @@ const App = () => {
 };
 
 ReactDOM.render(<App />, document.getElementById('root'));
+
+{
+  /* //    coolerComponent0: {
+                type: 'custom',
+            parent: 'app',
+            pointer: 'coolerComponent',
+            children: function() {
+        return originals[this.pointer].children;
+      },
+            state: function() {
+        return originals[this.pointer].state;
+      }
+    } as CopyCustomComp,
+  });</AppContext.Provider> */
+}

@@ -48,7 +48,7 @@ const ComponentDetails = (): JSX.Element => {
 
   let childElements = displayedComponent.children.map((childName, index) => {
     if (currentComponent !== 'app' && currentComponent !== null) {
-      return ElementBlock(childName, copies, index, moveItem);
+      return ElementBlock(childName, copies, index, moveItem, 'details');
     }
   });
 

@@ -6,19 +6,14 @@ const ElementBlock = (
   componentName: string,
   components: {},
   index: number,
-  moveItem
+  moveItem,
+  location
 ): JSX.Element => {
   const ref = useRef(null);
   const componentDef = components[componentName];
 
-  const [mouseOver, setMouseOver] = useState(false);
-  const [dropable, setDropable] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setMouseOver(isOver);
-    }, 0);
-  });
+  let childElements = null;
+  let children = null;
 
   const [, drop] = useDrop({
     accept: 'elements',
@@ -71,18 +66,46 @@ const ElementBlock = (
   //
   drag(drop(ref));
 
-  let childElements: JSX.Element[] | null = componentDef.children.length
+  childElements = componentDef.children.length
     ? componentDef.children.map((childName: string, index: number) => {
         if (components[childName].type !== 'custom') {
-          return ElementBlock(childName, components, index, moveItem);
+          return ElementBlock(
+            childName,
+            components,
+            index,
+            moveItem,
+            'details'
+          );
         }
       })
     : null;
+  //depending on if the current component is custom or not, we must get children differently
+  if (componentDef.type === 'custom' && location === 'app')
+    children = componentDef.children();
+  else {
+    children = componentDef.children;
+  }
 
-  const elementTitle: string =
-    components[componentName].type === 'custom'
-      ? components[componentName].pointer
-      : components[componentName].type;
+  if (children.length) {
+    const arr = [];
+
+    children.forEach((childName) => {
+      if (location === 'app' && components[childName].type === 'custom') {
+        arr.push(ElementBlock(childName, components, index, moveItem, 'app'));
+      } else if (
+        location === 'details' &&
+        components[childName].type !== 'custom'
+      ) {
+        arr.push(
+          ElementBlock(childName, components, index, moveItem, 'details')
+        );
+      }
+    });
+    childElements = arr;
+  }
+  // const childElements = componentDef.children.length
+  //   ? componentDef.children.map(childName => ElementBlock(childName, components))
+  //   : null;
 
   return (
     <div
@@ -91,7 +114,12 @@ const ElementBlock = (
       className='element'
       ref={ref}
     >
-      <p>{elementTitle}</p>
+      <p>
+        {components[componentName].type === 'custom'
+          ? components[componentName].pointer
+          : components[componentName].type}
+      </p>
+
       {childElements}
     </div>
   );
