@@ -2,7 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import AppContext from './context/AppContext';
 import MainContainer from './components/containers/MainContainer';
-import NavBarContainer from './components/top/NavBarContainer';
+import NavBar from './components/top/NavBar';
 import {
   Originals,
   Copies,
@@ -155,7 +155,7 @@ const App = () => {
       >
         <DndProvider backend={HTML5Backend}>
           <div>
-            <NavBarContainer />
+            <NavBar/>
             < MainContainer />
           </div>
         </DndProvider>
