@@ -2,6 +2,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  // outline: 1px solid lime;
 }
 
 
@@ -13,6 +14,7 @@ body {
 
 #main-container {
   display: flex;
+  height: 100vh;
 }
 
 #right-container {
@@ -25,12 +27,16 @@ body {
   display: flex;
   flex-direction: column;
   width: 33%;
+  gap: 12px;
 }
 
 #app-canvas {
   width: 33%;
 }
 
-@import './componentDetails.scss';
+@import '_variables.scss';
 @import 'addChild.scss';
+@import 'addComponent.scss';
 @import 'appCanvas.scss';
+@import 'componentDetails.scss';
+@import 'componentList.scss';

@@ -41,6 +41,7 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
-    "sass": "^1.59.3"
+    "sass": "^1.59.3",
+    "ts-node": "^10.9.1"
   }
 }
