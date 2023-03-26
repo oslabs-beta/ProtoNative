@@ -7,9 +7,8 @@ import { ItemTypes } from '../left/AddableChild';
 const AppCanvas = (): JSX.Element => {
   
   const {setCopies, setOriginals, originals, originals: {App}, copies} = useContext(AppContext);
-  console.log('AppCanvas originals: ', originals)
-  console.log('AppCanvas copies: ', copies)
   const [appComponents, setAppComponents] = useState([]);
+  
   useEffect(() => {
     let appChildren: JSX.Element[] = App.children.map(child => {
       if (copies[child].type === 'custom'){
@@ -48,18 +47,21 @@ const AppCanvas = (): JSX.Element => {
           
         }
 
-        // increment index of originalElement and add newElement to copies
+        // increment index of originalElement, add newElement to copies, add newElement to App's children
         setOriginals((previous: typeof originals): typeof originals => {
+          const newApp = {
+            ...previous['App'],
+            children: [...previous['App'].children, newElement.name], // TODO: Put child element in correct location
+          };
           const newOriginal = {
             ...previous[item.name],
             index: previous[item.name].index + 1,
             copies: [...previous[item.name].copies, newElement.name],
           };
-          console.log('LOOK HERE!!!!: ', newOriginal)
-  
           return {
             ...previous,
             [item.name]: newOriginal,
+            App: newApp,
           };
         });
 
@@ -75,31 +77,23 @@ const AppCanvas = (): JSX.Element => {
           parent: {origin: 'original', key: 'App'},
           children: [],
         }
-        // increment index of originalElement
+        // increment index of originalElement, add newElement to copies, add newElement to App's children
         setOriginals((previous: typeof originals): typeof originals => {
+          const newApp = {
+            ...previous['App'],
+            children: [...previous['App'].children, newElement.name], // TODO: Put child element in correct location
+          };
           const newOriginal = {
             ...previous[item.name],
             index: previous[item.name].index + 1,
           };
-  
           return {
             ...previous,
             [item.name]: newOriginal,
+            App: newApp,
           };
         });
       }
-      
-      // add to children property of app
-      setOriginals((previous: typeof originals): typeof originals => {
-        const newApp = {
-          ...App,
-          children: [...App.children, newElement.name], // TODO: Put child element in correct location
-        };
-        return {
-          ...previous,
-          App: newApp,
-        };
-      })
       
       // add to copies
       setCopies((previous: typeof copies): typeof copies => {
@@ -108,10 +102,6 @@ const AppCanvas = (): JSX.Element => {
           [newElement.name]: newElement,
         };
       });
-      // console.log('App before drop: ', app.children)
-      // console.log('Newly created element: ', newElement);
-      // console.log('App after drop: ', app.children)
-      // console.log('Keys of copies: ', Object.keys(copies));
     },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),

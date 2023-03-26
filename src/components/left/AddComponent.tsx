@@ -20,7 +20,7 @@ const AddComponent = () => {
       if (componentName in originals) return alert('Component name already exists!');
       setOriginals((previous: typeof originals): typeof originals => {
         return {
-          ...originals,
+          ...previous,
           [componentName]: {
             name: componentName,
             type: 'custom',
@@ -32,6 +32,7 @@ const AddComponent = () => {
         };
       });
       setComponentName('');
+      setCurrentComponent(componentName);
       setIsOpen(false);
     } else {
       alert('Component name should be in PascalCase format!');
