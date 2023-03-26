@@ -35,7 +35,7 @@ const App = () => {
     TestComponent: {
       name: 'TestComponent',
       type: 'custom',
-      children: ['Button0', 'Text0'],
+      children: ['Button0'],
       state: [],
       index: 3,
       copies: ['TestComponent0', 'TestComponent1', 'TestComponent2'],
@@ -96,7 +96,7 @@ const App = () => {
       },
       state: function () {
         return originals[this.pointer].state;
-      },
+      }
     } as CopyCustomComp,
     TestComponent1: {
       name: 'TestComponent1',
@@ -132,8 +132,8 @@ const App = () => {
       },
       state: function () {
         return originals[this.pointer].state;
-      },
-    },
+      }
+    } as CopyCustomComp,
   });
   const [currentComponent, setCurrentComponent] = React.useState('TestComponent');
 

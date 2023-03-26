@@ -23,7 +23,7 @@ const ComponentDetails = (): JSX.Element => {
     });
     setChildrenOfCurrent(copy);
     const newElements = copy.map((childName: string, index: number) => {
-      if (currentComponent !== 'app' && currentComponent !== null) {
+      if (currentComponent !== 'App' && currentComponent !== null) {
         return (
           <ElementBlock
             key={index}
@@ -41,7 +41,7 @@ const ComponentDetails = (): JSX.Element => {
 
   const [childElements, setChildElements] = useState(
     childrenOfCurrent.map((childName: string, index: number) => {
-      if (currentComponent !== 'app' && currentComponent !== null) {
+      if (currentComponent !== 'App' && currentComponent !== null) {
         return (
           <ElementBlock
             key={index}
@@ -59,7 +59,7 @@ const ComponentDetails = (): JSX.Element => {
   useEffect(() => {
     setChildElements(
       childrenOfCurrent.map((childName: string, index: number) => {
-        if (currentComponent !== 'app' && currentComponent !== null) {
+        if (currentComponent !== 'App' && currentComponent !== null) {
           return (
             <ElementBlock
               key={index}
@@ -74,13 +74,13 @@ const ComponentDetails = (): JSX.Element => {
       })
     );
     console.log(childrenOfCurrent);
-  }, [childrenOfCurrent, currentComponent]);
+  }, [childrenOfCurrent, currentComponent, originals, copies]);
 
   return (
     <div id='component-details-container'>
       <h2>Component Details</h2>
 
-      {currentComponent !== 'app' && currentComponent && (
+      {currentComponent !== 'App' && currentComponent && (
         <div style={{ border: '1px solid black' }} id='component-box'>
           <p>{currentComponent}</p>
           {childElements}
