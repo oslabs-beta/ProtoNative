@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import AppContext from '../../context/AppContext';
-import { CopyCustomComp, CopyNativeEl, OrigCustomComp, AppInterface } from '../../parser/interfaces';
+import { CopyCustomComp, CopyNativeEl } from '../../parser/interfaces';
 import { Originals, Copies } from '../../parser/interfaces';
 
 type ComponentListItemProps = {
@@ -11,23 +11,27 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 	const name = props.name;
 	const { currentComponent, setCurrentComponent, originals, setOriginals, copies, setCopies } = useContext(AppContext);
 	const [ComponentItem, setComponentItem] = useState(null);
-
-	const handleHighlight = useCallback((): void => {
-		if (currentComponent !== name) setCurrentComponent(name);
-	}, [currentComponent]);
 	
 	// if the name is 'app', do not render the delete button and do not allow the user to click on the component
 	useEffect(() => {
 		if (name === 'App') {
-			setComponentItem(
-				<div className='componentListItem'>
-					<span> {name} </span>
-				</div>
-			)
+			if (currentComponent === null) {
+				setComponentItem(
+					<div className='highlightedComponentListItem'>
+						<span> {name} </span>
+					</div>
+				)
+			} else {
+				setComponentItem(
+					<div className='componentListItem' onClick={() => setCurrentComponent(null)}>
+						<span> {name} </span>
+					</div>
+				)
+			}
 		} else {
 			if (currentComponent === name) {
 				setComponentItem(
-					<div className='highlightedComponentListItem' onClick={() => handleHighlight()}>
+					<div className='highlightedComponentListItem'>
 						<span> {name} </span>
 						<button onClick={(e) => handleStateClick(e)}>State</button>
 						<button onClick={(e) => handleDeleteClick(e)}>Delete</button>
@@ -35,7 +39,7 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 				)
 			} else {
 				setComponentItem(
-					<div className='componentListItem' onClick={() => handleHighlight()}>
+					<div className='componentListItem' onClick={() => setCurrentComponent(name)}>
 						<span> {name} </span>
 						<button onClick={(e) => handleStateClick(e)}>State</button>
 						<button onClick={(e) => handleDeleteClick(e)}>Delete</button>
@@ -43,7 +47,7 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 				)
 			}
 		}
-	}, [currentComponent]);
+	}, [currentComponent, originals, copies]);
 
 	// TODO: Add a modal for the user to input state
 	const handleStateClick = (event: any): void => {
@@ -64,9 +68,8 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		? children = copyOriginals[deletedComponent.pointer].children
 		: children = deletedComponent.children;
 
-		// recursively call trashCan on all 
+		// recursively call trashCan on all children
 		children.forEach((child: string): void => trashCan(child, copyCopies, copyOriginals));
-
 		// delete the custom component from the parent's children array in ORIGINALS or COPIES
 		(deletedComponent.parent.origin === 'original')
 		?	copyOriginals[deletedComponent.parent.key].children = copyOriginals[deletedComponent.parent.key].children.filter((child: string): boolean => child !== name)

@@ -1,5 +1,4 @@
 import {createContext} from 'react';
-import {OrigNativeEl, OrigCustomComp, AppInterface, CopyNativeEl, CopyCustomComp} from '../parser/interfaces';
 import { Originals, Copies } from '../parser/interfaces';
 
 interface AppContextTypes {

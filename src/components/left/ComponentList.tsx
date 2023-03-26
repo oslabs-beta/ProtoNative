@@ -11,7 +11,7 @@ import { OrigCustomComp, AppInterface, OrigNativeEl } from '../../parser/interfa
 // current component should be highlighted
 const ComponentList = (): JSX.Element => {
 
-  const { originals, copies } = useContext(AppContext);
+  const { originals } = useContext(AppContext);
 
   // create a state variable to hold list of elements
   const [components, setComponents] = useState<JSX.Element[]>([]);
