@@ -2,7 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import AppContext from './context/AppContext';
 import MainContainer from './components/containers/MainContainer';
-import NavBarContainer from './components/top/NavBarContainer';
+import NavBar from './components/top/NavBar';
 import {
   Originals,
   Copies,
@@ -10,7 +10,7 @@ import {
   AppInterface,
   OrigCustomComp,
   CopyNativeEl,
-  CopyCustomComp
+  CopyCustomComp,
 } from './parser/interfaces';
 import './styles/main.scss'
 import { DndProvider } from 'react-dnd';
@@ -35,7 +35,7 @@ const App = () => {
     TestComponent: {
       name: 'TestComponent',
       type: 'custom',
-      children: ['Button0'],
+      children: ['Button0', 'Text0'],
       state: [],
       index: 3,
       copies: ['TestComponent0', 'TestComponent1', 'TestComponent2'],
@@ -96,7 +96,7 @@ const App = () => {
       },
       state: function () {
         return originals[this.pointer].state;
-      }
+      },
     } as CopyCustomComp,
     TestComponent1: {
       name: 'TestComponent1',
@@ -132,8 +132,8 @@ const App = () => {
       },
       state: function () {
         return originals[this.pointer].state;
-      }
-    } as CopyCustomComp,
+      },
+    },
   });
   const [currentComponent, setCurrentComponent] = React.useState('TestComponent');
 
@@ -155,7 +155,7 @@ const App = () => {
       >
         <DndProvider backend={HTML5Backend}>
           <div>
-            <NavBarContainer />
+            <NavBar/>
             < MainContainer />
           </div>
         </DndProvider>
@@ -178,4 +178,5 @@ const App = () => {
         return originals[this.pointer].state;
       }
     } as CopyCustomComp,
-  });</AppContext.Provider> */}
+  });</AppContext.Provider> */
+}

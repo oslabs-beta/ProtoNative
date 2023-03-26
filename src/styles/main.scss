@@ -1,3 +1,5 @@
+@import '_variables.scss';
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -24,8 +26,8 @@ body {
 }
 
 #left-container {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: .2fr 1fr 1fr;
   width: 33%;
   gap: 12px;
 }

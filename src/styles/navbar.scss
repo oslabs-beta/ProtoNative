@@ -1,0 +1,23 @@
+#navbar-container{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  background-color: $primary-color;
+  padding: 0 1.5rem;
+  color: white;
+}
+
+#master-button-container{
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.master-button{
+  width: 75px;
+  padding: 7.5px;
+  border: none;
+  border-radius: 5px;
+}
