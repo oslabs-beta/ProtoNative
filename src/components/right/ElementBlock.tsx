@@ -21,8 +21,8 @@ const ElementBlock = ({
   let children: any = null;
   const ref = useRef(null);
   const [, drop] = useDrop({
-    accept: 'elements',
-    drop: (item: { name: string; index: number }, monitor) => {
+    accept: ['elements', 'addableElement'],
+    drop: (item: { name: number; index: number; type: string}, monitor) => {
       if (!ref.current) return;
 
       if (!monitor.canDrop()) {
@@ -34,13 +34,17 @@ const ElementBlock = ({
       const hoverIndex = index;
       if (dragIndex === hoverIndex) return;
 
-      moveItem(dragIndex, hoverIndex);
+      if(item.type === 'elements') {
+        moveItem(dragIndex, hoverIndex);
+      
+      }
+      else if (item.type === 'addableElement') console.log('hi');
     },
   });
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'elements',
-    item: { name: componentName, index: index },
+    item: { name: componentName, index: index, type: 'elements' },
     collect: (monitor) => ({
       //boolean to see if component is being dragged (isDragging)
       isDragging: monitor.isDragging(),

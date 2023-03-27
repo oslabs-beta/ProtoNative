@@ -16,8 +16,8 @@ type Props = {
 const AddChild = ({ name }: Props): JSX.Element => {
   // make this component draggable
   const [{ isDragging }, drag] = useDrag({
-    type: ItemTypes.ADDABLE_ELEMENT,
-    item: { name },
+    type: 'addableElement',
+    item: { name, type: 'addableElement' },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),

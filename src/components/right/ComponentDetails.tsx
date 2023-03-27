@@ -1,18 +1,19 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import AppContext from '../../context/AppContext';
 import ElementBlock from './ElementBlock';
-import { useDrop } from 'react-dnd';
+import { OrigCustomComp } from '../../parser/interfaces';
+
+
 
 const ComponentDetails = (): JSX.Element => {
   const { currentComponent, originals, setOriginals, copies, setCopies } =
     useContext(AppContext);
-  const displayedComponent = originals[currentComponent];
-  const [childrenOfCurrent, setChildrenOfCurrent] = useState(
-    displayedComponent.children
-  );
+  const displayedComponent: OrigCustomComp= originals[currentComponent];
+  const [childrenOfCurrent, setChildrenOfCurrent] = useState([]);
+  const [childElements, setChildElements] = useState([]);
 
   const moveItem = (dragIndex: number, hoverIndex: number): void => {
-    console.log('drag', dragIndex, 'hover', hoverIndex);
+    // console.log('drag', dragIndex, 'hover', hoverIndex);
     const item = displayedComponent.children[dragIndex];
     const copy = [...displayedComponent.children];
     copy.splice(dragIndex, 1);
@@ -22,41 +23,11 @@ const ComponentDetails = (): JSX.Element => {
       return prevState;
     });
     setChildrenOfCurrent(copy);
-    const newElements = copy.map((childName: string, index: number) => {
-      if (currentComponent !== 'app' && currentComponent !== null) {
-        return (
-          <ElementBlock
-            key={index}
-            componentName={childName}
-            components={copies}
-            index={index}
-            moveItem={moveItem}
-            location={'details'}
-          />
-        );
-      }
-    });
-    setChildElements(newElements);
   };
 
-  const [childElements, setChildElements] = useState(
-    childrenOfCurrent.map((childName: string, index: number) => {
-      if (currentComponent !== 'app' && currentComponent !== null) {
-        return (
-          <ElementBlock
-            key={index}
-            componentName={childName}
-            components={copies}
-            index={index}
-            moveItem={moveItem}
-            location={'details'}
-          />
-        );
-      }
-    })
-  );
 
   useEffect(() => {
+    setChildrenOfCurrent(originals[currentComponent].children)
     setChildElements(
       childrenOfCurrent.map((childName: string, index: number) => {
         if (currentComponent !== 'app' && currentComponent !== null) {
