@@ -4,25 +4,23 @@ import { CopyCustomComp, CopyNativeEl } from '../../parser/interfaces';
 import { Originals, Copies } from '../../parser/interfaces';
 import Modal from './Modal';
 
-type ComponentListItemProps = {
-	name: string;
-}
-
-const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
+const ComponentListItem = (props: {name: string}): JSX.Element => {
 	const name = props.name;
 	const { currentComponent, setCurrentComponent, originals, setOriginals, copies, setCopies } = useContext(AppContext);
 	const [ComponentItem, setComponentItem] = useState(null);
+
+	// Modal states
 	const [currentModal, setCurrentModal] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
 
 	const handleClick = () => {
 		setIsOpen(false);
 		console.log('close button clicked');
-}
+	}
 	
 	useEffect(() => {
 		if (name === 'App') {
-			if (currentComponent === null) {
+			if (currentComponent === name) {
 				setComponentItem(
 					<div className='highlightedComponentListItem'>
 						<span> {name} </span>
@@ -84,8 +82,6 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		delete copyCopies[name];
 	}
 
-	
-	// TODO: Add a modal that asks the user if they are sure they want to delete the component
 	// TODO: import type of event object
 	// type for event React.MouseEvent<HTMLElement> but hasn't been working, so using any for now
 	const handleDeleteClick = (event: any): void => {
@@ -94,6 +90,7 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		event.cancelBubble = true;
 		if (event.stopPropagation) event.stopPropagation();
 		
+		// TODO: Add a modal that asks the user if they are sure they want to delete the component
 		setCurrentModal('delete')
 		setIsOpen(true);
 		

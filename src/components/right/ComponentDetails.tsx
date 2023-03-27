@@ -4,12 +4,14 @@ import ElementBlock from './ElementBlock';
 import { useDrop } from 'react-dnd';
 
 const ComponentDetails = (): JSX.Element => {
-  const { currentComponent, originals, setOriginals, copies, setCopies } =
-    useContext(AppContext);
-  const displayedComponent = originals[currentComponent];
-  const [childrenOfCurrent, setChildrenOfCurrent] = useState(
-    displayedComponent.children
-  );
+  const { currentComponent, originals, setOriginals, copies, setCopies } = useContext(AppContext);
+  const [displayedComponent, setDisplayedComponent] = useState(originals[currentComponent]);
+  const [childrenOfCurrent, setChildrenOfCurrent] = useState(displayedComponent.children);
+
+  useEffect(() => {
+    setDisplayedComponent(originals[currentComponent]);
+    setChildrenOfCurrent(originals[currentComponent].children);
+  }, [currentComponent]);
 
   const moveItem = (dragIndex: number, hoverIndex: number): void => {
     console.log('drag', dragIndex, 'hover', hoverIndex);
@@ -74,7 +76,7 @@ const ComponentDetails = (): JSX.Element => {
       })
     );
     console.log(childrenOfCurrent);
-  }, [childrenOfCurrent, currentComponent, originals, copies]);
+  }, [childrenOfCurrent, currentComponent, copies]);
 
   return (
     <div id='component-details-container'>
