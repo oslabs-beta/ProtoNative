@@ -20,37 +20,33 @@ const ComponentListItem = (props: {name: string}): JSX.Element => {
 	
 	useEffect(() => {
 		if (name === 'App') {
-			if (currentComponent === name) {
-				setComponentItem(
+			currentComponent === name
+				? setComponentItem(
 					<div className='highlightedComponentListItem'>
 						<span> {name} </span>
 					</div>
 				)
-			} else {
-				setComponentItem(
+				: setComponentItem(
 					<div className='componentListItem' onClick={() => setCurrentComponent(name)}>
 						<span> {name} </span>
 					</div>
 				)
-			}
 		} else {
-			if (currentComponent === name) {
-				setComponentItem(
+			currentComponent === name
+				? setComponentItem(
 					<div className='highlightedComponentListItem'>
 						<span> {name} </span>
 						<button onClick={(e) => handleStateClick(e)}>State</button>
 						<button onClick={(e) => handleDeleteClick(e)}>Delete</button>
 					</div>
 				)
-			} else {
-				setComponentItem(
+				: setComponentItem(
 					<div className='componentListItem' onClick={() => setCurrentComponent(name)}>
 						<span> {name} </span>
 						<button onClick={(e) => handleStateClick(e)}>State</button>
 						<button onClick={(e) => handleDeleteClick(e)}>Delete</button>
 					</div>
 				)
-			}
 		}
 	}, [currentComponent, originals, copies]);
 
@@ -62,21 +58,20 @@ const ComponentListItem = (props: {name: string}): JSX.Element => {
 		let children: string[];
 		// if the component is custom, use the pointer to find the children of its original
 		// if the component is native, use the children array
-		(deletedComponent.type === 'custom')
-		? children = copyOriginals[deletedComponent.pointer].children
-		: children = deletedComponent.children;
+		deletedComponent.type === 'custom'
+			? children = copyOriginals[deletedComponent.pointer].children
+			: children = deletedComponent.children;
 		
 		// recursively call trashCan on all children
 		children.forEach((child: string): void => trashCan(child, copyCopies, copyOriginals));
 		// delete the custom component from the parent's children array in ORIGINALS or COPIES
-		(deletedComponent.parent.origin === 'original')
-		?	copyOriginals[deletedComponent.parent.key].children = copyOriginals[deletedComponent.parent.key].children.filter((child: string): boolean => child !== name)
-		: copyCopies[deletedComponent.parent.key].children = copyCopies[deletedComponent.parent.key].children.filter((child: string): boolean => child !== name);
+		deletedComponent.parent.origin === 'original'
+			?	copyOriginals[deletedComponent.parent.key].children = copyOriginals[deletedComponent.parent.key].children.filter((child: string): boolean => child !== name)
+			: copyCopies[deletedComponent.parent.key].children = copyCopies[deletedComponent.parent.key].children.filter((child: string): boolean => child !== name);
 
 		// delete the custom component from original's copies array
-		if (deletedComponent.type === 'custom') {
-			copyOriginals[deletedComponent.pointer].copies = copyOriginals[deletedComponent.pointer].copies.filter((copy: string): boolean => copy !== name);
-		}
+		deletedComponent.type === 'custom' &&
+			(copyOriginals[deletedComponent.pointer].copies = copyOriginals[deletedComponent.pointer].copies.filter((copy: string): boolean => copy !== name));
 		
 		// delete the copy component instance from COPIES
 		delete copyCopies[name];
@@ -88,7 +83,7 @@ const ComponentListItem = (props: {name: string}): JSX.Element => {
 
 		// prevent the click from propagating to the parent div
 		event.cancelBubble = true;
-		if (event.stopPropagation) event.stopPropagation();
+		event.stopPropagation && event.stopPropagation();
 		
 		// TODO: Add a modal that asks the user if they are sure they want to delete the component
 		setCurrentModal('delete')
@@ -121,7 +116,7 @@ const ComponentListItem = (props: {name: string}): JSX.Element => {
 		setOriginals(newOriginals);
 		
 		// if the deleted component is the current component, set current component to null
-		if (currentComponent === name) setCurrentComponent('App');
+		currentComponent === name && setCurrentComponent('App');
 	}
 	
 	// TODO: Add a modal for the user to input state
@@ -129,8 +124,9 @@ const ComponentListItem = (props: {name: string}): JSX.Element => {
 
 		// prevent the click from propagating to the parent div
 		event.cancelBubble = true;
-		if(event.stopPropagation) event.stopPropagation();
+		event.stopPropagation && event.stopPropagation();
 
+		// TODO: Flesh out state modal
 		setIsOpen(true)
 		console.log('clicked state')
 	}
