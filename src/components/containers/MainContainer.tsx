@@ -11,7 +11,7 @@ const MainContainer = (): JSX.Element => {
       <div id='main-container'>
         <LeftContainer />
         <AppCanvas />
-        {/* <RightContainer /> */}
+        <RightContainer />
       </div>
     </DndProvider>
   );

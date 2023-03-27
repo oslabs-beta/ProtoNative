@@ -1,46 +1,56 @@
-import React, { useRef, useContext} from 'react';
+import React, { useRef, useContext } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import {Copies} from '../../parser/interfaces';
+import { Copies } from '../../parser/interfaces';
 import AppContext from '../../context/AppContext';
 
 type ElementBlockProps = {
-  componentName: string,
+  componentName: string;
   // components: Copies,
-  index: number,
-  moveItem: (dragIndex: number, hoverIndex: number)=> void,
-  location: string
-}
+  index: number;
+  setChildrenOfCurrent: (copy: string[]) => void;
+  location: string;
+};
 
 const ElementBlock = ({
   componentName,
   index,
-  moveItem,
+  setChildrenOfCurrent,
   location,
 }: ElementBlockProps) => {
-  const {originals, copies} = useContext(AppContext);
+  const { originals, copies, currentComponent, setOriginals } =
+    useContext(AppContext);
   const componentDef = copies[componentName];
   let childElements = null;
   let children: any = null;
   const ref = useRef(null);
+
+  const moveItem = (dragIndex: number, hoverIndex: number): void => {
+    const item = originals[currentComponent].children[dragIndex];
+    const copy = [...originals[currentComponent].children];
+    copy.splice(dragIndex, 1);
+    copy.splice(hoverIndex, 0, item);
+    setOriginals((prevState: any) => {
+      prevState[currentComponent].children = copy;
+      return prevState;
+    });
+    setChildrenOfCurrent(copy);
+  };
+
   const [, drop] = useDrop({
     accept: ['elements', 'addableElement'],
-    drop: (item: { name: number; index: number; type: string}, monitor) => {
+    drop: (item: { name: number; index: number; type: string }, monitor) => {
       if (!ref.current) return;
 
       if (!monitor.canDrop()) {
         return;
       }
-      console.log(item.name, 'dropped into', componentName);
-
       const dragIndex = item.index;
       const hoverIndex = index;
       if (dragIndex === hoverIndex) return;
 
-      if(item.type === 'elements') {
+      if (item.type === 'elements') {
         moveItem(dragIndex, hoverIndex);
-      
-      }
-      else if (item.type === 'addableElement') console.log('hi');
+      } else if (item.type === 'addableElement') console.log('hi');
     },
   });
 
@@ -57,8 +67,8 @@ const ElementBlock = ({
   //depending on if the current component is custom or not, we must get children differently
   if (componentDef.type === 'custom' && location === 'app') {
     children = originals[componentDef.pointer].children;
-    
-} else {
+    // children = componentDef.children();
+  } else {
     children = componentDef.children;
   }
 
@@ -66,14 +76,12 @@ const ElementBlock = ({
     const arr: JSX.Element[] = [];
     children.forEach((childName: string) => {
       if (location === 'app' && copies[childName].type === 'custom') {
-        // console.log(childName)
         arr.push(
           <ElementBlock
             key={index}
             componentName={childName}
-            // components={copies}
             index={index}
-            moveItem={moveItem}
+            setChildrenOfCurrent={setChildrenOfCurrent}
             location={'app'}
           />
         );
@@ -85,9 +93,8 @@ const ElementBlock = ({
           <ElementBlock
             key={index}
             componentName={childName}
-            // components={copies}
             index={index}
-            moveItem={moveItem}
+            setChildrenOfCurrent={setChildrenOfCurrent}
             location={'details'}
           />
         );
@@ -97,19 +104,22 @@ const ElementBlock = ({
   }
 
   return (
-    <div
-      key={index}
-      style={{ border: '1px solid black' }}
-      className='element'
-      ref={ref}
-    >
-      <p>
-        {copies[componentName].type === 'custom'
-          ? copies[componentName].pointer
-          : copies[componentName].type}
-      </p>
-
-      {childElements}
+    <div>
+      <div className='above'></div>
+      <div
+        key={index}
+        style={{ border: '1px solid black' }}
+        className='element'
+        ref={ref}
+      >
+        <p>
+          {copies[componentName].type === 'custom'
+            ? copies[componentName].pointer
+            : copies[componentName].type}
+        </p>
+        {childElements}
+      </div>
+      <div className='below'></div>
     </div>
   );
 };

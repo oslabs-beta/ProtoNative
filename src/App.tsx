@@ -12,13 +12,23 @@ import {
   CopyNativeEl,
   CopyCustomComp,
 } from './parser/interfaces';
-import './styles/main.scss'
+import './styles/main.scss';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const App = () => {
   const [originals, setOriginals] = React.useState<Originals>({
-    App: { type: 'App', children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2', 'CoolComponent0'], state: [] } as AppInterface,
+    App: {
+      type: 'App',
+      children: [
+        'TestComponent0',
+        'View0',
+        'TestComponent1',
+        'TestComponent2',
+        'CoolComponent0',
+      ],
+      state: [],
+    } as AppInterface,
     View: { type: 'View', children: [], index: 2 } as OrigNativeEl,
     Button: { type: 'Button', children: [], index: 3 } as OrigNativeEl,
     Text: { type: 'Text', children: [], index: 1 } as OrigNativeEl,
@@ -26,12 +36,28 @@ const App = () => {
     TextInput: { type: 'TextInput', children: [], index: 0 } as OrigNativeEl,
     ScrollView: { type: 'ScrollView', children: [], index: 0 } as OrigNativeEl,
     FlatList: { type: 'FlatList', children: [], index: 0 } as OrigNativeEl,
-    SectionList: { type: 'SectionList', children: [], index: 0 } as OrigNativeEl,
+    SectionList: {
+      type: 'SectionList',
+      children: [],
+      index: 0,
+    } as OrigNativeEl,
     Switch: { type: 'Switch', children: [], index: 0 } as OrigNativeEl,
-    TouchableHighlight: { type: 'TouchableHighlight', children: [], index: 0 } as OrigNativeEl,
-    TouchableOpacity: { type: 'TouchableOpacity', children: [], index: 0 } as OrigNativeEl,
+    TouchableHighlight: {
+      type: 'TouchableHighlight',
+      children: [],
+      index: 0,
+    } as OrigNativeEl,
+    TouchableOpacity: {
+      type: 'TouchableOpacity',
+      children: [],
+      index: 0,
+    } as OrigNativeEl,
     StatusBar: { type: 'StatusBar', children: [], index: 0 } as OrigNativeEl,
-    ActivityIndicator: { type: 'ActivityIndicator', children: [], index: 0 } as OrigNativeEl,
+    ActivityIndicator: {
+      type: 'ActivityIndicator',
+      children: [],
+      index: 0,
+    } as OrigNativeEl,
     TestComponent: {
       name: 'TestComponent',
       type: 'custom',
@@ -47,13 +73,13 @@ const App = () => {
       state: [],
       index: 1,
       copies: ['CoolComponent0'],
-    } as OrigCustomComp
+    } as OrigCustomComp,
   });
   const [copies, setCopies] = React.useState<Copies>({
     Button0: {
       name: 'Button0',
       type: 'Button',
-      parent: { origin: 'original', key: 'TestComponent' },
+      parent: { origin: 'copies', key: 'TestComponent' },
       children: [],
     } as CopyNativeEl,
     Text0: {
@@ -96,7 +122,7 @@ const App = () => {
       },
       state: function () {
         return originals[this.pointer].state;
-      }
+      },
     } as CopyCustomComp,
     TestComponent1: {
       name: 'TestComponent1',
@@ -108,7 +134,7 @@ const App = () => {
       },
       state: function () {
         return originals[this.pointer].state;
-      }
+      },
     } as CopyCustomComp,
     TestComponent2: {
       name: 'TestComponent2',
@@ -120,7 +146,7 @@ const App = () => {
       },
       state: function () {
         return originals[this.pointer].state;
-      }
+      },
     } as CopyCustomComp,
     CoolComponent0: {
       name: 'CoolComponent0',
@@ -132,7 +158,7 @@ const App = () => {
       },
       state: function () {
         return originals[this.pointer].state;
-      }
+      },
     } as CopyCustomComp,
   });
   const [currentComponent, setCurrentComponent] = React.useState('App');
@@ -143,31 +169,32 @@ const App = () => {
   // FIXME: Turn off strict mode when unnecesary
   return (
     // <React.StrictMode>
-      <AppContext.Provider
-        value={{
-          originals,
-          setOriginals,
-          copies,
-          setCopies,
-          currentComponent,
-          setCurrentComponent,
-        }}
-      >
-        <DndProvider backend={HTML5Backend}>
-          <div>
-            <NavBar/>
-            < MainContainer />
-          </div>
-        </DndProvider>
-      </AppContext.Provider>
+    <AppContext.Provider
+      value={{
+        originals,
+        setOriginals,
+        copies,
+        setCopies,
+        currentComponent,
+        setCurrentComponent,
+      }}
+    >
+      <DndProvider backend={HTML5Backend}>
+        <div>
+          <NavBar />
+          <MainContainer />
+        </div>
+      </DndProvider>
+    </AppContext.Provider>
     // </React.StrictMode>
   );
 };
 
-      // use create root instead of render
-      createRoot(document.getElementById('root')).render(<App />);
+// use create root instead of render
+createRoot(document.getElementById('root')).render(<App />);
 
-      {/* //    CoolerComponent0: {
+{
+  /* //    CoolerComponent0: {
                 type: 'custom',
             parent: 'App',
             pointer: 'CoolerComponent',
