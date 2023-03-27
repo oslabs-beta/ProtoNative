@@ -18,7 +18,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const App = () => {
   const [originals, setOriginals] = React.useState<Originals>({
-    App: { type: 'App', children: ['TestComponent0', 'CoolComponent0', 'View0', 'TestComponent1', 'TestComponent2'], state: [] } as AppInterface,
+    App: { type: 'App', children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2', 'CoolComponent0'], state: [] } as AppInterface,
     View: { type: 'View', children: [], index: 2 } as OrigNativeEl,
     Button: { type: 'Button', children: [], index: 3 } as OrigNativeEl,
     Text: { type: 'Text', children: [], index: 1 } as OrigNativeEl,
@@ -142,7 +142,7 @@ const App = () => {
   // FIXME: Turn off strict mode when unnecesary
   // FIXME: Turn off strict mode when unnecesary
   return (
-    <React.StrictMode>
+    // <React.StrictMode>
       <AppContext.Provider
         value={{
           originals,
@@ -160,7 +160,7 @@ const App = () => {
           </div>
         </DndProvider>
       </AppContext.Provider>
-    </React.StrictMode>
+    // </React.StrictMode>
   );
 };
 
