@@ -31,6 +31,7 @@ const ComponentDetails = (): JSX.Element => {
             key={index}
             componentName={childName}
             components={copies}
+            originals={originals}
             index={index}
             moveItem={moveItem}
             location={'details'}
@@ -41,32 +42,18 @@ const ComponentDetails = (): JSX.Element => {
     setChildElements(newElements);
   };
 
-  const [childElements, setChildElements] = useState(
-    childrenOfCurrent.map((childName: string, index: number) => {
-      if (currentComponent !== 'App' && currentComponent !== null) {
-        return (
-          <ElementBlock
-            key={index}
-            componentName={childName}
-            components={copies}
-            index={index}
-            moveItem={moveItem}
-            location={'details'}
-          />
-        );
-      }
-    })
-  );
+  const [childElements, setChildElements] = useState([]);
 
   useEffect(() => {
     setChildElements(
-      childrenOfCurrent.map((childName: string, index: number) => {
+      originals[currentComponent].children.map((childName: string, index: number) => {
         if (currentComponent !== 'App' && currentComponent !== null) {
           return (
             <ElementBlock
               key={index}
               componentName={childName}
               components={copies}
+              originals={originals}
               index={index}
               moveItem={moveItem}
               location={'details'}

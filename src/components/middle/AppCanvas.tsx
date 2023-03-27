@@ -16,6 +16,7 @@ const AppCanvas = (): JSX.Element => {
         key={index}
         componentName={child}
         components={copies}
+        originals={originals}
         index={index}
         moveItem={() => console.log('hi')}
         location={'app'}
@@ -26,6 +27,7 @@ const AppCanvas = (): JSX.Element => {
           key={index}
           componentName={child}
           components={copies}
+          originals={originals}
           index={index}
           moveItem={() => console.log('hi')}
           location={'details'}
