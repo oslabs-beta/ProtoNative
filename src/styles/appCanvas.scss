@@ -17,5 +17,10 @@
   padding: 1rem;
   margin-top: 3rem;
   background-color: white;
+  overflow-y: scroll;
 }
 //2.163
+
+#phone-screen-container::-webkit-scrollbar{
+  display: none;
+}
