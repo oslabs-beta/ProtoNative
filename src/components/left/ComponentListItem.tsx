@@ -1,117 +1,146 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import AppContext from '../../context/AppContext';
-import { CopyCustomComp, CopyNativeEl, OrigCustomComp, AppInterface } from '../../parser/interfaces';
+import { CopyCustomComp, CopyNativeEl } from '../../parser/interfaces';
+import { Originals, Copies } from '../../parser/interfaces';
+import Modal from './Modal';
 
-
-type ComponentListItemProps = {
-	name: string;
-}
-
-const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
+const ComponentListItem = (props: {name: string}): JSX.Element => {
 	const name = props.name;
 	const { currentComponent, setCurrentComponent, originals, setOriginals, copies, setCopies } = useContext(AppContext);
 	const [ComponentItem, setComponentItem] = useState(null);
 
-	const handleHighlight = useCallback((): void => {
-		if (currentComponent !== name) setCurrentComponent(name);
-	}, [currentComponent]);
+	// Modal states
+	const [currentModal, setCurrentModal] = useState('');
+	const [isOpen, setIsOpen] = useState(false);
+
+	const handleClick = () => {
+		setIsOpen(false);
+		console.log('close button clicked');
+	}
 	
-	// if the name is 'app', do not render the delete button and do not allow the user to click on the component
 	useEffect(() => {
 		if (name === 'App') {
-			setComponentItem(
-				<div className='componentListItem'>
-					<span> {name} </span>
-				</div>
-			)
+			currentComponent === name
+				? setComponentItem(
+					<div className='highlightedComponentListItem'>
+						<span> {name} </span>
+					</div>
+				)
+				: setComponentItem(
+					<div className='componentListItem' onClick={() => setCurrentComponent(name)}>
+						<span> {name} </span>
+					</div>
+				)
 		} else {
-			if (currentComponent === name) {
-				setComponentItem(
-					<div className='highlightedComponentListItem' onClick={() => handleHighlight()}>
+			currentComponent === name
+				? setComponentItem(
+					<div className='highlightedComponentListItem'>
 						<span> {name} </span>
 						<button onClick={(e) => handleStateClick(e)}>State</button>
 						<button onClick={(e) => handleDeleteClick(e)}>Delete</button>
 					</div>
 				)
-			} else {
-				setComponentItem(
-					<div className='componentListItem' onClick={() => handleHighlight()}>
+				: setComponentItem(
+					<div className='componentListItem' onClick={() => setCurrentComponent(name)}>
 						<span> {name} </span>
 						<button onClick={(e) => handleStateClick(e)}>State</button>
 						<button onClick={(e) => handleDeleteClick(e)}>Delete</button>
 					</div>
 				)
-			}
 		}
-	}, [currentComponent]);
+	}, [currentComponent, originals, copies]);
 
-	// TODO: Add a modal for the user to input state
-	const handleStateClick = (event: any): void => {
-		event.cancelBubble = true;
-		if(event.stopPropagation) event.stopPropagation();
-	}
-
-	// takes in a name and the copies and originals objects and returns a new copies and originals objects with the component and all of its children deleted
-	const trashCan = (name: string, copyCopies: typeof copies, copyOriginals: typeof originals) => {
-
-		// helper function to recursively delete all instances of a component and its children from clone of copies and originals objects
-		const helper = (name: string) => {
-			const deletedComponent: (CopyNativeEl | CopyCustomComp) = copyCopies[name];
-			let children: string[];
-
-			// different methods for getting children depending on whether the component is a custom component or a native element
-			console.log('deletedComponent', deletedComponent)
-			deletedComponent.type === 'custom'
-			? children = deletedComponent.children()
+	
+	// Deletes all children and the component itself from the copies object and any references to the component in the originals object
+	const trashCan = (name: string, copyCopies: Copies, copyOriginals: Originals): void => {
+		const deletedComponent: (CopyNativeEl | CopyCustomComp) = copyCopies[name];
+		
+		let children: string[];
+		// if the component is custom, use the pointer to find the children of its original
+		// if the component is native, use the children array
+		deletedComponent.type === 'custom'
+			? children = copyOriginals[deletedComponent.pointer].children
 			: children = deletedComponent.children;
-
-			// recursively call trashCan on all children
-			children.forEach((child: string): void => helper(child));
-
-			// delete the custom component from original's copies array
-			if (deletedComponent.type === 'custom') {
-				copyOriginals[deletedComponent.pointer].copies = copyOriginals[deletedComponent.pointer].copies.filter((copy: string): boolean => copy !== name);
-			}
-
-			// delete the custom component from the parent's children array in ORIGINALS or COPIES
-			deletedComponent.parent.origin === 'original'
-			? copyOriginals[deletedComponent.parent.key].children = copyOriginals[deletedComponent.parent.key].children.filter((child: string): boolean => child !== name)
+		
+		// recursively call trashCan on all children
+		children.forEach((child: string): void => trashCan(child, copyCopies, copyOriginals));
+		// delete the custom component from the parent's children array in ORIGINALS or COPIES
+		deletedComponent.parent.origin === 'original'
+			?	copyOriginals[deletedComponent.parent.key].children = copyOriginals[deletedComponent.parent.key].children.filter((child: string): boolean => child !== name)
 			: copyCopies[deletedComponent.parent.key].children = copyCopies[deletedComponent.parent.key].children.filter((child: string): boolean => child !== name);
 
-			// delete the copy from COPIES
-			delete copyCopies[name];
-		}
-
-		helper(name);
-		return [copyCopies, copyOriginals];
+		// delete the custom component from original's copies array
+		deletedComponent.type === 'custom' &&
+			(copyOriginals[deletedComponent.pointer].copies = copyOriginals[deletedComponent.pointer].copies.filter((copy: string): boolean => copy !== name));
+		
+		// delete the copy component instance from COPIES
+		delete copyCopies[name];
 	}
 
-
-	// TODO: Add a modal that asks the user if they are sure they want to delete the component
+	// TODO: import type of event object
+	// type for event React.MouseEvent<HTMLElement> but hasn't been working, so using any for now
 	const handleDeleteClick = (event: any): void => {
+
 		// prevent the click from propagating to the parent div
 		event.cancelBubble = true;
-		if (event.stopPropagation) event.stopPropagation();
-
-		// delete all the copies of the custom component from copies
-		console.log(originals)
-		let [newCopies, newOriginals] = [JSON.parse(JSON.stringify(copies)), JSON.parse(JSON.stringify(originals))];
-		originals[name].copies.forEach((copyName: string) => [newCopies, newOriginals] = trashCan(copyName, newCopies, newOriginals));
+		event.stopPropagation && event.stopPropagation();
 		
-		// delete the custom component from originals
+		// TODO: Add a modal that asks the user if they are sure they want to delete the component
+		setCurrentModal('delete')
+		setIsOpen(true);
+		
+		// Function to deep copy an object
+		const deepCopy = (obj: any): any => {
+			if (typeof obj === 'object') {
+				if (Array.isArray(obj)) {
+					let copy: string[] = [];
+					obj.forEach((item: string): number => copy.push(item));
+					return copy;
+				} else {
+					let copy: {[key: string]: {}} = {};
+					for (let key in obj) {
+						copy[key] = deepCopy(obj[key]);
+					}
+					return copy;
+				}
+			} else return obj;
+		}
+		let [newCopies, newOriginals] = [deepCopy(copies), deepCopy(originals)];
+		originals[name].copies.forEach((copyName: string) => trashCan(copyName, newCopies, newOriginals));
+
+		// delete the custom component from originals context
 		delete newOriginals[name];
 
 		// set copies and originals to the new copies and originals
 		setCopies(newCopies);
 		setOriginals(newOriginals);
-
+		
 		// if the deleted component is the current component, set current component to null
-		if (currentComponent === name) setCurrentComponent(null);
+		currentComponent === name && setCurrentComponent('App');
+	}
+	
+	// TODO: Add a modal for the user to input state
+	const handleStateClick = (event: any): void => {
+
+		// prevent the click from propagating to the parent div
+		event.cancelBubble = true;
+		event.stopPropagation && event.stopPropagation();
+
+		// TODO: Flesh out state modal
+		setIsOpen(true)
+		console.log('clicked state')
 	}
 
 	return (
 		<>
 			{ComponentItem}
+			{isOpen
+				?
+				<Modal isOpen={isOpen} handleClick={handleClick}>
+				</Modal>
+				:
+				<></>
+      }
 		</>
 
 	)

@@ -7,6 +7,25 @@
   h2 {
     margin-bottom: 20px;
   }
+#componentListContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 10px;
+    height: 80%;
+}
+
+#customComps {
+    border: 1px solid black;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 100%;
+    h2 {
+        margin-bottom: 20px;
+    }
 }
 
 #customComps {
@@ -67,4 +86,4 @@
     height: 60%;
     border-radius: 8px;
   }
-}
+}}

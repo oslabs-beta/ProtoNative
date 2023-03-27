@@ -8,7 +8,7 @@ import { OrigCustomComp } from '../../parser/interfaces';
 const ComponentDetails = (): JSX.Element => {
   const { currentComponent, originals, setOriginals, copies, setCopies } =
     useContext(AppContext);
-  const displayedComponent: OrigCustomComp= originals[currentComponent];
+  const displayedComponent = originals[currentComponent];
   const [childrenOfCurrent, setChildrenOfCurrent] = useState([]);
   const [childElements, setChildElements] = useState([]);
 
@@ -20,6 +20,7 @@ const ComponentDetails = (): JSX.Element => {
     copy.splice(hoverIndex, 0, item);
     setOriginals((prevState: any) => {
       prevState[currentComponent].children = copy;
+      console.log(prevState[currentComponent].children)
       return prevState;
     });
     setChildrenOfCurrent(copy);
@@ -28,14 +29,16 @@ const ComponentDetails = (): JSX.Element => {
 
   useEffect(() => {
     setChildrenOfCurrent(originals[currentComponent].children)
+    // console.log('children of current', originals[currentComponent].children)
     setChildElements(
-      childrenOfCurrent.map((childName: string, index: number) => {
-        if (currentComponent !== 'app' && currentComponent !== null) {
+     originals[currentComponent].children.map((childName: string, index: number) => {
+        if (currentComponent !== 'App' && currentComponent !== null) {
+          console.log('mapping', childName);
           return (
             <ElementBlock
               key={index}
               componentName={childName}
-              components={copies}
+              // components={copies}
               index={index}
               moveItem={moveItem}
               location={'details'}
@@ -44,14 +47,14 @@ const ComponentDetails = (): JSX.Element => {
         }
       })
     );
-    console.log(childrenOfCurrent);
-  }, [childrenOfCurrent, currentComponent]);
+    // console.log(childrenOfCurrent);
+  }, [currentComponent, childrenOfCurrent, originals]);
 
   return (
     <div id='component-details-container'>
       <h2>Component Details</h2>
 
-      {currentComponent !== 'app' && currentComponent && (
+      {currentComponent !== 'App' && currentComponent && (
         <div style={{ border: '1px solid black' }} id='component-box'>
           <p>{currentComponent}</p>
           {childElements}

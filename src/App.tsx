@@ -2,7 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import AppContext from './context/AppContext';
 import MainContainer from './components/containers/MainContainer';
-import NavBarContainer from './components/top/NavBarContainer';
+import NavBar from './components/top/NavBar';
 import {
   Originals,
   Copies,
@@ -18,7 +18,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const App = () => {
   const [originals, setOriginals] = React.useState<Originals>({
-    App: { type: 'App', children: ['TestComponent0', 'CoolComponent0', 'View0', 'TestComponent1', 'TestComponent2'], state: [] } as AppInterface,
+    App: { type: 'App', children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2', 'CoolComponent0'], state: [] } as AppInterface,
     View: { type: 'View', children: [], index: 2 } as OrigNativeEl,
     Button: { type: 'Button', children: [], index: 3 } as OrigNativeEl,
     Text: { type: 'Text', children: [], index: 1 } as OrigNativeEl,
@@ -35,7 +35,7 @@ const App = () => {
     TestComponent: {
       name: 'TestComponent',
       type: 'custom',
-      children: ['Button0', 'Text0', 'CoolComponent0'],
+      children: ['Button0'],
       state: [],
       index: 3,
       copies: ['TestComponent0', 'TestComponent1', 'TestComponent2'],
@@ -96,7 +96,7 @@ const App = () => {
       },
       state: function () {
         return originals[this.pointer].state;
-      },
+      }
     } as CopyCustomComp,
     TestComponent1: {
       name: 'TestComponent1',
@@ -132,10 +132,10 @@ const App = () => {
       },
       state: function () {
         return originals[this.pointer].state;
-      },
-    },
+      }
+    } as CopyCustomComp,
   });
-  const [currentComponent, setCurrentComponent] = React.useState('TestComponent');
+  const [currentComponent, setCurrentComponent] = React.useState('App');
 
   // FIXME: Turn off strict mode when unnecesary
   // FIXME: Turn off strict mode when unnecesary
@@ -155,7 +155,7 @@ const App = () => {
       >
         <DndProvider backend={HTML5Backend}>
           <div>
-            <NavBarContainer />
+            <NavBar/>
             < MainContainer />
           </div>
         </DndProvider>

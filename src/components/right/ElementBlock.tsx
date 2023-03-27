@@ -1,9 +1,11 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useContext} from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import {Copies} from '../../parser/interfaces';
+import AppContext from '../../context/AppContext';
+
 type ElementBlockProps = {
   componentName: string,
-  components: Copies,
+  // components: Copies,
   index: number,
   moveItem: (dragIndex: number, hoverIndex: number)=> void,
   location: string
@@ -11,12 +13,12 @@ type ElementBlockProps = {
 
 const ElementBlock = ({
   componentName,
-  components,
   index,
   moveItem,
   location,
 }: ElementBlockProps) => {
-  const componentDef = components[componentName];
+  const {originals, copies} = useContext(AppContext);
+  const componentDef = copies[componentName];
   let childElements = null;
   let children: any = null;
   const ref = useRef(null);
@@ -52,23 +54,24 @@ const ElementBlock = ({
   }));
   //
   drag(drop(ref));
-
   //depending on if the current component is custom or not, we must get children differently
-  if (componentDef.type === 'custom' && location === 'app')
-    children = componentDef.children();
-  else {
+  if (componentDef.type === 'custom' && location === 'app') {
+    children = originals[componentDef.pointer].children;
+    
+} else {
     children = componentDef.children;
   }
 
   if (children.length) {
     const arr: JSX.Element[] = [];
     children.forEach((childName: string) => {
-      if (location === 'app' && components[childName].type === 'custom') {
+      if (location === 'app' && copies[childName].type === 'custom') {
+        // console.log(childName)
         arr.push(
           <ElementBlock
             key={index}
             componentName={childName}
-            components={components}
+            // components={copies}
             index={index}
             moveItem={moveItem}
             location={'app'}
@@ -76,13 +79,13 @@ const ElementBlock = ({
         );
       } else if (
         location === 'details' &&
-        components[childName].type !== 'custom'
+        copies[childName].type !== 'custom'
       ) {
         arr.push(
           <ElementBlock
             key={index}
             componentName={childName}
-            components={components}
+            // components={copies}
             index={index}
             moveItem={moveItem}
             location={'details'}
@@ -101,9 +104,9 @@ const ElementBlock = ({
       ref={ref}
     >
       <p>
-        {components[componentName].type === 'custom'
-          ? components[componentName].pointer
-          : components[componentName].type}
+        {copies[componentName].type === 'custom'
+          ? copies[componentName].pointer
+          : copies[componentName].type}
       </p>
 
       {childElements}
