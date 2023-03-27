@@ -1,8 +1,26 @@
+#component-details-container{
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 1rem;
+  background-color: $container-background;
+  max-height: 100%;
+}
+
+#component-box{
+  overflow-y: scroll;
+  height: 400px;
+}
+
+#component-box::-webkit-scrollbar{
+  display: none;
+}
 
 #component-box, .element{
   margin: 20px;
   text-align: center;
   border-radius: 5px;
+
 }
 
 .element p {

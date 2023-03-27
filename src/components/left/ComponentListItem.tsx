@@ -10,7 +10,7 @@ const ComponentListItem = (props: {name: string}): JSX.Element => {
 	const [ComponentItem, setComponentItem] = useState(null);
 
 	// Modal states
-	const [currentModal, setCurrentModal] = useState('');
+	const [currentModal, setCurrentModal] = useState('state');
 	const [isOpen, setIsOpen] = useState(false);
 
 	const handleClick = () => {
@@ -128,6 +128,7 @@ const ComponentListItem = (props: {name: string}): JSX.Element => {
 
 		// TODO: Flesh out state modal
 		setIsOpen(true)
+		setCurrentModal('state')
 		console.log('clicked state')
 	}
 
@@ -136,7 +137,17 @@ const ComponentListItem = (props: {name: string}): JSX.Element => {
 			{ComponentItem}
 			{isOpen
 				?
-				<Modal isOpen={isOpen} handleClick={handleClick}>
+				<Modal handleClick={handleClick}>
+					{currentModal === 'state'
+						?
+						<div>
+							state
+						</div>
+						:
+						<div>
+							Delete
+						</div>
+					}
 				</Modal>
 				:
 				<></>
