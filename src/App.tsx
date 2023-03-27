@@ -35,7 +35,7 @@ const App = () => {
     TestComponent: {
       name: 'TestComponent',
       type: 'custom',
-      children: ['Button0', 'Text0'],
+      children: ['Button0'],
       state: [],
       index: 3,
       copies: ['TestComponent0', 'TestComponent1', 'TestComponent2'],
@@ -96,7 +96,7 @@ const App = () => {
       },
       state: function () {
         return originals[this.pointer].state;
-      },
+      }
     } as CopyCustomComp,
     TestComponent1: {
       name: 'TestComponent1',
@@ -132,17 +132,17 @@ const App = () => {
       },
       state: function () {
         return originals[this.pointer].state;
-      },
-    },
+      }
+    } as CopyCustomComp,
   });
-  const [currentComponent, setCurrentComponent] = React.useState('TestComponent');
+  const [currentComponent, setCurrentComponent] = React.useState('App');
 
   // FIXME: Turn off strict mode when unnecesary
   // FIXME: Turn off strict mode when unnecesary
   // FIXME: Turn off strict mode when unnecesary
   // FIXME: Turn off strict mode when unnecesary
   return (
-    // <React.StrictMode>
+    <React.StrictMode>
       <AppContext.Provider
         value={{
           originals,
@@ -160,7 +160,7 @@ const App = () => {
           </div>
         </DndProvider>
       </AppContext.Provider>
-    // </React.StrictMode>
+    </React.StrictMode>
   );
 };
 

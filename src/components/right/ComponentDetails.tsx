@@ -4,12 +4,14 @@ import ElementBlock from './ElementBlock';
 import { useDrop } from 'react-dnd';
 
 const ComponentDetails = (): JSX.Element => {
-  const { currentComponent, originals, setOriginals, copies, setCopies } =
-    useContext(AppContext);
-  const displayedComponent = originals[currentComponent];
-  const [childrenOfCurrent, setChildrenOfCurrent] = useState(
-    displayedComponent.children
-  );
+  const { currentComponent, originals, setOriginals, copies, setCopies } = useContext(AppContext);
+  const [displayedComponent, setDisplayedComponent] = useState(originals[currentComponent]);
+  const [childrenOfCurrent, setChildrenOfCurrent] = useState(displayedComponent.children);
+
+  useEffect(() => {
+    setDisplayedComponent(originals[currentComponent]);
+    setChildrenOfCurrent(originals[currentComponent].children);
+  }, [currentComponent]);
 
   const moveItem = (dragIndex: number, hoverIndex: number): void => {
     console.log('drag', dragIndex, 'hover', hoverIndex);
@@ -23,7 +25,7 @@ const ComponentDetails = (): JSX.Element => {
     });
     setChildrenOfCurrent(copy);
     const newElements = copy.map((childName: string, index: number) => {
-      if (currentComponent !== 'app' && currentComponent !== null) {
+      if (currentComponent !== 'App' && currentComponent !== null) {
         return (
           <ElementBlock
             key={index}
@@ -41,7 +43,7 @@ const ComponentDetails = (): JSX.Element => {
 
   const [childElements, setChildElements] = useState(
     childrenOfCurrent.map((childName: string, index: number) => {
-      if (currentComponent !== 'app' && currentComponent !== null) {
+      if (currentComponent !== 'App' && currentComponent !== null) {
         return (
           <ElementBlock
             key={index}
@@ -59,7 +61,7 @@ const ComponentDetails = (): JSX.Element => {
   useEffect(() => {
     setChildElements(
       childrenOfCurrent.map((childName: string, index: number) => {
-        if (currentComponent !== 'app' && currentComponent !== null) {
+        if (currentComponent !== 'App' && currentComponent !== null) {
           return (
             <ElementBlock
               key={index}
@@ -74,13 +76,13 @@ const ComponentDetails = (): JSX.Element => {
       })
     );
     console.log(childrenOfCurrent);
-  }, [childrenOfCurrent, currentComponent]);
+  }, [childrenOfCurrent, currentComponent, copies]);
 
   return (
     <div id='component-details-container'>
       <h2>Component Details</h2>
 
-      {currentComponent !== 'app' && currentComponent && (
+      {currentComponent !== 'App' && currentComponent && (
         <div style={{ border: '1px solid black' }} id='component-box'>
           <p>{currentComponent}</p>
           {childElements}
