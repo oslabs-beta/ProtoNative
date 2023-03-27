@@ -11,34 +11,37 @@
 body {
   display: flex;
   flex-direction: column;
+  font-family: $main-font;
 }
 
 
 #main-container {
   display: flex;
-  height: 100vh;
+  height: 90vh;
+  padding: .5rem;
 }
 
 #right-container {
   display: flex;
   flex-direction: column;
-  width: 33%
+  width: 33%;
 }
 
 #left-container {
   display: grid;
-  grid-template-rows: .2fr 1fr 1fr;
+  grid-template-rows: .5fr 1fr 1fr;
   width: 33%;
-  gap: 12px;
 }
 
 #app-canvas {
   width: 33%;
 }
 
-@import '_variables.scss';
 @import 'addChild.scss';
 @import 'addComponent.scss';
 @import 'appCanvas.scss';
 @import 'componentDetails.scss';
 @import 'componentList.scss';
+@import 'modal.scss';
+@import 'navbar.scss';
+@import '_variables.scss';
