@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import AppContext from '../../context/AppContext';
+import Modal from './Modal';
 
 
 // user clicks Add CC button, modal opens
@@ -53,21 +54,24 @@ const AddComponent = () => {
       <button id='addComponent' onClick={() => {
         console.log('are we in OnClick?');
         setIsOpen(true)
-      }
-      }>Add Custom Component </button>
+      }}>
+        Add Custom Component 
+      </button>
       {isOpen && (
         <div id="modal">
-          <div id="modal-content">
-            <h2>Add Custom Component</h2>
-            <form onSubmit={handleSubmit}>
-              <label>
-                Component Name:
-                <input type="text" value={componentName} onChange={handleInputChange} />
-              </label>
-              <button type="submit">Add</button>
-              <button onClick={() => handleClose()}>Cancel</button>
-            </form>
-          </div>
+          <Modal isOpen={isOpen} handleClick={()=> setIsOpen(false)}>
+            <div id="modal-content">
+              <h2>Add Custom Component</h2>
+              <form onSubmit={handleSubmit}>
+                <label>
+                  Component Name:
+                  <input type="text" value={componentName} onChange={handleInputChange} />
+                </label>
+                <button type="submit">Add</button>
+                <button onClick={() => handleClose()}>Cancel</button>
+              </form>
+            </div>
+          </Modal>
         </div>
       )}
     </div>

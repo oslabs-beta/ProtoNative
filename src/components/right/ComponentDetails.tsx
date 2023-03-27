@@ -52,11 +52,15 @@ const ComponentDetails = (): JSX.Element => {
 
   return (
     <div id='component-details-container'>
-      <h2>Component Details</h2>
+      <h2>Component Details:  
+        {currentComponent === 'App'
+        ?''
+        :<span> {currentComponent}</span>
+        }
+      </h2>
 
       {currentComponent !== 'App' && currentComponent && (
         <div style={{ border: '1px solid black' }} id='component-box'>
-          <p>{currentComponent}</p>
           {childElements}
         </div>
       )}

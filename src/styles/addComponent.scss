@@ -4,17 +4,19 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 20%;
+  height: 100%;
 }
 
 #addComponent {
-  margin: 20px;
   // this is a big long button
-  width: 80%;
+  width: 100%;
   height: 100%;
   border-radius: 10px;
   cursor: pointer;
   font-size: 20px;
+  padding: .3rem;
+  background-color: rgb(103, 172, 103);
+  border: 2px solid rgb(56, 126, 56);;
 }
 
 #modal {

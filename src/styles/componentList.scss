@@ -4,6 +4,9 @@
   padding: 30px;
   border-radius: 10px;
   height: 40vh;
+  margin: .6rem 0 ;
+  width: 100%;
+  background-color: $container-background;
   h2 {
     margin-bottom: 20px;
   }
@@ -15,6 +18,7 @@
     padding: 10px;
     border-radius: 10px;
     height: 80%;
+
 }
 
 #customComps {
@@ -23,6 +27,7 @@
     border-radius: 10px;
     text-align: center;
     width: 100%;
+    background-color: white;
     h2 {
         margin-bottom: 20px;
     }
@@ -37,6 +42,10 @@
   height: 30vh;
   overflow-y: auto;
   gap: 16px;
+}
+
+#customComps::-webkit-scrollbar{
+  display: none;
 }
 
 .componentListItem {
@@ -60,6 +69,9 @@
     width: 200px;
     height: 60%;
     border-radius: 8px;
+  }
+  button:hover{
+    cursor: pointer;
   }
 }
 
