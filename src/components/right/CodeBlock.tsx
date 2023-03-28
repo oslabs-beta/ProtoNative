@@ -7,7 +7,9 @@ import "prismjs/plugins/line-numbers/prism-line-numbers.min.js";
 import "prism-themes/themes/prism-shades-of-purple.css";
 import "prismjs/plugins/match-braces/prism-match-braces.min";
 import "prismjs/plugins/match-braces/prism-match-braces.css";
-// import parser from '../../parser/parser';
+import { generateCustomComponentCode } from '../../parser/parser';
+
+
 
 const CodeBlock = (): JSX.Element => {
   const { currentComponent } = useContext(AppContext);
