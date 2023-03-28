@@ -352,17 +352,17 @@ export const formatCode = (code: string): string => {
   });
 }
 
-const customComponent = generateCustomComponentCode(originals['TestComponent'] as OrigCustomComp, originals, copies);
-// console.log(customComponent);
-// console.log(formatCode(customComponent));
-const customComponent2 = generateCustomComponentCode(originals['CoolComponent'] as OrigCustomComp, originals, copies);
-console.log(customComponent2);
-console.log(formatCode(customComponent2));
-const customComponent3 = generateCustomComponentCode(originals['GahlComponent'] as OrigCustomComp, originals, copies);
-// console.log(customComponent3);
+// const customComponent = generateCustomComponentCode(originals['TestComponent'] as OrigCustomComp, originals, copies);
+// // console.log(customComponent);
+// // console.log(formatCode(customComponent));
+// const customComponent2 = generateCustomComponentCode(originals['CoolComponent'] as OrigCustomComp, originals, copies);
+// console.log(customComponent2);
+// console.log(formatCode(customComponent2));
+// const customComponent3 = generateCustomComponentCode(originals['GahlComponent'] as OrigCustomComp, originals, copies);
+// // console.log(customComponent3);
 // console.log(formatCode(customComponent3));
-const customComponent4 = generateCustomComponentCode(originals['App'] as AppInterface, originals, copies);
-// console.log(customComponent4);
+// const customComponent4 = generateCustomComponentCode(originals['App'] as AppInterface, originals, copies);
+// // console.log(customComponent4);
 // console.log(formatCode(customComponent4));
 
 // TODO: look into exporting app
