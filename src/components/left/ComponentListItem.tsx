@@ -7,7 +7,6 @@ import Modal from './Modal';
 const isCopyCustomComp = (comp: CopyNativeEl | CopyCustomComp): comp is CopyCustomComp => {
   return comp.type === 'custom';
 }
-const _ = require('lodash');
 
 type ComponentListItemProps = {
 	comp: AppInterface | OrigCustomComp;
@@ -101,7 +100,24 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		event.cancelBubble = true;
 		if (event.stopPropagation) event.stopPropagation();
 		
-		let [newCopies, newOriginals] = [_.cloneDeep(copies), _.cloneDeep(originals)];
+		// create deep copies
+		const deepCopy = (obj: any): any => {
+			if (typeof obj === 'object') {
+				if (Array.isArray(obj)) {
+					let copy: string[] = [];
+					obj.forEach((item: string): number => copy.push(item));
+					return copy;
+				} else {
+					let copy: {[key: string]: {}} = {};
+					for (let key in obj) {
+						copy[key] = deepCopy(obj[key]);
+					}
+					return copy;
+				}
+			} else return obj;
+		}
+
+		let [newCopies, newOriginals] = [deepCopy(copies), deepCopy(originals)];
 		const OriginalCustomComponent = comp as OrigCustomComp;
 		const originalElement = originals[OriginalCustomComponent.name] as OrigCustomComp;
 		originalElement.copies.forEach((copyName: string) => {
