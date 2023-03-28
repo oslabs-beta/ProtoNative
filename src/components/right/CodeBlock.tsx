@@ -7,38 +7,18 @@ import "prismjs/plugins/line-numbers/prism-line-numbers.min.js";
 import "prism-themes/themes/prism-shades-of-purple.css";
 import "prismjs/plugins/match-braces/prism-match-braces.min";
 import "prismjs/plugins/match-braces/prism-match-braces.css";
-import { generateCustomComponentCode } from '../../parser/parser';
+import { generateCustomComponentCode, formatCode } from '../../parser/parser';
+import { OrigCustomComp } from '../../parser/interfaces';
 
 
 
 const CodeBlock = (): JSX.Element => {
-  const { currentComponent } = useContext(AppContext);
-  const [code, setCode] = useState(`import React from 'react';
-  import { View, Button, Text } from 'react-native';
-  import CoolComponent from './CoolComponent';
-  
-  const TestComponent = () => {
-    return (
-      <View>
-        <Button />
-        <CoolComponent />
-        <CoolComponent />
-        <Text>
-        </Text>
-        <View>
-          <Button />
-          <CoolComponent />
-        </View>
-        <CoolComponent />
-      </View>
-    );
-  };
-  
-  export default TestComponent;`);
+  const { currentComponent, originals, copies } = useContext(AppContext);
+  const [code, setCode] = useState(null);
 
   useEffect(() => {
-    // const code = parser(currentComponent);
-    // setCode(code);
+    const code = formatCode(generateCustomComponentCode(originals[currentComponent] as OrigCustomComp, originals, copies));
+    setCode(code);
     Prism.highlightAll(null, () => {
       // find all custom elements and add a different class so they can be a different color
       const consoleKeyword = document.querySelectorAll('.class-name');
@@ -61,7 +41,7 @@ const CodeBlock = (): JSX.Element => {
         }
       });
     });
-  }, [currentComponent]);
+  });
 
   return (
     <>
