@@ -10,50 +10,34 @@ const ComponentDetails = (): JSX.Element => {
   const [childrenOfCurrent, setChildrenOfCurrent] = useState([]);
   const [childElements, setChildElements] = useState([]);
 
-  // const moveItem = (dragIndex: number, hoverIndex: number): void => {
-  //   // console.log('drag', dragIndex, 'hover', hoverIndex);
-  //   const item = displayedComponent.children[dragIndex];
-  //   const copy = [...displayedComponent.children];
-  //   copy.splice(dragIndex, 1);
-  //   copy.splice(hoverIndex, 0, item);
-  //   setOriginals((prevState: any) => {
-  //     prevState[currentComponent].children = copy;
-  //     console.log(prevState[currentComponent].children);
-  //     return prevState;
-  //   });
-  //   setChildrenOfCurrent(copy);
-  // };
-
   useEffect(() => {
     setChildrenOfCurrent(originals[currentComponent].children);
     setChildElements(
       originals[currentComponent].children.map(
         (childName: string, index: number) => {
           if (currentComponent !== 'App' && currentComponent !== null) {
-            console.log('mapping', childName);
             return (
               <ElementBlock
-                key={index}
+                key={index + childName}
                 componentName={childName}
-                // components={copies}
                 index={index}
                 setChildrenOfCurrent={setChildrenOfCurrent}
                 location={'details'}
+                parent={currentComponent}
+                topLevel={true}
               />
             );
           }
         }
       )
     );
-  }, [currentComponent, childrenOfCurrent, originals]);
+  }, [currentComponent, childrenOfCurrent, copies]);
 
   return (
     <div id='component-details-container'>
-      <h2>Component Details:  
-        {currentComponent === 'App'
-        ?''
-        :<span> {currentComponent}</span>
-        }
+      <h2>
+        Component Details:
+        {currentComponent === 'App' ? '' : <span> {currentComponent}</span>}
       </h2>
 
       {currentComponent !== 'App' && currentComponent && (

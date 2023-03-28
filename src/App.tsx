@@ -20,13 +20,7 @@ const App = () => {
   const [originals, setOriginals] = React.useState<Originals>({
     App: {
       type: 'App',
-      children: [
-        'TestComponent0',
-        'View0',
-        'TestComponent1',
-        'TestComponent2',
-        'CoolComponent0',
-      ],
+      children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2'],
       state: [],
     } as AppInterface,
     View: { type: 'View', children: [], index: 2 } as OrigNativeEl,
@@ -61,7 +55,7 @@ const App = () => {
     TestComponent: {
       name: 'TestComponent',
       type: 'custom',
-      children: ['Button0', 'CoolComponent0'],
+      children: ['Button0', 'CoolComponent0', 'Text1'],
       state: [],
       index: 3,
       copies: ['TestComponent0', 'TestComponent1', 'TestComponent2'],
@@ -151,7 +145,7 @@ const App = () => {
     CoolComponent0: {
       name: 'CoolComponent0',
       type: 'custom',
-      parent: { origin: 'original', key: 'App' },
+      parent: { origin: 'original', key: 'TestComponent' },
       pointer: 'CoolComponent',
       children: function () {
         return originals[this.pointer].children;
@@ -160,6 +154,12 @@ const App = () => {
         return originals[this.pointer].state;
       },
     } as CopyCustomComp,
+    Text1: {
+      name: 'Text1',
+      type: 'Text',
+      parent: { origin: 'copies', key: 'TestComponent' },
+      children: [],
+    } as CopyNativeEl,
   });
   const [currentComponent, setCurrentComponent] = React.useState('App');
 

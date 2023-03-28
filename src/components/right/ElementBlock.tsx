@@ -1,7 +1,8 @@
-import React, { useRef, useContext } from 'react';
+import React, { useRef, useState, useContext } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { Copies } from '../../parser/interfaces';
 import AppContext from '../../context/AppContext';
+import DropLayer from './DropLayer';
 
 type ElementBlockProps = {
   componentName: string;
@@ -9,6 +10,8 @@ type ElementBlockProps = {
   index: number;
   setChildrenOfCurrent: (copy: string[]) => void;
   location: string;
+  parent: string;
+  topLevel: boolean;
 };
 
 const ElementBlock = ({
@@ -16,6 +19,8 @@ const ElementBlock = ({
   index,
   setChildrenOfCurrent,
   location,
+  parent,
+  topLevel,
 }: ElementBlockProps) => {
   const { originals, copies, currentComponent, setOriginals } =
     useContext(AppContext);
@@ -24,50 +29,50 @@ const ElementBlock = ({
   let children: any = null;
   const ref = useRef(null);
 
-  const moveItem = (dragIndex: number, hoverIndex: number): void => {
-    const item = originals[currentComponent].children[dragIndex];
-    const copy = [...originals[currentComponent].children];
-    copy.splice(dragIndex, 1);
-    copy.splice(hoverIndex, 0, item);
-    setOriginals((prevState: any) => {
-      prevState[currentComponent].children = copy;
-      return prevState;
-    });
-    setChildrenOfCurrent(copy);
-  };
-
   const [, drop] = useDrop({
     accept: ['elements', 'addableElement'],
-    drop: (item: { name: number; index: number; type: string }, monitor) => {
-      if (!ref.current) return;
+    drop: (
+      item: { name: number; index: number; type: string; parentComp: string },
+      monitor
+    ) => {
+      console.log(item.name, 'dropped in', componentName);
+      // if (!ref.current) return;
 
-      if (!monitor.canDrop()) {
-        return;
-      }
       const dragIndex = item.index;
       const hoverIndex = index;
-      if (dragIndex === hoverIndex) return;
+      // if (dragIndex === hoverIndex) return;
 
       if (item.type === 'elements') {
-        moveItem(dragIndex, hoverIndex);
+        // moveItem(dragIndex, hoverIndex);
       } else if (item.type === 'addableElement') console.log('hi');
     },
+    // collect: (monitor) => ({
+    //   isOver: monitor.isOver(),
+    //   isOverCurrent: monitor.isOver({ shallow: true }),
+    // }),
   });
 
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: 'elements',
-    item: { name: componentName, index: index, type: 'elements' },
-    collect: (monitor) => ({
-      //boolean to see if component is being dragged (isDragging)
-      isDragging: monitor.isDragging(),
+  const [{ isDragging }, drag] = useDrag(
+    () => ({
+      type: 'elements',
+      item: {
+        name: componentName,
+        index: index,
+        type: 'elements',
+        parentComp: parent,
+      },
+      collect: (monitor) => ({
+        //boolean to see if component is being dragged (isDragging)
+        isDragging: monitor.isDragging(),
+      }),
     }),
-  }));
+    [componentName, index]
+  );
   //
   drag(drop(ref));
   //depending on if the current component is custom or not, we must get children differently
   if (componentDef.type === 'custom' && location === 'app') {
     children = originals[componentDef.pointer].children;
-    // children = componentDef.children();
   } else {
     children = componentDef.children;
   }
@@ -78,11 +83,13 @@ const ElementBlock = ({
       if (location === 'app' && copies[childName].type === 'custom') {
         arr.push(
           <ElementBlock
-            key={index}
+            key={index + childName}
             componentName={childName}
             index={index}
             setChildrenOfCurrent={setChildrenOfCurrent}
             location={'app'}
+            parent={copies[childName].parent.key}
+            topLevel={false}
           />
         );
       } else if (
@@ -91,11 +98,13 @@ const ElementBlock = ({
       ) {
         arr.push(
           <ElementBlock
-            key={index}
+            key={index + childName}
             componentName={childName}
             index={index}
             setChildrenOfCurrent={setChildrenOfCurrent}
             location={'details'}
+            parent={copies[childName].parent.key}
+            topLevel={false}
           />
         );
       }
@@ -105,13 +114,14 @@ const ElementBlock = ({
 
   return (
     <div>
-      <div className='above'></div>
-      <div
-        key={index}
-        style={{ border: '1px solid black' }}
-        className='element'
-        ref={ref}
-      >
+      <DropLayer
+        component={componentName}
+        position='above'
+        index={index}
+        setChildrenOfCurrent={setChildrenOfCurrent}
+        parent={copies[componentName].parent.key}
+      />
+      <div style={{ border: '1px solid black' }} className='element' ref={ref}>
         <p>
           {copies[componentName].type === 'custom'
             ? copies[componentName].pointer
@@ -119,7 +129,13 @@ const ElementBlock = ({
         </p>
         {childElements}
       </div>
-      <div className='below'></div>
+      <DropLayer
+        component={componentName}
+        position='below'
+        index={index}
+        setChildrenOfCurrent={setChildrenOfCurrent}
+        parent={copies[componentName].parent.key}
+      />
     </div>
   );
 };
