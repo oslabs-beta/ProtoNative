@@ -1,39 +1,32 @@
 {
-  "name": "protonative-package",
+  "name": "proto-native",
   "version": "1.0.0",
   "description": "A React Native prototyping tool",
   "main": "./src/electron.ts",
   "scripts": {
-    "start": "cross-env NODE_ENV=development electron .",
-    "dev": "vite",
+    "start": "electron .", 
+    "dev": "concurrently \"npm run vite:dev\" \"node -e \\\"setTimeout(() => process.exit(0), 1000)\\\" && npm run electron:dev\"",
+    "vite:dev": "vite",
+    "electron:dev": "NODE_ENV=development electron .",
     "build": "vite build",
-    "serve": "vite preview",
-    "electron": "electron .",
-    "electron-build": "vite build && tsc && electron-builder --windows"
+    "preview": "vite preview"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "concurrently": "7.6.0",
     "@types/prismjs": "^1.26.0",
     "@types/react": "^18.0.30",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^3.1.0",
     "cross-env": "^7.0.3",
-    "electron-builder": "23.6.0",
     "electron-reloader": "1.2.3",
     "eslint": "^8.36.0",
-    "node-loader": "^2.0.0",
-    "prettier": "^2.8.7",
-    "sass-loader": "^13.2.2",
     "scss": "^0.2.4",
-    "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.2",
     "vite": "^4.2.1",
-    "electron": "^23.2.0"
-  },
-  "dependencies": {
-    "electron-serve": "^1.1.0",
+    "prettier": "^2.8.7",
     "prism-themes": "^1.9.0",
     "prismjs": "^1.29.0",
     "react": "^18.2.0",
@@ -42,21 +35,8 @@
     "react-dom": "^18.2.0",
     "sass": "^1.60.0"
   },
-  "build": {
-    "appId": "protonative",
-    "productName": "ProtoNative",
-    "asar": true,
-    "win": {
-      "target": "nsis"
-    },
-    "files": [
-      "dist/**/*",
-      "src/**/*",
-      "index.html",
-      "main.js"
-    ],
-    "directories": {
-      "buildResources": "assets"
-    }
+  "dependencies": {
+    "electron-serve": "^1.1.0",
+    "electron": "^23.2.0"
   }
 }
