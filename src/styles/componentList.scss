@@ -18,6 +18,16 @@
     height: 80%;
 
 }
+#state-item {
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 10px;
+  height: 100%;
+}
+
+  h2 {
+    margin-bottom: 20px;
+  }
 
 #customComps {
     border: 1px solid black;
@@ -72,7 +82,7 @@
 }
 
 .highlightedComponentListItem {
-  background-color: rgba(255, 0, 0, 0.2);
+  background-color: rgba(191, 0, 255, 0.2);
   border: 1px solid black;
   display: flex;
   align-items: center;
