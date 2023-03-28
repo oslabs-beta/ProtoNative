@@ -11,7 +11,7 @@
     "build": "vite build",
     "preview": "vite preview"
   },
-  "author": "",
+  "author": "Team ProtoNative",
   "license": "MIT",
   "devDependencies": {
     "concurrently": "7.6.0",
