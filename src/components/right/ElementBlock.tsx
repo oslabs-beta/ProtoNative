@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useContext} from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import {Copies, CopyNativeEl, CopyCustomComp, Originals} from '../../parser/interfaces';
 type ElementBlockProps = {
@@ -27,8 +27,8 @@ const ElementBlock = ({
   let children: string[] = null;
   const ref = useRef(null);
   const [, drop] = useDrop({
-    accept: 'elements',
-    drop: (item: { name: string; index: number }, monitor) => {
+    accept: ['elements', 'addableElement'],
+    drop: (item: { name: number; index: number; type: string}, monitor) => {
       if (!ref.current) return;
 
       if (!monitor.canDrop()) {
@@ -40,13 +40,17 @@ const ElementBlock = ({
       const hoverIndex = index;
       if (dragIndex === hoverIndex) return;
 
-      moveItem(dragIndex, hoverIndex);
+      if(item.type === 'elements') {
+        moveItem(dragIndex, hoverIndex);
+      
+      }
+      else if (item.type === 'addableElement') console.log('hi');
     },
   });
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'elements',
-    item: { name: componentName, index: index },
+    item: { name: componentName, index: index, type: 'elements' },
     collect: (monitor) => ({
       //boolean to see if component is being dragged (isDragging)
       isDragging: monitor.isDragging(),
@@ -55,28 +59,18 @@ const ElementBlock = ({
   //
   drag(drop(ref));
 
-  //depending on if the current component is custom or not, we must get children differently
-  // if (componentDef.type === 'custom' && location === 'app')
-  //   children = componentDef.children();
-  // else {
-  //   children = componentDef.children;
-  // }
-
   if (isCopyCustomComp(componentDef))
-    children = originals[componentDef.pointer].children; // originals[componentDef.pointer].children
+    children = originals[componentDef.pointer].children;
   else {
     children = componentDef.children;
   }
 
-
-  // TestComponent0
-  // TestComponent original context
-  // TestComponent.children = ['Button0', 'CoolComponent0']
   console.log('CHILDREN IN ELEMENT BLOCK ', children)
   if (children.length) {
     const arr: JSX.Element[] = [];
     children.forEach((childName: string) => {
       if (location === 'app' && components[childName].type === 'custom') {
+        // console.log(childName)
         arr.push(
           <ElementBlock
             key={index}

@@ -18,6 +18,15 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 	const { currentComponent, setCurrentComponent, originals, setOriginals, copies, setCopies } = useContext(AppContext);
 	const [ComponentItem, setComponentItem] = useState(null);
 
+	// Modal states
+	const [currentModal, setCurrentModal] = useState('state');
+	const [isOpen, setIsOpen] = useState(false);
+
+	const handleClick = () => {
+		setIsOpen(false);
+		console.log('close button clicked');
+	}
+	
 	useEffect(() => {
 		if (comp.type === 'App') {
 				setComponentItem(
@@ -35,12 +44,6 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 			)
 		}
 	}, [currentComponent, originals, copies]);
-
-	// TODO: Add a modal for the user to input state
-	const handleStateClick = (event: any): void => {
-		event.cancelBubble = true;
-		if(event.stopPropagation) event.stopPropagation();
-	}
 
 	const trashCan = (compToDelete: CopyNativeEl | CopyCustomComp, copyCopies: Copies, copyOriginals: Originals) => {
 		
@@ -107,10 +110,40 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		// if the deleted component is the current component, set current component to null
 		if (currentComponent === comp.name) setCurrentComponent('App');
 	}
+	
+	// TODO: Add a modal for the user to input state
+	const handleStateClick = (event: any): void => {
+
+		// prevent the click from propagating to the parent div
+		event.cancelBubble = true;
+		event.stopPropagation && event.stopPropagation();
+
+		// TODO: Flesh out state modal
+		setIsOpen(true)
+		setCurrentModal('state')
+		console.log('clicked state')
+	}
 
 	return (
 		<>
 			{ComponentItem}
+			{isOpen
+				?
+				<Modal handleClick={handleClick}>
+					{currentModal === 'state'
+						?
+						<div>
+							state
+						</div>
+						:
+						<div>
+							Delete
+						</div>
+					}
+				</Modal>
+				:
+				<></>
+      }
 		</>
 
 	)
