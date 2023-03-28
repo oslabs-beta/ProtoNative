@@ -18,11 +18,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const App = () => {
   const [originals, setOriginals] = React.useState<Originals>({
-    App: {
-      type: 'App',
-      children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2'],
-      state: [],
-    } as AppInterface,
+    App: { type: 'App', children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2'], state: [] } as AppInterface,
     View: { type: 'View', index: 2 } as OrigNativeEl,
     Button: { type: 'Button', index: 3 } as OrigNativeEl,
     Text: { type: 'Text', index: 1 } as OrigNativeEl,
@@ -32,17 +28,14 @@ const App = () => {
     FlatList: { type: 'FlatList', index: 0 } as OrigNativeEl,
     SectionList: { type: 'SectionList', index: 0 } as OrigNativeEl,
     Switch: { type: 'Switch', index: 0 } as OrigNativeEl,
-    TouchableHighlight: {
-      type: 'TouchableHighlight',
-      index: 0,
-    } as OrigNativeEl,
+    TouchableHighlight: { type: 'TouchableHighlight', index: 0 } as OrigNativeEl,
     TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
     StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
     ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
     TestComponent: {
       name: 'TestComponent',
       type: 'custom',
-      children: ['Button0', 'CoolComponent0', 'Text1'],
+      children: ['Button0', 'CoolComponent0'],
       state: [],
       index: 3,
       copies: ['TestComponent0', 'TestComponent1', 'TestComponent2'],
@@ -54,13 +47,13 @@ const App = () => {
       state: [],
       index: 1,
       copies: ['CoolComponent0'],
-    } as OrigCustomComp,
+    } as OrigCustomComp
   });
   const [copies, setCopies] = React.useState<Copies>({
     Button0: {
       name: 'Button0',
       type: 'Button',
-      parent: { origin: 'copies', key: 'TestComponent' },
+      parent: { origin: 'original', key: 'TestComponent' },
       children: [],
     } as CopyNativeEl,
     Text0: {
@@ -117,12 +110,6 @@ const App = () => {
       parent: { origin: 'original', key: 'TestComponent' },
       pointer: 'CoolComponent',
     } as CopyCustomComp,
-    Text1: {
-      name: 'Text1',
-      type: 'Text',
-      parent: { origin: 'copies', key: 'TestComponent' },
-      children: [],
-    } as CopyNativeEl,
   });
   const [currentComponent, setCurrentComponent] = React.useState('App');
 
