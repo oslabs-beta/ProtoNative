@@ -12,7 +12,7 @@ import {
   CopyNativeEl,
   CopyCustomComp,
 } from './parser/interfaces';
-import './styles/main.scss'
+import './styles/main.scss';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -119,31 +119,32 @@ const App = () => {
   // FIXME: Turn off strict mode when unnecesary
   return (
     // <React.StrictMode>
-      <AppContext.Provider
-        value={{
-          originals,
-          setOriginals,
-          copies,
-          setCopies,
-          currentComponent,
-          setCurrentComponent,
-        }}
-      >
-        <DndProvider backend={HTML5Backend}>
-          <div>
-            <NavBar/>
-            < MainContainer />
-          </div>
-        </DndProvider>
-      </AppContext.Provider>
+    <AppContext.Provider
+      value={{
+        originals,
+        setOriginals,
+        copies,
+        setCopies,
+        currentComponent,
+        setCurrentComponent,
+      }}
+    >
+      <DndProvider backend={HTML5Backend}>
+        <div>
+          <NavBar />
+          <MainContainer />
+        </div>
+      </DndProvider>
+    </AppContext.Provider>
     // </React.StrictMode>
   );
 };
 
-      // use create root instead of render
-      createRoot(document.getElementById('root')).render(<App />);
+// use create root instead of render
+createRoot(document.getElementById('root')).render(<App />);
 
-      {/* //    CoolerComponent0: {
+{
+  /* //    CoolerComponent0: {
                 type: 'custom',
             parent: 'App',
             pointer: 'CoolerComponent',

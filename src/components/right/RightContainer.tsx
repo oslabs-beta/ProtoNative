@@ -1,7 +1,6 @@
 import React from 'react';
 import ComponentDetails from './ComponentDetails';
 import CodeBlock from './CodeBlock';
-import AddComponent from '../left/AddComponent';
 import TrashButton from './TrashButton';
 
 

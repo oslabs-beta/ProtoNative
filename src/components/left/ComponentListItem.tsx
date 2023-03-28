@@ -101,23 +101,17 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		if (event.stopPropagation) event.stopPropagation();
 		
 		// create deep copies
-		const deepCopy = (obj: any): any => {
-			if (typeof obj === 'object') {
-				if (Array.isArray(obj)) {
-					let copy: string[] = [];
-					obj.forEach((item: string): number => copy.push(item));
-					return copy;
-				} else {
-					let copy: {[key: string]: {}} = {};
-					for (let key in obj) {
-						copy[key] = deepCopy(obj[key]);
-					}
-					return copy;
-				}
-			} else return obj;
+		const deepCopy = (collection: (Originals | Copies)): (Originals | Copies) => {
+			if (typeof collection !== "object" || collection === null) return collection;
+			const output: {[key: string]: any} = Array.isArray(collection) ? [] : {};
+			for (const [key, value] of Object.entries(collection)) {
+				output[key] = deepCopy (value);
+			}
+			return output;
 		}
 
-		let [newCopies, newOriginals] = [deepCopy(copies), deepCopy(originals)];
+		let newCopies = deepCopy(copies) as Copies;
+		let newOriginals = deepCopy(originals) as Originals;
 		const OriginalCustomComponent = comp as OrigCustomComp;
 		const originalElement = originals[OriginalCustomComponent.name] as OrigCustomComp;
 		originalElement.copies.forEach((copyName: string) => {

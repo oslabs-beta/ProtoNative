@@ -2,14 +2,13 @@
   border: 1px solid black;
   border-radius: 10px;
   padding: 10px;
-  margin-bottom: 1rem;
+  height: 460px;
   background-color: $container-background;
-  max-height: 100%;
 }
 
 #component-box{
   overflow-y: scroll;
-  height: 400px;
+  height: 375px;
 }
 
 #component-box::-webkit-scrollbar{
@@ -17,14 +16,17 @@
 }
 
 #component-box, .element{
-  margin: 20px;
+  margin: 10px;
   text-align: center;
   border-radius: 5px;
-
 }
 
 .element p {
   margin: 0 0 40px 0;
 }
 
+#drop-layer-area{
+  height:10px;
+  width: 100%;
+}
 

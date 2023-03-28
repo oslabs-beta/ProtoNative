@@ -1,9 +1,13 @@
 import React from 'react';
 
+
 const NavBar = (): JSX.Element => {
   return (
     <div id='navbar-container'>
-      <h1>ProtoNative</h1>
+      <div id='logo-container'>
+        <img id='actual-logo'src='../public/icons/logo-no-background.png'></img>
+      </div>
+
       <div id='master-button-container'>
         <button className='master-button'>Clear All</button>
         <button className='master-button'>Export</button>

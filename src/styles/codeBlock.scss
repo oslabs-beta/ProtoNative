@@ -1,11 +1,23 @@
 #code-block-container{
   border: 1px solid black;
   border-radius: 10px;
-  margin-top: 1rem;
   background-color: $container-background;
-  padding: 10px;
+  padding: 20px;
+}
+
+#code-block-container::-webkit-scrollbar{
+  display: none;
 }
 
 .custom-element {
   color: #f240f8;
+}
+
+#code-preview-container{
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
+#code-preview-container::-webkit-scrollbar{
+  display: none;
 }

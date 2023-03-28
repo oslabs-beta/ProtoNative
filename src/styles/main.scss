@@ -21,19 +21,19 @@ body {
   height: 92vh;
   padding: .5rem;
   gap: 10px;
-  background-color: gray;
+  background-color: rgb(85, 85, 85);
+  overflow-y: hidden;
 }
 
 #right-container {
   display: grid;
-  grid-template-rows: 1.2fr .08fr .8fr;
-  height: 100%;
+  grid-template-rows: .5fr .08fr .5fr;
 }
 
 #left-container {
   display: grid;
-  grid-template-rows: .08fr 1fr 1fr;
-  height: 100%;
+  grid-template-rows: .15fr .6fr .6fr;
+  gap: 10px
 }
 
 @import 'addChild.scss';

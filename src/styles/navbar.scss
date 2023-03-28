@@ -7,6 +7,20 @@
   background-color: $primary-color;
   padding: 0 1.5rem;
   color: white;
+  overflow: hidden;
+}
+
+#logo-container{
+  width: 300px;
+  height: 60px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+#actual-logo{
+  width: 100%;
+  height: auto;
 }
 
 #master-button-container{

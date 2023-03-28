@@ -1,11 +1,16 @@
 #app-canvas{
   width: 100%;
+  height: 97%;
   display: flex;
   flex-direction: column;
   align-items: center;
   border: 1px solid black;
   border-radius: 10px;
   background-color: $container-background;
+}
+
+#app-canvas-title{
+  margin: 2rem 0;
 }
 
 #phone-screen-container{
@@ -15,7 +20,7 @@
   max-width: 350px;
   height: 725px;
   padding: 1rem;
-  margin-top: 3rem;
+
   background-color: white;
   overflow-y: scroll;
 }

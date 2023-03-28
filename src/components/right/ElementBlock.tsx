@@ -1,73 +1,92 @@
-import React, { useRef, useContext} from 'react';
+import React, { useRef, useState, useContext } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import {Copies, CopyNativeEl, CopyCustomComp, Originals, OrigCustomComp} from '../../parser/interfaces';
+import {
+  Copies,
+  CopyNativeEl,
+  CopyCustomComp,
+  Originals,
+  OrigCustomComp,
+} from '../../parser/interfaces';
+import DropLayer from './DropLayer';
 type ElementBlockProps = {
-  componentName: string,
-  components: Copies,
-  originals: Originals,
-  index: number,
-  moveItem: (dragIndex: number, hoverIndex: number)=> void,
-  location: string
-}
+  componentName: string;
+  components: Copies;
+  originals: Originals;
+  index: number;
+  location: string;
+  parent: string;
+  setChildrenOfCurrent: (value: string[]) => void;
+};
 
-const isCopyCustomComp = (comp: CopyNativeEl | CopyCustomComp): comp is CopyCustomComp => {
+const isCopyCustomComp = (
+  comp: CopyNativeEl | CopyCustomComp
+): comp is CopyCustomComp => {
   return comp.type === 'custom';
-}
+};
 
 const ElementBlock = ({
   componentName,
   components,
   originals,
   index,
-  moveItem,
   location,
+  parent,
+  setChildrenOfCurrent,
 }: ElementBlockProps) => {
   const componentDef = components[componentName];
   let childElements = null;
   let children: string[] = null;
   const ref = useRef(null);
+
   const [, drop] = useDrop({
     accept: ['elements', 'addableElement'],
-    drop: (item: { name: number; index: number; type: string}, monitor) => {
-      if (!ref.current) return;
-
-      if (!monitor.canDrop()) {
-        return;
-      }
-      console.log(item.name, 'dropped into', componentName);
+    drop: (
+      item: { name: number; index: number; type: string; parentComp: string },
+      monitor
+    ) => {
+      console.log(item.name, 'dropped in', componentName);
+      // if (!ref.current) return;
 
       const dragIndex = item.index;
       const hoverIndex = index;
-      if (dragIndex === hoverIndex) return;
+      // if (dragIndex === hoverIndex) return;
 
-      if(item.type === 'elements') {
-        moveItem(dragIndex, hoverIndex);
-      
-      }
-      else if (item.type === 'addableElement') console.log('hi');
+      if (item.type === 'elements') {
+        // moveItem(dragIndex, hoverIndex);
+      } else if (item.type === 'addableElement') console.log('hi');
     },
+    // collect: (monitor) => ({
+    //   isOver: monitor.isOver(),
+    //   isOverCurrent: monitor.isOver({ shallow: true }),
+    // }),
   });
 
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: 'elements',
-    item: { name: componentName, index: index, type: 'elements' },
-    collect: (monitor) => ({
-      //boolean to see if component is being dragged (isDragging)
-      isDragging: monitor.isDragging(),
+  const [{ isDragging }, drag] = useDrag(
+    () => ({
+      type: 'elements',
+      item: {
+        name: componentName,
+        index: index,
+        type: 'elements',
+        parentComp: parent,
+      },
+      collect: (monitor) => ({
+        //boolean to see if component is being dragged (isDragging)
+        isDragging: monitor.isDragging(),
+      }),
     }),
-  }));
+    [componentName, index]
+  );
   //
   drag(drop(ref));
 
   if (isCopyCustomComp(componentDef)) {
     const originalElement = originals[componentDef.pointer] as OrigCustomComp;
     children = originalElement.children;
-  }
-  else {
+  } else {
     children = componentDef.children;
   }
 
-  console.log('CHILDREN IN ELEMENT BLOCK ', children)
   if (children.length) {
     const arr: JSX.Element[] = [];
     children.forEach((childName: string) => {
@@ -75,13 +94,14 @@ const ElementBlock = ({
         // console.log(childName)
         arr.push(
           <ElementBlock
-            key={index}
+            key={index + childName}
             componentName={childName}
             components={components}
             originals={originals}
             index={index}
-            moveItem={moveItem}
             location={'app'}
+            parent={components[childName].parent.key}
+            setChildrenOfCurrent={setChildrenOfCurrent}
           />
         );
       } else if (
@@ -90,13 +110,14 @@ const ElementBlock = ({
       ) {
         arr.push(
           <ElementBlock
-            key={index}
+            key={index + childName}
             componentName={childName}
             components={components}
             originals={originals}
             index={index}
-            moveItem={moveItem}
             location={'details'}
+            parent={components[childName].parent.key}
+            setChildrenOfCurrent={setChildrenOfCurrent}
           />
         );
       }
@@ -105,19 +126,30 @@ const ElementBlock = ({
   }
 
   return (
-    <div
-      key={index}
-      style={{ border: '1px solid black' }}
-      className='element'
-      ref={ref}
-    >
-      <p>
-        {components[componentName].type === 'custom'
-          ? components[componentName].pointer
-          : components[componentName].type}
-      </p>
+    <div>
+      <DropLayer
+        component={componentName}
+        position={'above'}
+        index={index}
+        setChildrenOfCurrent={setChildrenOfCurrent}
+        parent={components[componentName].parent.key}
+      />
+      <div style={{ border: '1px solid black' }} className='element' ref={ref}>
+        <p>
+          {components[componentName].type === 'custom'
+            ? components[componentName].pointer
+            : components[componentName].type}
+        </p>
 
-      {childElements}
+        {childElements}
+      </div>
+      <DropLayer
+        component={componentName}
+        position={'below'}
+        index={index}
+        setChildrenOfCurrent={setChildrenOfCurrent}
+        parent={components[componentName].parent.key}
+      />
     </div>
   );
 };
