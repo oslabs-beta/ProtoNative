@@ -1,9 +1,11 @@
 // vite.config.js
-const { defineConfig } = require('vite');
-const reactPlugin = require('@vitejs/plugin-react');
+import { defineConfig } from 'vite';
+import reactPlugin from '@vitejs/plugin-react';
 
 module.exports = defineConfig({
-  plugins: [reactPlugin()],
+  plugins: [
+    reactPlugin(),
+  ],
   build: {
     outDir: 'build',
   },
