@@ -43,10 +43,18 @@ const App = () => {
     CoolComponent: {
       name: 'CoolComponent',
       type: 'custom',
-      children: ['Button2', 'View1', 'View2'],
+      children: ['Button2', 'View1', 'View2', 'BruhComponent0'],
       state: [],
       index: 1,
       copies: ['CoolComponent0'],
+    } as OrigCustomComp,
+    BruhComponent: {
+      name: 'BruhComponent',
+      type: 'custom',
+      children: ['Button3', 'View3'],
+      state: [],
+      index: 1,
+      copies: ['BruhComponent0'],
     } as OrigCustomComp
   });
   const [copies, setCopies] = React.useState<Copies>({
@@ -56,11 +64,29 @@ const App = () => {
       parent: { origin: 'original', key: 'TestComponent' },
       children: [],
     } as CopyNativeEl,
+    Button3: {
+      name: 'Button3',
+      type: 'Button',
+      parent: { origin: 'original', key: 'BruhComponent' },
+      children: [],
+    } as CopyNativeEl,
+    Button4: {
+      name: 'Button4',
+      type: 'Button',
+      parent: { origin: 'copies', key: 'View3' },
+      children: [],
+    } as CopyNativeEl,
     View2: {
       name: 'View2',
       type: 'View',
       parent: { origin: 'original', key: 'CoolComponent' },
       children: [],
+    } as CopyNativeEl,
+    View3: {
+      name: 'View3',
+      type: 'View',
+      parent: { origin: 'original', key: 'BruhComponent' },
+      children: ['Button4'],
     } as CopyNativeEl,
     Text0: {
       name: 'Text0',
@@ -115,6 +141,12 @@ const App = () => {
       type: 'custom',
       parent: { origin: 'original', key: 'TestComponent' },
       pointer: 'CoolComponent',
+    } as CopyCustomComp,
+    BruhComponent0: {
+      name: 'BruhComponent0',
+      type: 'custom',
+      parent: { origin: 'original', key: 'CoolComponent' },
+      pointer: 'BruhComponent',
     } as CopyCustomComp,
   });
   const [currentComponent, setCurrentComponent] = React.useState('App');
