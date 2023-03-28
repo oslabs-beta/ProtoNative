@@ -1,3 +1,5 @@
+@import '_variables.scss';
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -9,34 +11,39 @@
 body {
   display: flex;
   flex-direction: column;
+  font-family: $main-font;
+  overflow-y: hidden;
 }
 
 
 #main-container {
-  display: flex;
-  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  height: 92vh;
+  padding: .5rem;
+  gap: 10px;
+  background-color: gray;
 }
 
 #right-container {
-  display: flex;
-  flex-direction: column;
-  width: 33%
+  display: grid;
+  grid-template-rows: 1.2fr .08fr .8fr;
+  height: 100%;
 }
 
 #left-container {
-  display: flex;
-  flex-direction: column;
-  width: 33%;
-  gap: 12px;
+  display: grid;
+  grid-template-rows: .08fr 1fr 1fr;
+  height: 100%;
 }
 
-#app-canvas {
-  width: 33%;
-}
-
-@import '_variables.scss';
 @import 'addChild.scss';
 @import 'addComponent.scss';
 @import 'appCanvas.scss';
+@import 'codeBlock.scss';
 @import 'componentDetails.scss';
 @import 'componentList.scss';
+@import 'modal.scss';
+@import 'navbar.scss';
+@import 'trashButton.scss';
+@import '_variables.scss';

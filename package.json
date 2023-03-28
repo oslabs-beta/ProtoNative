@@ -36,6 +36,7 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
+    "lodash": "^4.17.21",
     "node": "^19.8.1",
     "react": "^18.2.0",
     "react-dnd": "^16.0.1",

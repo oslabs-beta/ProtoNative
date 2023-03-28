@@ -1,40 +1,74 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import AppContext from '../../context/AppContext';
-import ElementBlock from './ElementBlock'
+import ElementBlock from './ElementBlock';
+import { AppInterface, OrigCustomComp, Originals } from '../../parser/interfaces';
 
-// testComponent: {
-//   type: 'custom',
-//   children: ['button1', 'view1'],
-//   state: [],
-//   index: 1,
-//   copies: ['testComponent0'],
-// },
 
-// view0: {
-//   type: 'view',
-//   parent: { origin: 'original', key: 'testComponent' },
-//   children: ['text1'],
-// },
 
 const ComponentDetails = (): JSX.Element => {
-  const { currentComponent, originals, setOriginals, copies, setCopies } = useContext(AppContext);
-  const displayedComponent = originals[currentComponent];
-  let childElements;
-  if (currentComponent !== 'App' && currentComponent !== null) {
-    childElements = displayedComponent.children.map(childName => ElementBlock(childName, copies, 'details'));
-  }
+  const { currentComponent, originals, setOriginals, copies, setCopies } =
+    useContext(AppContext);
+  const displayedComponent = originals[currentComponent] as (OrigCustomComp | AppInterface);
+  const [childrenOfCurrent, setChildrenOfCurrent] = useState([]);
+  const [childElements, setChildElements] = useState([]);
+
+  const moveItem = (dragIndex: number, hoverIndex: number): void => {
+    // console.log('drag', dragIndex, 'hover', hoverIndex);
+    const item: string = displayedComponent.children[dragIndex];
+    const copy: string[] = [...displayedComponent.children];
+    copy.splice(dragIndex, 1);
+    copy.splice(hoverIndex, 0, item);
+    setOriginals((prevState: Originals) => {
+      const originalCustomElement = prevState[currentComponent] as OrigCustomComp;
+      originalCustomElement.children = copy;
+      console.log(originalCustomElement.children)
+      return prevState;
+    });
+    setChildrenOfCurrent(copy);
+  };
+
+
+  useEffect(() => {
+    const originalComponent = originals[currentComponent] as (OrigCustomComp | AppInterface);
+    setChildrenOfCurrent(originalComponent.children)
+    // console.log('children of current', originals[currentComponent].children)
+    setChildElements(
+      originalComponent.children.map((childName: string, index: number) => {
+        if (currentComponent !== 'App' && currentComponent !== null) {
+          console.log('mapping', childName);
+          return (
+            <ElementBlock
+              key={index}
+              componentName={childName}
+              components={copies}
+              originals={originals}
+              index={index}
+              moveItem={moveItem}
+              location={'details'}
+            />
+          );
+        }
+      })
+    );
+    // console.log(childrenOfCurrent);
+  }, [currentComponent, childrenOfCurrent, originals]);
 
   return (
     <div id='component-details-container'>
-      <h2>Component Details</h2>
-      
-      {currentComponent !== 'app' && currentComponent && <div style={{border: '1px solid black'}} id='component-box'>
-        <p>{currentComponent}</p>
-        {childElements}
-      </div>}
+      <h2>Component Details:  
+        {currentComponent === 'App'
+        ?''
+        :<span> {currentComponent}</span>
+        }
+      </h2>
+
+      {currentComponent !== 'App' && currentComponent && (
+        <div style={{ border: '1px solid black' }} id='component-box'>
+          {childElements}
+        </div>
+      )}
     </div>
   );
 };
 
 export default ComponentDetails;
-

@@ -11,7 +11,7 @@ import { OrigCustomComp, AppInterface, OrigNativeEl } from '../../parser/interfa
 // current component should be highlighted
 const ComponentList = (): JSX.Element => {
 
-  const { originals, copies } = useContext(AppContext);
+  const { originals } = useContext(AppContext);
 
   // create a state variable to hold list of elements
   const [components, setComponents] = useState<JSX.Element[]>([]);
@@ -19,10 +19,10 @@ const ComponentList = (): JSX.Element => {
   useEffect(() => {
     const newComponents: JSX.Element[] = [];
     for (const name in originals) {
-      const element: (OrigCustomComp | AppInterface | OrigNativeEl) = originals[name as keyof typeof originals];
+      const element: (OrigCustomComp | AppInterface | OrigNativeEl) = originals[name];
       if (element.type === 'App' || element.type === 'custom') {
         // push component block elements to array. They have the original context component name in them
-        newComponents.push(<ComponentListItem key={name} name={name} />);
+        newComponents.push(<ComponentListItem key={name} comp={element} />);
       }
     }
     setComponents(newComponents);

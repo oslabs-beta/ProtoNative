@@ -1,10 +1,26 @@
 #app-canvas{
-  width: 33%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: $container-background;
 }
+
 #phone-screen-container{
   border: 3px solid black;
-  border-radius: 20px;
-  width: 300px;
-  height: 649px;
+  border-radius: 40px;
+  width: 60%;
+  max-width: 350px;
+  height: 725px;
+  padding: 1rem;
+  margin-top: 3rem;
+  background-color: white;
+  overflow-y: scroll;
 }
 //2.163
+
+#phone-screen-container::-webkit-scrollbar{
+  display: none;
+}
