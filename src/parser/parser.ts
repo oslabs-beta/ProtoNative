@@ -10,101 +10,108 @@ import {
 
 const { format } = require('prettier');
 
-const originals: Originals = {
-  App: { type: 'App', children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2'], state: [] } as AppInterface,
-  View: { type: 'View', index: 2 } as OrigNativeEl,
-  Button: { type: 'Button', index: 3 } as OrigNativeEl,
-  Text: { type: 'Text', index: 1 } as OrigNativeEl,
-  Image: { type: 'Image', index: 0 } as OrigNativeEl,
-  TextInput: { type: 'TextInput', index: 0 } as OrigNativeEl,
-  ScrollView: { type: 'ScrollView', index: 0 } as OrigNativeEl,
-  FlatList: { type: 'FlatList', index: 0 } as OrigNativeEl,
-  SectionList: { type: 'SectionList', index: 0 } as OrigNativeEl,
-  Switch: { type: 'Switch', index: 0 } as OrigNativeEl,
-  TouchableHighlight: { type: 'TouchableHighlight', index: 0 } as OrigNativeEl,
-  TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
-  StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
-  ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
-  TestComponent: {
-    name: 'TestComponent',
-    type: 'custom',
-    children: ['Button0', 'CoolComponent0'],
-    state: ['state1', 'state2'],
-    index: 3,
-    copies: ['TestComponent0', 'TestComponent1', 'TestComponent2'],
-  } as OrigCustomComp,
-  CoolComponent: {
-    name: 'CoolComponent',
-    type: 'custom',
-    children: ['Button2', 'View1'],
-    state: [],
-    index: 1,
-    copies: ['CoolComponent0'],
-  } as OrigCustomComp
-};
 
-const copies: Copies = {
-  Button0: {
-    name: 'Button0',
-    type: 'Button',
-    parent: { origin: 'original', key: 'TestComponent' },
-    children: [],
-  } as CopyNativeEl,
-  Text0: {
-    name: 'Text0',
-    type: 'Text',
-    parent: { origin: 'copies', key: 'View1' },
-    children: ['Button1'],
-  } as CopyNativeEl,
-  View0: {
-    name: 'View0',
-    type: 'View',
-    parent: { origin: 'original', key: 'App' },
-    children: ['Button1', 'View1'],
-  } as CopyNativeEl,
-  Button1: {
-    name: 'Button1',
-    type: 'Button',
-    parent: { origin: 'copies', key: 'Text0' },
-    children: [],
-  } as CopyNativeEl,
-  View1: {
-    name: 'View1',
-    type: 'View',
-    parent: { origin: 'original', key: 'CoolComponent' },
-    children: ['Text0'],
-  } as CopyNativeEl,
-  Button2: {
-    name: 'Button2',
-    type: 'Button',
-    parent: { origin: 'original', key: 'CoolComponent' },
-    children: [],
-  } as CopyNativeEl,
-  TestComponent0: {
-    name: 'TestComponent0',
-    type: 'custom',
-    parent: { origin: 'original', key: 'App' },
-    pointer: 'TestComponent',
-  } as CopyCustomComp,
-  TestComponent1: {
-    name: 'TestComponent1',
-    type: 'custom',
-    parent: { origin: 'original', key: 'App' },
-    pointer: 'TestComponent',
-  } as CopyCustomComp,
-  TestComponent2: {
-    name: 'TestComponent2',
-    type: 'custom',
-    parent: { origin: 'original', key: 'App' },
-    pointer: 'TestComponent',
-  } as CopyCustomComp,
-  CoolComponent0: {
-    name: 'CoolComponent0',
-    type: 'custom',
-    parent: { origin: 'original', key: 'TestComponent' },
-    pointer: 'CoolComponent',
-  } as CopyCustomComp,
-};
+// const originals: Originals = {
+//   App: { type: 'App', children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2', 'Button3'], state: [] } as AppInterface,
+//   View: { type: 'View', index: 2 } as OrigNativeEl,
+//   Button: { type: 'Button', index: 4 } as OrigNativeEl,
+//   Text: { type: 'Text', index: 1 } as OrigNativeEl,
+//   Image: { type: 'Image', index: 0 } as OrigNativeEl,
+//   TextInput: { type: 'TextInput', index: 0 } as OrigNativeEl,
+//   ScrollView: { type: 'ScrollView', index: 0 } as OrigNativeEl,
+//   FlatList: { type: 'FlatList', index: 0 } as OrigNativeEl,
+//   SectionList: { type: 'SectionList', index: 0 } as OrigNativeEl,
+//   Switch: { type: 'Switch', index: 0 } as OrigNativeEl,
+//   TouchableHighlight: { type: 'TouchableHighlight', index: 0 } as OrigNativeEl,
+//   TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
+//   StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
+//   ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
+//   TestComponent: {
+//     name: 'TestComponent',
+//     type: 'custom',
+//     children: ['Button0', 'CoolComponent0'],
+//     state: ['state1', 'state2'],
+//     index: 3,
+//     copies: ['TestComponent0', 'TestComponent1', 'TestComponent2'],
+//   } as OrigCustomComp,
+//   CoolComponent: {
+//     name: 'CoolComponent',
+//     type: 'custom',
+//     children: ['Button2', 'View1'],
+//     state: [],
+//     index: 1,
+//     copies: ['CoolComponent0'],
+//   } as OrigCustomComp
+// };
+
+// const copies: Copies = {
+//   Button0: {
+//     name: 'Button0',
+//     type: 'Button',
+//     parent: { origin: 'original', key: 'TestComponent' },
+//     children: [],
+//   } as CopyNativeEl,
+//   Button3: {
+//     name: 'Button3',
+//     type: 'Button',
+//     parent: { origin: 'original', key: 'App' },
+//     children: [],
+//   } as CopyNativeEl,
+//   Text0: {
+//     name: 'Text0',
+//     type: 'Text',
+//     parent: { origin: 'copies', key: 'View1' },
+//     children: ['Button1'],
+//   } as CopyNativeEl,
+//   View0: {
+//     name: 'View0',
+//     type: 'View',
+//     parent: { origin: 'original', key: 'App' },
+//     children: ['Button1', 'View1'],
+//   } as CopyNativeEl,
+//   Button1: {
+//     name: 'Button1',
+//     type: 'Button',
+//     parent: { origin: 'copies', key: 'Text0' },
+//     children: [],
+//   } as CopyNativeEl,
+//   View1: {
+//     name: 'View1',
+//     type: 'View',
+//     parent: { origin: 'original', key: 'CoolComponent' },
+//     children: ['Text0'],
+//   } as CopyNativeEl,
+//   Button2: {
+//     name: 'Button2',
+//     type: 'Button',
+//     parent: { origin: 'original', key: 'CoolComponent' },
+//     children: [],
+//   } as CopyNativeEl,
+//   TestComponent0: {
+//     name: 'TestComponent0',
+//     type: 'custom',
+//     parent: { origin: 'original', key: 'App' },
+//     pointer: 'TestComponent',
+//   } as CopyCustomComp,
+//   TestComponent1: {
+//     name: 'TestComponent1',
+//     type: 'custom',
+//     parent: { origin: 'original', key: 'App' },
+//     pointer: 'TestComponent',
+//   } as CopyCustomComp,
+//   TestComponent2: {
+//     name: 'TestComponent2',
+//     type: 'custom',
+//     parent: { origin: 'original', key: 'App' },
+//     pointer: 'TestComponent',
+//   } as CopyCustomComp,
+//   CoolComponent0: {
+//     name: 'CoolComponent0',
+//     type: 'custom',
+//     parent: { origin: 'original', key: 'TestComponent' },
+//     pointer: 'CoolComponent',
+//   } as CopyCustomComp,
+// };
 
 /**
  * @method capitalizeFirst
@@ -171,7 +178,7 @@ const addState = (stateNames: string[]): string => {
  * @input - native element of interface CopyNativeEl
  * @output - array of strings containing which native core components need to be imported
  */
-const getNativeImports = (nativeElement: CopyNativeEl): string[] => {
+const getNativeImports = (nativeElement: CopyNativeEl, copies: Copies): string[] => {
   const toImport: string[] = [];
   const allNativeImports = (nativeElement: CopyNativeEl): void => {
     if (nativeElement.children.length === 0) {
@@ -228,7 +235,7 @@ const addCustomCompExport = (toExport: string): string => {
  * @input - component of interface CopyNativeEl or CopyCustomComp
  * @output - string of the code necessary for the component passed in
  */
-const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
+const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp, originals: Originals, copies: Copies): string => {
   const currElement: string = isCopyCustomComp(comp) ? comp.pointer : comp.type;
   const originalsComp = originals[comp.pointer] as OrigCustomComp;
   const componentChildren: string[] = isCopyCustomComp(comp) ? originalsComp.children : comp.children;
@@ -241,7 +248,7 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
 
   let childrenNodes: string = '';
   for (const child of componentChildren) {
-    childrenNodes += `${generateComponentCode(copies[child])}\n`;
+    childrenNodes += `${generateComponentCode(copies[child], originals, copies)}\n`;
   }
   return  `<${currElement}> 
               ${childrenNodes} 
@@ -254,7 +261,7 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
  * @input - name of the custom component to generate the code for
  * @output - string of the code necessary for the custom component passed in
  */
-export const generateCustomComponentCode = (component: OrigCustomComp | AppInterface): string => {
+export const generateCustomComponentCode = (component: OrigCustomComp | AppInterface, originals: Originals, copies: Copies): string => {
   // store to save all native core components to be imported
   const importNative: {[key: string]: boolean} = {};
   // store to save all the custom components to be imported
@@ -272,12 +279,12 @@ export const generateCustomComponentCode = (component: OrigCustomComp | AppInter
       importCustom[foundChild.pointer] = true;
     } else { // if type of found child is native
       // add the type of native element
-      const nativeImports: string[] = getNativeImports(foundChild);
+      const nativeImports: string[] = getNativeImports(foundChild, copies);
       for (const nativeImport of nativeImports) {
         importNative[nativeImport] = true;
       }
     }
-    returnedComponentCode += generateComponentCode(foundChild);
+    returnedComponentCode += generateComponentCode(foundChild, originals, copies);
   }
   // generate all import statements
   let importStatements: string = '';
@@ -305,7 +312,7 @@ export const generateCustomComponentCode = (component: OrigCustomComp | AppInter
   `;
 };
 
-const formatCode = (code: string): string => {
+export const formatCode = (code: string): string => {
   return format(code, {
     parser: 'babel',
     jsxBracketSameLine: true,
@@ -313,15 +320,15 @@ const formatCode = (code: string): string => {
   });
 }
 
-const customComponent = generateCustomComponentCode(originals['TestComponent'] as OrigCustomComp);
-// console.log(customComponent);
-console.log(formatCode(customComponent));
-const customComponent2 = generateCustomComponentCode(originals['CoolComponent'] as OrigCustomComp);
-// console.log(customComponent2);
-console.log(formatCode(customComponent2));
-const customComponent3 = generateCustomComponentCode(originals['App'] as AppInterface);
-// console.log(customComponent3);
-console.log(formatCode(customComponent3));
+// const customComponent = generateCustomComponentCode(originals['TestComponent'] as OrigCustomComp);
+// // console.log(customComponent);
+// console.log(formatCode(customComponent));
+// const customComponent2 = generateCustomComponentCode(originals['CoolComponent'] as OrigCustomComp);
+// // console.log(customComponent2);
+// console.log(formatCode(customComponent2));
+// const customComponent3 = generateCustomComponentCode(originals['App'] as AppInterface);
+// // console.log(customComponent3);
+// console.log(formatCode(customComponent3));
 
 // TODO: look into exporting app
 // TODO: create files function
