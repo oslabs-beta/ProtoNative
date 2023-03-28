@@ -59,7 +59,7 @@ const AddComponent = () => {
       </button>
       {isOpen && (
         <div id="modal">
-          <Modal isOpen={isOpen} handleClick={()=> setIsOpen(false)}>
+          <Modal handleClick={()=> setIsOpen(false)}>
             <div id="modal-content">
               <h2>Add Custom Component</h2>
               <form onSubmit={handleSubmit}>
@@ -68,7 +68,7 @@ const AddComponent = () => {
                   <input type="text" value={componentName} onChange={handleInputChange} />
                 </label>
                 <button type="submit">Add</button>
-                <button onClick={() => handleClose()}>Cancel</button>
+                <button onClick={handleClose}>Cancel</button>
               </form>
             </div>
           </Modal>

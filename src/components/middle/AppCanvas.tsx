@@ -19,6 +19,7 @@ const AppCanvas = (): JSX.Element => {
   useEffect(() => {
     setChildrenOfApp(originals.App.children);
     console.log('hi');
+    console.log(originals);
     setAppComponents(
       originals.App.children.map((child: string, index: number) => {
         if (copies[child].type === 'custom') {

@@ -4,6 +4,7 @@ import { CopyCustomComp, CopyNativeEl } from '../../parser/interfaces';
 import { Originals, Copies } from '../../parser/interfaces';
 import Modal from './Modal';
 
+
 const ComponentListItem = (props: {name: string}): JSX.Element => {
 	const name = props.name;
 	const { currentComponent, setCurrentComponent, originals, setOriginals, copies, setCopies } = useContext(AppContext);
@@ -12,6 +13,13 @@ const ComponentListItem = (props: {name: string}): JSX.Element => {
 	// Modal states
 	const [currentModal, setCurrentModal] = useState('state');
 	const [isOpen, setIsOpen] = useState(false);
+
+	// set State for components this needs to go on the originals
+	//  and on copies?
+	const [newState, setNewState] = useState('');
+	// the input state will go on originals[name].state
+	// 
+	
 
 	const handleClick = () => {
 		setIsOpen(false);
@@ -125,36 +133,63 @@ const ComponentListItem = (props: {name: string}): JSX.Element => {
 		// prevent the click from propagating to the parent div
 		event.cancelBubble = true;
 		event.stopPropagation && event.stopPropagation();
-
+		
 		// TODO: Flesh out state modal
 		setIsOpen(true)
 		setCurrentModal('state')
 		console.log('clicked state')
 	}
 
+	const handleStateSaveClick = (event: any): void => {
+		console.log(`new state for ${name}: ${newState}`);
+		// create a copy of the originals object
+		const updatedOriginals = { ...originals };  
+		// update the componant with the added state in the copies
+		updatedOriginals[name].state.push(newState);
+		setIsOpen(false);
+		setNewState('');
+		setOriginals(updatedOriginals);
+		console.log(originals, copies);
+	}
+	const handleClose = (): void => {
+		
+		setIsOpen(false);
+	};
+
 	return (
 		<>
 			{ComponentItem}
-			{isOpen
-				?
-				<Modal handleClick={handleClick}>
-					{currentModal === 'state'
-						?
+			{isOpen ? (
+				 <Modal handleClick={handleClick}>
+					{currentModal === 'state' ? (
+						
 						<div>
-							state
-						</div>
+							<div id='stateModal'>
+								<h3>Add State to {name}</h3>
+								<label htmlFor="stateInput">New State</label>
+								<input 
+								  id='stateInput' 
+								  value={newState} 
+								  onChange={(e) => setNewState(e.target.value)}
+								   />
+								<button onClick={() => handleClose()}>Cancel</button>
+								<button onClick={handleStateSaveClick}>Save</button>
+							</div>
+						</div> 
+						)
 						:
 						<div>
 							Delete
 						</div>
 					}
 				</Modal>
-				:
+				
+				) : (
 				<></>
-      }
+            )}
 		</>
 
-	)
-}
+	);
+};
 
 export default ComponentListItem;
