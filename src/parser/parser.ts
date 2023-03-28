@@ -31,7 +31,7 @@ const originals: Originals = {
     name: 'TestComponent',
     type: 'custom',
     children: ['Button0', 'CoolComponent0'],
-    state: [],
+    state: ['state1', 'state2'],
     index: 3,
     copies: ['TestComponent0', 'TestComponent1', 'TestComponent2'],
   } as OrigCustomComp,
@@ -62,7 +62,7 @@ const copies: Copies = {
     name: 'View0',
     type: 'View',
     parent: { origin: 'original', key: 'App' },
-    children: [],
+    children: ['Button1', 'View1'],
   } as CopyNativeEl,
   Button1: {
     name: 'Button1',
@@ -108,16 +108,16 @@ const copies: Copies = {
   } as CopyCustomComp,
 };
 
-// /**
-//  * @method capitalizeFirst
-//  * @description - capitalizes first letter of input string
-//  * @input - string
-//  * @output - string with capitalized first letter
-//  */
-// // const capitalizeFirst = (str: string): string => {
-// //   if (str.length === 0) return '';
-// //   return str[0].toUpperCase() + str.slice(1);
-// // };
+/**
+ * @method capitalizeFirst
+ * @description - capitalizes first letter of input string
+ * @input - string
+ * @output - string with capitalized first letter
+ */
+const capitalizeFirst = (str: string): string => {
+  if (str.length === 0) return '';
+  return str[0].toUpperCase() + str.slice(1);
+};
 
 /**
  * @method importReact
@@ -162,7 +162,7 @@ const isCopyCustomComp = (comp: CopyNativeEl | CopyCustomComp): comp is CopyCust
 const addState = (stateNames: string[]): string => {
   let stateVariables: string = '';
   for (const stateVar of stateNames) {
-    stateVariables += `const [${stateVar}, set${stateVar}] = React.useState(null);\n`;
+    stateVariables += `const [${stateVar}, set${capitalizeFirst(stateVar)}] = React.useState(null);\n`;
   }
   return stateVariables;
 };
@@ -235,10 +235,10 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
   const originalsComp = originals[comp.pointer] as OrigCustomComp;
   const componentChildren: string[] = isCopyCustomComp(comp) ? originalsComp.children : comp.children;
 
-  if (componentChildren.length === 0) {
+  if (componentChildren.length === 0 || comp.type === 'custom') {
     return isDoubleTagElement(comp.name)
-      ? `</${currElement}>\n`
-      : `<${currElement}/>\n`;
+      ? `</${currElement}>`
+      : `<${currElement}/>`;
   }
 
   let childrenNodes: string = '';
@@ -247,7 +247,7 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
   }
   return  `<${currElement}> 
               ${childrenNodes} 
-          </${currElement}>\n`;
+          </${currElement}>`;
 };
 
 /**
@@ -256,7 +256,7 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
  * @input - name of the custom component to generate the code for
  * @output - string of the code necessary for the custom component passed in
  */
-const generateCustomComponentCode = (component: OrigCustomComp): string => {
+const generateCustomComponentCode = (component: OrigCustomComp | AppInterface): string => {
   // store to save all native core components to be imported
   const importNative: {[key: string]: boolean} = {};
   // store to save all the custom components to be imported
@@ -296,7 +296,7 @@ const generateCustomComponentCode = (component: OrigCustomComp): string => {
 
   return `
       ${importStatements}
-      const ${component.name} = () => {
+      const ${component.type === 'App' ? component.type : component.name} = () => {
         ${stateVariables}
         return (
           <div>
@@ -304,7 +304,7 @@ const generateCustomComponentCode = (component: OrigCustomComp): string => {
           </div>
         );
       };\n      
-      ${addCustomCompExport(component.name)}
+      ${addCustomCompExport(component.type === 'App' ? component.type : component.name)}
   `;
 };
 
@@ -317,10 +317,14 @@ const formatCode = (code: string): string => {
 }
 
 const customComponent = generateCustomComponentCode(originals['TestComponent'] as OrigCustomComp);
+// console.log(customComponent);
 console.log(formatCode(customComponent));
 const customComponent2 = generateCustomComponentCode(originals['CoolComponent'] as OrigCustomComp);
+// console.log(customComponent2);
 console.log(formatCode(customComponent2));
-
+const customComponent3 = generateCustomComponentCode(originals['App'] as AppInterface);
+// console.log(customComponent3);
+console.log(formatCode(customComponent3));
 
 /*
   --- view: <View> </View>
