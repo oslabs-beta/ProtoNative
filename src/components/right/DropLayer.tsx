@@ -33,6 +33,7 @@ const DropLayer = ({
     let dropArr: string[];
     let item: string;
     //item is in the top level custom component
+
     if (originals[parentComp]) {
       item = originals[parentComp].children[dragIndex];
       if (parentComp === parent) {

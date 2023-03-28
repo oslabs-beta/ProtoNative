@@ -138,8 +138,11 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		setOriginals((prevOriginals) => {
 			const updatedOriginals = { ...prevOriginals };
 			const originalElement = updatedOriginals[OriginalCustomComponent.name ?? comp.type] as OrigCustomComp | AppInterface;
-			originalElement.state.push(newState);
-			return updatedOriginals;
+			if (originalElement.state.includes(newState)) return alert('that state already exists on this component!');
+			else  {
+			  originalElement.state.push(newState);
+			  return updatedOriginals;
+		}
 		})
 		setIsOpen(false);
 		setNewState('');
