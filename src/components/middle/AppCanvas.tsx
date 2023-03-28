@@ -140,7 +140,7 @@ const AppCanvas = (): JSX.Element => {
 
   return (
     <div id='app-canvas'>
-      <h1>My App</h1>
+      <h1 id='app-canvas-title'>My App</h1>
       <div id='phone-screen-container' ref={drop}>
         {appComponents}
       </div>

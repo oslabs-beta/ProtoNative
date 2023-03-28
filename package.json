@@ -1,51 +1,60 @@
 {
-  "name": "testing",
+  "name": "proto-native",
   "version": "1.0.0",
-  "description": "",
+  "description": "A React Native prototyping tool",
   "main": "./src/electron.ts",
   "scripts": {
-    "watch": "webpack --config webpack.config.js --watch",
-    "start": "electron ."
+    "start": "electron .", 
+    "dev": "concurrently \"npm run vite:dev\" \"node -e \\\"setTimeout(() => process.exit(0), 1000)\\\" && npm run electron:dev\"",
+    "vite:dev": "vite",
+    "electron:dev": "NODE_ENV=development electron .",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Team ProtoNative",
+  "contributors": [
+    "Matthew Kymn", 
+    "Michelle Leong",
+    "Jonathan Klibansky",
+    "Patricia Good",
+    "Raymond Ferrer"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oslabs-beta/ProtoNative.git"
+  },
+  "keywords": [
+    "electron",
+    "prototyping",
+    "react",
+    "native"
+  ],
+  "homepage": "https://github.com/oslabs-beta/ProtoNative#readme",
+  "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.21.0",
-    "@babel/core": "^7.21.3",
-    "@babel/eslint-parser": "^7.21.3",
-    "@babel/plugin-transform-runtime": "^7.21.0",
-    "@babel/preset-env": "^7.20.2",
-    "@babel/preset-react": "^7.18.6",
-    "@babel/runtime": "^7.21.0",
+    "concurrently": "7.6.0",
     "@types/prismjs": "^1.26.0",
     "@types/react": "^18.0.30",
     "@types/react-dom": "^18.0.11",
-    "babel-loader": "^9.1.2",
-    "css-loader": "^6.7.3",
-    "electron": "^23.2.0",
-    "electron-reloader": "^1.2.3",
+    "@vitejs/plugin-react": "^3.1.0",
+    "cross-env": "^7.0.3",
+    "electron-reloader": "1.2.3",
     "eslint": "^8.36.0",
-    "html-webpack-plugin": "^5.5.0",
-    "node-loader": "^2.0.0",
-    "prettier": "^2.8.7",
-    "sass-loader": "^13.2.2",
     "scss": "^0.2.4",
-    "style-loader": "^3.3.2",
-    "ts-loader": "^9.4.2",
+    "ts-node": "^10.9.1",
     "typescript": "^5.0.2",
-    "webpack": "^5.76.3",
-    "webpack-cli": "^5.0.1"
-  },
-  "dependencies": {
-    "lodash": "^4.17.21",
-    "node": "^19.8.1",
+    "vite": "^4.2.1",
+    "prettier": "^2.8.7",
     "prism-themes": "^1.9.0",
     "prismjs": "^1.29.0",
     "react": "^18.2.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
-    "sass": "^1.60.0",
-    "ts-node": "^10.9.1"
+    "sass": "^1.60.0"
+  },
+  "dependencies": {
+    "electron-serve": "^1.1.0",
+    "electron": "^23.2.0"
   }
 }

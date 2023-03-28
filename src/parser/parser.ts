@@ -1,9 +1,7 @@
 import {
-  NativeElement,
   OrigNativeEl,
   AppInterface,
   OrigCustomComp,
-  Parent,
   CopyNativeEl,
   CopyCustomComp,
   Originals,
@@ -256,14 +254,13 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
  * @input - name of the custom component to generate the code for
  * @output - string of the code necessary for the custom component passed in
  */
-const generateCustomComponentCode = (component: OrigCustomComp | AppInterface): string => {
+export const generateCustomComponentCode = (component: OrigCustomComp | AppInterface): string => {
   // store to save all native core components to be imported
   const importNative: {[key: string]: boolean} = {};
   // store to save all the custom components to be imported
   const importCustom: {[key: string]: boolean} = {};
   // returnedComponentCode will contain everything that goes into the return statement of component
   let returnedComponentCode: string = '';
-  // const component: OrigCustomComp | OrigNativeEl| AppInterface = originals[componentName];
   // generate stuff in return statement
   // keep track of what native/ custom components we need
   for (const child of component.children) {
@@ -299,11 +296,11 @@ const generateCustomComponentCode = (component: OrigCustomComp | AppInterface): 
       const ${component.type === 'App' ? component.type : component.name} = () => {
         ${stateVariables}
         return (
-          <div>
+          <View>
             ${returnedComponentCode}
-          </div>
+          </View>
         );
-      };\n      
+      };\n
       ${addCustomCompExport(component.type === 'App' ? component.type : component.name)}
   `;
 };
@@ -326,54 +323,6 @@ const customComponent3 = generateCustomComponentCode(originals['App'] as AppInte
 // console.log(customComponent3);
 console.log(formatCode(customComponent3));
 
-/*
-  --- view: <View> </View>
-  button: <Button />
-  --- text: <Text> </Text>
-  image: <Image />
-  textInput: <TextInput />
-  --- scrollView: <ScrollView> </ScrollView>
-  flatList: <FlatList />
-  sectionList: <SectionList />
-  switch: <Switch />
-  --- touchableHighlight: <TouchableHighlight> </TouchableHighlight>
-  --- touchableOpacity: <TouchableOpacity> </TouchableOpacity>
-  statusBar: <StatusBar />
-  activityIndicator: <ActivityIndicator />
-*/
-
-/*
----OUTPUT FOR TEST COMPONENT---
-
-import React from 'react';
-import { Button, View, Text } from 'react-native';
-import coolComponent from './coolComponent';
-
-const testComponent = () => {
-  const [testState, setTestState] = React.useState(null);
-
-  return (
-    <div>
-      <Button />
-      <View>
-        <Text>
-          <Button />
-        </Text>
-      </View>
-      <CoolComponent />
-    </div>
-  );
-};
-
-export default testComponent;
-*/
-
-/*
-1. import statments
-2. state variables
-3. return statement
-  1. button - no children, append text for button, move to next child
-  2. view - children, go to its children
-  3. coolcomponent - no children, append text
-4. wrap 2-3 in function
-*/
+// TODO: look into exporting app
+// TODO: create files function
+// TODO: look into how to export files and folders
