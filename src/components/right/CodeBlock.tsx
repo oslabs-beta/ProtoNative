@@ -1,4 +1,5 @@
 import React from 'react';
+import { generateCustomComponentCode } from '../../parser/parser';
 
 const CodeBlock = (): JSX.Element => {
   return (

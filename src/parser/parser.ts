@@ -254,7 +254,7 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
  * @input - name of the custom component to generate the code for
  * @output - string of the code necessary for the custom component passed in
  */
-const generateCustomComponentCode = (component: OrigCustomComp | AppInterface): string => {
+export const generateCustomComponentCode = (component: OrigCustomComp | AppInterface): string => {
   // store to save all native core components to be imported
   const importNative: {[key: string]: boolean} = {};
   // store to save all the custom components to be imported
@@ -322,3 +322,7 @@ console.log(formatCode(customComponent2));
 const customComponent3 = generateCustomComponentCode(originals['App'] as AppInterface);
 // console.log(customComponent3);
 console.log(formatCode(customComponent3));
+
+// TODO: look into exporting app
+// TODO: create files function
+// TODO: look into how to export files and folders
