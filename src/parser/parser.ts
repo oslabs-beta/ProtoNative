@@ -235,10 +235,10 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
   const originalsComp = originals[comp.pointer] as OrigCustomComp;
   const componentChildren: string[] = isCopyCustomComp(comp) ? originalsComp.children : comp.children;
 
-  if (componentChildren.length === 0) {
+  if (componentChildren.length === 0 || comp.type === 'custom') {
     return isDoubleTagElement(comp.name)
-      ? `</${currElement}>\n`
-      : `<${currElement}/>\n`;
+      ? `</${currElement}>`
+      : `<${currElement}/>`;
   }
 
   let childrenNodes: string = '';
@@ -247,7 +247,7 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
   }
   return  `<${currElement}> 
               ${childrenNodes} 
-          </${currElement}>\n`;
+          </${currElement}>`;
 };
 
 /**
@@ -317,10 +317,13 @@ const formatCode = (code: string): string => {
 }
 
 const customComponent = generateCustomComponentCode(originals['TestComponent'] as OrigCustomComp);
+// console.log(customComponent);
 console.log(formatCode(customComponent));
 const customComponent2 = generateCustomComponentCode(originals['CoolComponent'] as OrigCustomComp);
+// console.log(customComponent2);
 console.log(formatCode(customComponent2));
 const customComponent3 = generateCustomComponentCode(originals['App'] as AppInterface);
+// console.log(customComponent3);
 console.log(formatCode(customComponent3));
 
 /*
