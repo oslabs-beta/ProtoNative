@@ -1,35 +1,45 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import AppContext from '../../context/AppContext';
 import ElementBlock from './ElementBlock';
-import { OrigCustomComp } from '../../parser/interfaces';
+import {
+  AppInterface,
+  OrigCustomComp,
+  Originals,
+} from '../../parser/interfaces';
 
 const ComponentDetails = (): JSX.Element => {
   const { currentComponent, originals, setOriginals, copies, setCopies } =
     useContext(AppContext);
-  const displayedComponent = originals[currentComponent];
+  const displayedComponent = originals[currentComponent] as
+    | OrigCustomComp
+    | AppInterface;
   const [childrenOfCurrent, setChildrenOfCurrent] = useState([]);
   const [childElements, setChildElements] = useState([]);
 
   useEffect(() => {
-    setChildrenOfCurrent(originals[currentComponent].children);
+    const originalComponent = originals[currentComponent] as
+      | OrigCustomComp
+      | AppInterface;
+    setChildrenOfCurrent(originalComponent.children);
+    // console.log('children of current', originals[currentComponent].children)
     setChildElements(
-      originals[currentComponent].children.map(
-        (childName: string, index: number) => {
-          if (currentComponent !== 'App' && currentComponent !== null) {
-            return (
-              <ElementBlock
-                key={index + childName}
-                componentName={childName}
-                index={index}
-                setChildrenOfCurrent={setChildrenOfCurrent}
-                location={'details'}
-                parent={currentComponent}
-                topLevel={true}
-              />
-            );
-          }
+      originalComponent.children.map((childName: string, index: number) => {
+        if (currentComponent !== 'App' && currentComponent !== null) {
+          console.log('mapping', childName);
+          return (
+            <ElementBlock
+              key={index + childName}
+              componentName={childName}
+              components={copies}
+              originals={originals}
+              index={index}
+              location={'details'}
+              parent={currentComponent}
+              setChildrenOfCurrent={setChildrenOfCurrent}
+            />
+          );
         }
-      )
+      })
     );
   }, [currentComponent, childrenOfCurrent, copies]);
 

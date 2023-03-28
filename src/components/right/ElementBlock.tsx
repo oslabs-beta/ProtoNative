@@ -1,32 +1,41 @@
 import React, { useRef, useState, useContext } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { Copies } from '../../parser/interfaces';
-import AppContext from '../../context/AppContext';
+import {
+  Copies,
+  CopyNativeEl,
+  CopyCustomComp,
+  Originals,
+  OrigCustomComp,
+} from '../../parser/interfaces';
 import DropLayer from './DropLayer';
-
 type ElementBlockProps = {
   componentName: string;
-  // components: Copies,
+  components: Copies;
+  originals: Originals;
   index: number;
-  setChildrenOfCurrent: (copy: string[]) => void;
   location: string;
   parent: string;
-  topLevel: boolean;
+  setChildrenOfCurrent: (value: string[]) => void;
+};
+
+const isCopyCustomComp = (
+  comp: CopyNativeEl | CopyCustomComp
+): comp is CopyCustomComp => {
+  return comp.type === 'custom';
 };
 
 const ElementBlock = ({
   componentName,
+  components,
+  originals,
   index,
-  setChildrenOfCurrent,
   location,
   parent,
-  topLevel,
+  setChildrenOfCurrent,
 }: ElementBlockProps) => {
-  const { originals, copies, currentComponent, setOriginals } =
-    useContext(AppContext);
-  const componentDef = copies[componentName];
+  const componentDef = components[componentName];
   let childElements = null;
-  let children: any = null;
+  let children: string[] = null;
   const ref = useRef(null);
 
   const [, drop] = useDrop({
@@ -70,9 +79,10 @@ const ElementBlock = ({
   );
   //
   drag(drop(ref));
-  //depending on if the current component is custom or not, we must get children differently
-  if (componentDef.type === 'custom' && location === 'app') {
-    children = originals[componentDef.pointer].children;
+
+  if (isCopyCustomComp(componentDef)) {
+    const originalElement = originals[componentDef.pointer] as OrigCustomComp;
+    children = originalElement.children;
   } else {
     children = componentDef.children;
   }
@@ -80,31 +90,34 @@ const ElementBlock = ({
   if (children.length) {
     const arr: JSX.Element[] = [];
     children.forEach((childName: string) => {
-      if (location === 'app' && copies[childName].type === 'custom') {
+      if (location === 'app' && components[childName].type === 'custom') {
+        // console.log(childName)
         arr.push(
           <ElementBlock
             key={index + childName}
             componentName={childName}
+            components={components}
+            originals={originals}
             index={index}
-            setChildrenOfCurrent={setChildrenOfCurrent}
             location={'app'}
-            parent={copies[childName].parent.key}
-            topLevel={false}
+            parent={components[childName].parent.key}
+            setChildrenOfCurrent={setChildrenOfCurrent}
           />
         );
       } else if (
         location === 'details' &&
-        copies[childName].type !== 'custom'
+        components[childName].type !== 'custom'
       ) {
         arr.push(
           <ElementBlock
             key={index + childName}
             componentName={childName}
+            components={components}
+            originals={originals}
             index={index}
-            setChildrenOfCurrent={setChildrenOfCurrent}
             location={'details'}
-            parent={copies[childName].parent.key}
-            topLevel={false}
+            parent={components[childName].parent.key}
+            setChildrenOfCurrent={setChildrenOfCurrent}
           />
         );
       }
@@ -116,25 +129,26 @@ const ElementBlock = ({
     <div>
       <DropLayer
         component={componentName}
-        position='above'
+        position={'above'}
         index={index}
         setChildrenOfCurrent={setChildrenOfCurrent}
-        parent={copies[componentName].parent.key}
+        parent={components[componentName].parent.key}
       />
       <div style={{ border: '1px solid black' }} className='element' ref={ref}>
         <p>
-          {copies[componentName].type === 'custom'
-            ? copies[componentName].pointer
-            : copies[componentName].type}
+          {components[componentName].type === 'custom'
+            ? components[componentName].pointer
+            : components[componentName].type}
         </p>
+
         {childElements}
       </div>
       <DropLayer
         component={componentName}
-        position='below'
+        position={'below'}
         index={index}
         setChildrenOfCurrent={setChildrenOfCurrent}
-        parent={copies[componentName].parent.key}
+        parent={components[componentName].parent.key}
       />
     </div>
   );

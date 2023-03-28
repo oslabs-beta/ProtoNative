@@ -16,19 +16,13 @@ export type NativeElement =
 export interface OrigNativeEl {
   type: NativeElement;
   // depends on key names in copies context
-  children: string[];
   index: number;
-  state?: string[];
-  copies?: string[];
 }
 
 export interface AppInterface {
   type: 'App';
   children: string[];
   state: string[];
-  copies?: string[];
-  index?: number;
-  name?: string;
 }
 
 export interface OrigCustomComp {
@@ -54,7 +48,7 @@ export interface CopyNativeEl {
   parent: Parent;
   // depends on names of copies in copies context
   children: string[];
-  pointer?: string
+  pointer?: string;
 }
 
 export interface CopyCustomComp {
@@ -64,8 +58,6 @@ export interface CopyCustomComp {
   parent: Parent;
   // ALL depend on user's custom component names in originals
   pointer: NativeElement | string;
-  children(): (NativeElement | string)[];
-  state(): (NativeElement | string)[];
 }
 
 export interface Originals { [key: string]: AppInterface | OrigNativeEl | OrigCustomComp }
