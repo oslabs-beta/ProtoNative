@@ -134,8 +134,8 @@ const ElementBlock = ({
         setChildrenOfCurrent={setChildrenOfCurrent}
         parent={components[componentName].parent.key}
       />
-      <div style={{ border: '1px solid black' }} className='element' ref={ref}>
-        <p>
+      <div style={{ border: '1px solid black', backgroundColor :'rgba(0, 0, 0, .4)' }} className='element' ref={ref}>
+        <p style={{color: 'white'}}>
           {components[componentName].type === 'custom'
             ? components[componentName].pointer
             : components[componentName].type}

@@ -1,0 +1,24 @@
+[1] [eval]:1
+[1] setTimeout(() =, 1000)
+[1]             ^
+[1] 
+[1] SyntaxError: Unexpected token ')'
+[1]     at new Script (node:vm:100:7)
+[1]     at createScript (node:vm:257:10)
+[1]     at Object.runInThisContext (node:vm:305:10)
+[1]     at node:internal/process/execution:76:19
+[1]     at [eval]-wrapper:6:22
+[1]     at evalScript (node:internal/process/execution:75:60)
+[1]     at node:internal/main/eval_string:27:3
+[1] node -e "setTimeout(() =, 1000)" && npm run electron:dev exited with code 1
+[0] npm WARN config global `--global`, `--local` are deprecated. Use `--location=global` instead.
+[0] 
+[0] > proto-native@1.0.0 vite:dev
+[0] > vite
+[0] 
+[0] 
+[0]   [32m[1mVITE[22m v4.2.1[39m  [2mready in [0m[1m981[22m[2m[0m ms[22m
+[0] 
+[0]   [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m3000[22m/[39m
+[0] [2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+[0] Terminate batch job (Y/N)? npm run vite:dev exited with code 1
