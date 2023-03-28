@@ -65,7 +65,7 @@ const AddComponent = () => {
                   <input type="text" value={componentName} onChange={handleInputChange} />
                 </label>
                 <button type="submit">Add</button>
-                <button onClick={() => handleClose()}>Cancel</button>
+                <button onClick={handleClose}>Cancel</button>
               </form>
             </div>
           </Modal>

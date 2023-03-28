@@ -12,13 +12,17 @@ import {
   CopyNativeEl,
   CopyCustomComp,
 } from './parser/interfaces';
-import './styles/main.scss'
+import './styles/main.scss';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const App = () => {
   const [originals, setOriginals] = React.useState<Originals>({
-    App: { type: 'App', children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2'], state: [] } as AppInterface,
+    App: {
+      type: 'App',
+      children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2'],
+      state: [],
+    } as AppInterface,
     View: { type: 'View', index: 2 } as OrigNativeEl,
     Button: { type: 'Button', index: 3 } as OrigNativeEl,
     Text: { type: 'Text', index: 1 } as OrigNativeEl,
@@ -28,14 +32,17 @@ const App = () => {
     FlatList: { type: 'FlatList', index: 0 } as OrigNativeEl,
     SectionList: { type: 'SectionList', index: 0 } as OrigNativeEl,
     Switch: { type: 'Switch', index: 0 } as OrigNativeEl,
-    TouchableHighlight: { type: 'TouchableHighlight', index: 0 } as OrigNativeEl,
+    TouchableHighlight: {
+      type: 'TouchableHighlight',
+      index: 0,
+    } as OrigNativeEl,
     TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
     StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
     ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
     TestComponent: {
       name: 'TestComponent',
       type: 'custom',
-      children: ['Button0', 'CoolComponent0'],
+      children: ['Button0', 'CoolComponent0', 'Text1'],
       state: [],
       index: 3,
       copies: ['TestComponent0', 'TestComponent1', 'TestComponent2'],
@@ -47,13 +54,13 @@ const App = () => {
       state: [],
       index: 1,
       copies: ['CoolComponent0'],
-    } as OrigCustomComp
+    } as OrigCustomComp,
   });
   const [copies, setCopies] = React.useState<Copies>({
     Button0: {
       name: 'Button0',
       type: 'Button',
-      parent: { origin: 'original', key: 'TestComponent' },
+      parent: { origin: 'copies', key: 'TestComponent' },
       children: [],
     } as CopyNativeEl,
     Text0: {
@@ -110,6 +117,12 @@ const App = () => {
       parent: { origin: 'original', key: 'TestComponent' },
       pointer: 'CoolComponent',
     } as CopyCustomComp,
+    Text1: {
+      name: 'Text1',
+      type: 'Text',
+      parent: { origin: 'copies', key: 'TestComponent' },
+      children: [],
+    } as CopyNativeEl,
   });
   const [currentComponent, setCurrentComponent] = React.useState('App');
 
@@ -119,31 +132,32 @@ const App = () => {
   // FIXME: Turn off strict mode when unnecesary
   return (
     // <React.StrictMode>
-      <AppContext.Provider
-        value={{
-          originals,
-          setOriginals,
-          copies,
-          setCopies,
-          currentComponent,
-          setCurrentComponent,
-        }}
-      >
-        <DndProvider backend={HTML5Backend}>
-          <div>
-            <NavBar/>
-            < MainContainer />
-          </div>
-        </DndProvider>
-      </AppContext.Provider>
+    <AppContext.Provider
+      value={{
+        originals,
+        setOriginals,
+        copies,
+        setCopies,
+        currentComponent,
+        setCurrentComponent,
+      }}
+    >
+      <DndProvider backend={HTML5Backend}>
+        <div>
+          <NavBar />
+          <MainContainer />
+        </div>
+      </DndProvider>
+    </AppContext.Provider>
     // </React.StrictMode>
   );
 };
 
-      // use create root instead of render
-      createRoot(document.getElementById('root')).render(<App />);
+// use create root instead of render
+createRoot(document.getElementById('root')).render(<App />);
 
-      {/* //    CoolerComponent0: {
+{
+  /* //    CoolerComponent0: {
                 type: 'custom',
             parent: 'App',
             pointer: 'CoolerComponent',
