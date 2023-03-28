@@ -24,6 +24,7 @@
     "electron": "^23.1.4",
     "electron-reloader": "^1.2.3",
     "eslint": "^8.36.0",
+    "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "node-loader": "^2.0.0",
     "prettier": "^2.8.7",

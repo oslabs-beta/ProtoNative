@@ -17,6 +17,12 @@ module.exports = [
           test: /.node$/,
           loader: 'node-loader',
         },
+        {
+          test: /\.(png|jpg|gif)$/,
+          use: [{
+              loader: 'file-loader'
+          }]
+        }
       ],
     },
     output: {
