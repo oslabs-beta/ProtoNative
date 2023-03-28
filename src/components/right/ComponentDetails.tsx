@@ -13,14 +13,13 @@ const ComponentDetails = (): JSX.Element => {
   const displayedComponent = originals[currentComponent] as
     | OrigCustomComp
     | AppInterface;
-  const [childrenOfCurrent, setChildrenOfCurrent] = useState([]);
+  const [counter, setCounter] = useState(0);
   const [childElements, setChildElements] = useState([]);
 
   useEffect(() => {
     const originalComponent = originals[currentComponent] as
       | OrigCustomComp
       | AppInterface;
-    setChildrenOfCurrent(originalComponent.children);
     setChildElements(
       originalComponent.children.map((childName: string, index: number) => {
         if (currentComponent !== 'App' && currentComponent !== null) {
@@ -35,13 +34,14 @@ const ComponentDetails = (): JSX.Element => {
               index={index}
               location={'details'}
               parent={currentComponent}
-              setChildrenOfCurrent={setChildrenOfCurrent}
+              setCounter={setCounter}
             />
           );
         }
       })
     );
-  }, [currentComponent, childrenOfCurrent, copies]);
+    console.log(copies);
+  }, [currentComponent, counter, copies]);
 
   return (
     <div id='component-details-container'>

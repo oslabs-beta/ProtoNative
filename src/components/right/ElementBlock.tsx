@@ -17,7 +17,7 @@ type ElementBlockProps = {
   index: number;
   location: string;
   parent: string;
-  setChildrenOfCurrent: (value: string[]) => void;
+  setCounter: (value: number) => number;
 };
 
 const isCopyCustomComp = (
@@ -35,7 +35,7 @@ const ElementBlock = ({
   index,
   location,
   parent,
-  setChildrenOfCurrent,
+  setCounter,
 }: ElementBlockProps) => {
   const componentDef = copies[componentName];
   let childElements = null;
@@ -104,7 +104,7 @@ const ElementBlock = ({
             index={idx}
             location={'app'}
             parent={copies[childName].parent.key}
-            setChildrenOfCurrent={setChildrenOfCurrent}
+            setCounter={setCounter}
           />
         );
       } else if (location === 'details' && componentDef.type !== 'custom') {
@@ -119,7 +119,7 @@ const ElementBlock = ({
             index={idx}
             location={'details'}
             parent={copies[childName].parent.key}
-            setChildrenOfCurrent={setChildrenOfCurrent}
+            setCounter={setCounter}
           />
         );
       }
@@ -133,14 +133,18 @@ const ElementBlock = ({
         component={componentName}
         position={'above'}
         index={index}
-        setChildrenOfCurrent={setChildrenOfCurrent}
+        setCounter={setCounter}
         parent={copies[componentName].parent.key}
         copies={copies}
         setCopies={setCopies}
         originals={originals}
         setOriginals={setOriginals}
       />
-      <div style={{ border: '1px solid black' }} className='element' ref={ref}>
+      <div
+        style={{ border: '1px solid black', backgroundColor: 'rgba(0,0,0,.4)' }}
+        className='element'
+        ref={ref}
+      >
         <p>
           {copies[componentName].type === 'custom'
             ? copies[componentName].pointer
@@ -152,8 +156,8 @@ const ElementBlock = ({
       <DropLayer
         component={componentName}
         position={'below'}
-        index={index}
-        setChildrenOfCurrent={setChildrenOfCurrent}
+        index={index + 1}
+        setCounter={setCounter}
         parent={copies[componentName].parent.key}
         copies={copies}
         setCopies={setCopies}
