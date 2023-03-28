@@ -10,8 +10,10 @@ import {
 import DropLayer from './DropLayer';
 type ElementBlockProps = {
   componentName: string;
-  components: Copies;
+  copies: Copies;
+  setCopies: any;
   originals: Originals;
+  setOriginals: any;
   index: number;
   location: string;
   parent: string;
@@ -26,14 +28,16 @@ const isCopyCustomComp = (
 
 const ElementBlock = ({
   componentName,
-  components,
+  copies,
+  setCopies,
   originals,
+  setOriginals,
   index,
   location,
   parent,
   setChildrenOfCurrent,
 }: ElementBlockProps) => {
-  const componentDef = components[componentName];
+  const componentDef = copies[componentName];
   let childElements = null;
   let children: string[] = null;
   const ref = useRef(null);
@@ -49,10 +53,8 @@ const ElementBlock = ({
 
       const dragIndex = item.index;
       const hoverIndex = index;
-      // if (dragIndex === hoverIndex) return;
 
       if (item.type === 'elements') {
-        // moveItem(dragIndex, hoverIndex);
       } else if (item.type === 'addableElement') console.log('hi');
     },
     // collect: (monitor) => ({
@@ -77,7 +79,7 @@ const ElementBlock = ({
     }),
     [componentName, index]
   );
-  //
+
   drag(drop(ref));
 
   if (isCopyCustomComp(componentDef)) {
@@ -89,34 +91,34 @@ const ElementBlock = ({
 
   if (children.length) {
     const arr: JSX.Element[] = [];
-    children.forEach((childName: string) => {
-      if (location === 'app' && components[childName].type === 'custom') {
-        // console.log(childName)
+    children.forEach((childName: string, idx) => {
+      if (location === 'app' && copies[childName].type === 'custom') {
         arr.push(
           <ElementBlock
-            key={index + childName}
+            key={idx + childName}
             componentName={childName}
-            components={components}
+            copies={copies}
+            setCopies={setCopies}
             originals={originals}
-            index={index}
+            setOriginals={setOriginals}
+            index={idx}
             location={'app'}
-            parent={components[childName].parent.key}
+            parent={copies[childName].parent.key}
             setChildrenOfCurrent={setChildrenOfCurrent}
           />
         );
-      } else if (
-        location === 'details' &&
-        components[childName].type !== 'custom'
-      ) {
+      } else if (location === 'details' && componentDef.type !== 'custom') {
         arr.push(
           <ElementBlock
-            key={index + childName}
+            key={idx + childName}
             componentName={childName}
-            components={components}
+            copies={copies}
+            setCopies={setCopies}
             originals={originals}
-            index={index}
+            setOriginals={setOriginals}
+            index={idx}
             location={'details'}
-            parent={components[childName].parent.key}
+            parent={copies[childName].parent.key}
             setChildrenOfCurrent={setChildrenOfCurrent}
           />
         );
@@ -132,13 +134,17 @@ const ElementBlock = ({
         position={'above'}
         index={index}
         setChildrenOfCurrent={setChildrenOfCurrent}
-        parent={components[componentName].parent.key}
+        parent={copies[componentName].parent.key}
+        copies={copies}
+        setCopies={setCopies}
+        originals={originals}
+        setOriginals={setOriginals}
       />
       <div style={{ border: '1px solid black' }} className='element' ref={ref}>
         <p>
-          {components[componentName].type === 'custom'
-            ? components[componentName].pointer
-            : components[componentName].type}
+          {copies[componentName].type === 'custom'
+            ? copies[componentName].pointer
+            : copies[componentName].type}
         </p>
 
         {childElements}
@@ -148,7 +154,11 @@ const ElementBlock = ({
         position={'below'}
         index={index}
         setChildrenOfCurrent={setChildrenOfCurrent}
-        parent={components[componentName].parent.key}
+        parent={copies[componentName].parent.key}
+        copies={copies}
+        setCopies={setCopies}
+        originals={originals}
+        setOriginals={setOriginals}
       />
     </div>
   );

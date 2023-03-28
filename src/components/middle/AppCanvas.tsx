@@ -25,11 +25,12 @@ const AppCanvas = (): JSX.Element => {
           <ElementBlock
             key={index}
             componentName={child}
-            components={copies}
+            copies={copies}
             originals={originals}
             index={index}
             location={'app'}
             parent={'App'}
+            setChildrenOfCurrent={setAppComponents}
           />
         );
       } else {
@@ -37,11 +38,12 @@ const AppCanvas = (): JSX.Element => {
           <ElementBlock
             key={index}
             componentName={child}
-            components={copies}
+            copies={copies}
             originals={originals}
             index={index}
             location={'details'}
             parent={'App'}
+            setChildrenOfCurrent={setAppComponents}
           />
         );
       }

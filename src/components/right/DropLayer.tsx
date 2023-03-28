@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { useDrop } from 'react-dnd';
+import { AppInterface, OrigCustomComp } from '../../parser/interfaces';
 
 import AppContext from '../../context/AppContext';
 
@@ -9,6 +10,10 @@ type DropLayerProps = {
   index: number;
   setChildrenOfCurrent: (arr: string[]) => void;
   parent: string;
+  copies: any;
+  setCopies: any;
+  originals: any;
+  setOriginals: any;
 };
 
 const DropLayer = ({
@@ -17,22 +22,32 @@ const DropLayer = ({
   index,
   setChildrenOfCurrent,
   parent,
+  copies,
+  setCopies,
+  originals,
+  setOriginals,
 }: DropLayerProps) => {
-  const { originals, copies, setOriginals, currentComponent, setCopies } =
-    useContext(AppContext);
+  // const { originals, copies, setOriginals, currentComponent, setCopies } =
+  //   useContext(AppContext);
 
   const moveItem = (
     dragIndex: number,
     hoverIndex: number,
     name: string,
-    parentComp: string
+    parentComp: string,
+    position: string
   ): void => {
     console.log('parentComp', parentComp);
     console.log('name', name);
+    console.log(position);
     let dragArr: string[];
     let dropArr: string[];
     let item: string;
     //item is in the top level custom component
+
+    // const originalPosition = originals[parentComp] ? originals[parentComp] as AppInterface | OrigCustomComp: copies;
+    console.log('dragIndex', dragIndex);
+    console.log('hoverIndex', hoverIndex);
     if (originals[parentComp]) {
       item = originals[parentComp].children[dragIndex];
       if (parentComp === parent) {
@@ -45,7 +60,7 @@ const DropLayer = ({
       }
     } else {
       //item is in a child element
-      dragIndex = copies[parentComp].children.indexOf(name); //FIX: index of items nested in an element are mapped as the same index of the nested component
+      // dragIndex = copies[parentComp].children.indexOf(name); //FIX: index of items nested in an element are mapped as the same index of the nested component
       item = copies[parentComp].children[dragIndex];
       dragArr = [...copies[parentComp].children];
       //moving to the top level component
@@ -54,9 +69,9 @@ const DropLayer = ({
       } else {
         //moving to another nested element
         dropArr = [...copies[parent].children];
+        if (position === 'below') hoverIndex++;
       }
     }
-
     dragArr.splice(dragIndex, 1);
     dropArr.splice(hoverIndex, 0, item);
     console.log(dragArr);
@@ -100,17 +115,27 @@ const DropLayer = ({
       item: { name: string; index: number; type: string; parentComp: string },
       monitor
     ) => {
-      const dragIndex = item.index;
-      const hoverIndex = index;
-      const positionRelative = position;
+      const dragIndex: number = item.index;
+      const hoverIndex: number = index;
+      const positionRelative: string = position;
       // if (dragIndex === hoverIndex) return;
       if (item.type === 'elements') {
-        moveItem(dragIndex, hoverIndex, item.name, item.parentComp);
+        moveItem(
+          dragIndex,
+          hoverIndex,
+          item.name,
+          item.parentComp,
+          positionRelative
+        );
       }
     },
   });
 
-  return <div ref={drop} id='drop-layer-area'></div>;
+  return (
+    <div ref={drop} id='drop-layer-area'>
+      <span>{index}</span>
+    </div>
+  );
 };
 
 export default DropLayer;
