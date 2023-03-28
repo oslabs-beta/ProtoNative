@@ -4,16 +4,16 @@
   "description": "A React Native prototyping tool",
   "main": "./src/electron.ts",
   "scripts": {
-    "start": "electron .", 
+    "start": "electron .",
     "dev": "concurrently \"npm run vite:dev\" \"node -e \\\"setTimeout(() => process.exit(0), 1000)\\\" && npm run electron:dev\"",
     "vite:dev": "vite",
-    "electron:dev": "NODE_ENV=development electron .",
+    "electron:dev": "cross-env NODE_ENV=development electron .",
     "build": "vite build",
     "preview": "vite preview"
   },
   "author": "Team ProtoNative",
   "contributors": [
-    "Matthew Kymn", 
+    "Matthew Kymn",
     "Michelle Leong",
     "Jonathan Klibansky",
     "Patricia Good",
@@ -32,18 +32,14 @@
   "homepage": "https://github.com/oslabs-beta/ProtoNative#readme",
   "license": "MIT",
   "devDependencies": {
-    "concurrently": "7.6.0",
     "@types/prismjs": "^1.26.0",
     "@types/react": "^18.0.30",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^3.1.0",
+    "concurrently": "7.6.0",
     "cross-env": "^7.0.3",
     "electron-reloader": "1.2.3",
     "eslint": "^8.36.0",
-    "scss": "^0.2.4",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.0.2",
-    "vite": "^4.2.1",
     "prettier": "^2.8.7",
     "prism-themes": "^1.9.0",
     "prismjs": "^1.29.0",
@@ -51,10 +47,14 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
-    "sass": "^1.60.0"
+    "sass": "^1.60.0",
+    "scss": "^0.2.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.2",
+    "vite": "^4.2.1"
   },
   "dependencies": {
-    "electron-serve": "^1.1.0",
-    "electron": "^23.2.0"
+    "electron": "^23.2.0",
+    "electron-serve": "^1.1.0"
   }
 }
