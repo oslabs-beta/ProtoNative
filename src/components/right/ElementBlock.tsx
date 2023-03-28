@@ -1,6 +1,6 @@
 import React, { useRef, useContext} from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import {Copies, CopyNativeEl, CopyCustomComp, Originals} from '../../parser/interfaces';
+import {Copies, CopyNativeEl, CopyCustomComp, Originals, OrigCustomComp} from '../../parser/interfaces';
 type ElementBlockProps = {
   componentName: string,
   components: Copies,
@@ -59,8 +59,10 @@ const ElementBlock = ({
   //
   drag(drop(ref));
 
-  if (isCopyCustomComp(componentDef))
-    children = originals[componentDef.pointer].children;
+  if (isCopyCustomComp(componentDef)) {
+    const originalElement = originals[componentDef.pointer] as OrigCustomComp;
+    children = originalElement.children;
+  }
   else {
     children = componentDef.children;
   }

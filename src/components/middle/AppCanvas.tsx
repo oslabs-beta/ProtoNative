@@ -3,10 +3,12 @@ import AppContext from '../../context/AppContext';
 import ElementBlock from '../right/ElementBlock';
 import { useDrop } from 'react-dnd';
 import { ItemTypes } from '../left/AddableChild';
+import { AppInterface, Originals, OrigNativeEl, OrigCustomComp, CopyCustomComp, CopyNativeEl, Copies } from '../../parser/interfaces';
 
 const AppCanvas = (): JSX.Element => {
   
-  const {setCopies, setOriginals, originals, originals: {App}, copies} = useContext(AppContext);
+  const {setCopies, setOriginals, originals, copies} = useContext(AppContext);
+  const App = originals.App as AppInterface;
   const [appComponents, setAppComponents] = useState([]);
   
   useEffect(() => {
@@ -45,38 +47,33 @@ const AppCanvas = (): JSX.Element => {
       if (didDrop) {
         return;
       }
-      const originalElement: any = originals[item.name as keyof typeof originals];
-      let newElement: any = {};
+      const originalElement = originals[item.name] as (OrigNativeEl | OrigCustomComp);
+      let newElement = {} as (CopyCustomComp | CopyNativeEl);
       // if originalElement is a custom element use custom element template
       if (originalElement.type === 'custom'){
         newElement = {
           name: originalElement.name + originalElement.index,
           type: originalElement.type,
           parent: {origin: 'original', key: 'App'},
-          pointer: item.name,
-          children: function() {
-            return originals[this.pointer].children;
-          },
-          state: function() {
-            return originals[this.pointer].state;
-          }
-          
+          pointer: item.name,          
         }
 
         // increment index of originalElement, add newElement to copies, add newElement to App's children
-        setOriginals((previous: typeof originals): typeof originals => {
+        setOriginals((previous: Originals): Originals => {
+          const prevApp = previous['App'] as AppInterface;
           const newApp = {
-            ...previous['App'],
-            children: [...previous['App'].children, newElement.name], // TODO: Put child element in correct location
+            ...prevApp,
+            children: [...prevApp.children, newElement.name], // TODO: Put child element in correct location
           };
-          const newOriginal = {
-            ...previous[item.name],
-            index: previous[item.name].index + 1,
-            copies: [...previous[item.name].copies, newElement.name],
+          const prevOriginalElement = previous[item.name] as OrigCustomComp;
+          const newOriginalElement = {
+            ...prevOriginalElement,
+            index: prevOriginalElement.index + 1,
+            copies: [...prevOriginalElement.copies, newElement.name],
           };
           return {
             ...previous,
-            [item.name]: newOriginal,
+            [item.name]: newOriginalElement,
             App: newApp,
           };
         });
@@ -94,25 +91,27 @@ const AppCanvas = (): JSX.Element => {
           children: [],
         }
         // increment index of originalElement, add newElement to copies, add newElement to App's children
-        setOriginals((previous: typeof originals): typeof originals => {
+        setOriginals((previous: Originals): Originals => {
+          const prevApp = previous['App'] as AppInterface;
           const newApp = {
-            ...previous['App'],
-            children: [...previous['App'].children, newElement.name], // TODO: Put child element in correct location
+            ...prevApp,
+            children: [...prevApp.children, newElement.name], // TODO: Put child element in correct location
           };
-          const newOriginal = {
-            ...previous[item.name],
-            index: previous[item.name].index + 1,
+          const prevOriginalElement = previous[item.name] as (OrigNativeEl | OrigCustomComp);
+          const newOriginalElement = {
+            ...prevOriginalElement,
+            index: prevOriginalElement.index + 1,
           };
           return {
             ...previous,
-            [item.name]: newOriginal,
+            [item.name]: newOriginalElement,
             App: newApp,
           };
         });
       }
       
       // add to copies
-      setCopies((previous: typeof copies): typeof copies => {
+      setCopies((previous: Copies): Copies => {
         return {
           ...previous,
           [newElement.name]: newElement,
