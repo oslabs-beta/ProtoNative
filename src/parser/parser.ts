@@ -13,25 +13,25 @@ import {
 const { format } = require('prettier');
 
 const originals: Originals = {
-  App: { type: 'App', children: ['TestComponent0', 'CoolComponent0', 'View0', 'TestComponent1', 'TestComponent2'], state: [] } as AppInterface,
-  View: { type: 'View', children: [], index: 2 } as OrigNativeEl,
-  Button: { type: 'Button', children: [], index: 3 } as OrigNativeEl,
-  Text: { type: 'Text', children: [], index: 1 } as OrigNativeEl,
-  Image: { type: 'Image', children: [], index: 0 } as OrigNativeEl,
-  TextInput: { type: 'TextInput', children: [], index: 0 } as OrigNativeEl,
-  ScrollView: { type: 'ScrollView', children: [], index: 0 } as OrigNativeEl,
-  FlatList: { type: 'FlatList', children: [], index: 0 } as OrigNativeEl,
-  SectionList: { type: 'SectionList', children: [], index: 0 } as OrigNativeEl,
-  Switch: { type: 'Switch', children: [], index: 0 } as OrigNativeEl,
-  TouchableHighlight: { type: 'TouchableHighlight', children: [], index: 0 } as OrigNativeEl,
-  TouchableOpacity: { type: 'TouchableOpacity', children: [], index: 0 } as OrigNativeEl,
-  StatusBar: { type: 'StatusBar', children: [], index: 0 } as OrigNativeEl,
-  ActivityIndicator: { type: 'ActivityIndicator', children: [], index: 0 } as OrigNativeEl,
+  App: { type: 'App', children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2'], state: [] } as AppInterface,
+  View: { type: 'View', index: 2 } as OrigNativeEl,
+  Button: { type: 'Button', index: 3 } as OrigNativeEl,
+  Text: { type: 'Text', index: 1 } as OrigNativeEl,
+  Image: { type: 'Image', index: 0 } as OrigNativeEl,
+  TextInput: { type: 'TextInput', index: 0 } as OrigNativeEl,
+  ScrollView: { type: 'ScrollView', index: 0 } as OrigNativeEl,
+  FlatList: { type: 'FlatList', index: 0 } as OrigNativeEl,
+  SectionList: { type: 'SectionList', index: 0 } as OrigNativeEl,
+  Switch: { type: 'Switch', index: 0 } as OrigNativeEl,
+  TouchableHighlight: { type: 'TouchableHighlight', index: 0 } as OrigNativeEl,
+  TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
+  StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
+  ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
   TestComponent: {
     name: 'TestComponent',
     type: 'custom',
-    children: ['Button0'],
-    state: [],
+    children: ['Button0', 'CoolComponent0'],
+    state: ['state1', 'state2'],
     index: 3,
     copies: ['TestComponent0', 'TestComponent1', 'TestComponent2'],
   } as OrigCustomComp,
@@ -62,7 +62,7 @@ const copies: Copies = {
     name: 'View0',
     type: 'View',
     parent: { origin: 'original', key: 'App' },
-    children: [],
+    children: ['Button1', 'View1'],
   } as CopyNativeEl,
   Button1: {
     name: 'Button1',
@@ -87,61 +87,37 @@ const copies: Copies = {
     type: 'custom',
     parent: { origin: 'original', key: 'App' },
     pointer: 'TestComponent',
-    children: function () {
-      return originals[this.pointer].children;
-    },
-    state: function () {
-      return originals[this.pointer].state;
-    }
   } as CopyCustomComp,
   TestComponent1: {
     name: 'TestComponent1',
     type: 'custom',
     parent: { origin: 'original', key: 'App' },
     pointer: 'TestComponent',
-    children: function () {
-      return originals[this.pointer].children;
-    },
-    state: function () {
-      return originals[this.pointer].state;
-    }
   } as CopyCustomComp,
   TestComponent2: {
     name: 'TestComponent2',
     type: 'custom',
     parent: { origin: 'original', key: 'App' },
     pointer: 'TestComponent',
-    children: function () {
-      return originals[this.pointer].children;
-    },
-    state: function () {
-      return originals[this.pointer].state;
-    }
   } as CopyCustomComp,
   CoolComponent0: {
     name: 'CoolComponent0',
     type: 'custom',
-    parent: { origin: 'original', key: 'App' },
+    parent: { origin: 'original', key: 'TestComponent' },
     pointer: 'CoolComponent',
-    children: function () {
-      return originals[this.pointer].children;
-    },
-    state: function () {
-      return originals[this.pointer].state;
-    }
   } as CopyCustomComp,
 };
 
-// /**
-//  * @method capitalizeFirst
-//  * @description - capitalizes first letter of input string
-//  * @input - string
-//  * @output - string with capitalized first letter
-//  */
-// // const capitalizeFirst = (str: string): string => {
-// //   if (str.length === 0) return '';
-// //   return str[0].toUpperCase() + str.slice(1);
-// // };
+/**
+ * @method capitalizeFirst
+ * @description - capitalizes first letter of input string
+ * @input - string
+ * @output - string with capitalized first letter
+ */
+const capitalizeFirst = (str: string): string => {
+  if (str.length === 0) return '';
+  return str[0].toUpperCase() + str.slice(1);
+};
 
 /**
  * @method importReact
@@ -186,7 +162,7 @@ const isCopyCustomComp = (comp: CopyNativeEl | CopyCustomComp): comp is CopyCust
 const addState = (stateNames: string[]): string => {
   let stateVariables: string = '';
   for (const stateVar of stateNames) {
-    stateVariables += `const [${stateVar}, set${stateVar}] = React.useState(null);\n`;
+    stateVariables += `const [${stateVar}, set${capitalizeFirst(stateVar)}] = React.useState(null);\n`;
   }
   return stateVariables;
 };
@@ -256,20 +232,22 @@ const addCustomCompExport = (toExport: string): string => {
  */
 const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
   const currElement: string = isCopyCustomComp(comp) ? comp.pointer : comp.type;
-  if (comp.children.length === 0) {
+  const originalsComp = originals[comp.pointer] as OrigCustomComp;
+  const componentChildren: string[] = isCopyCustomComp(comp) ? originalsComp.children : comp.children;
+
+  if (componentChildren.length === 0 || comp.type === 'custom') {
     return isDoubleTagElement(comp.name)
-      ? `</${currElement}>\n`
-      : `<${currElement}/>\n`;
+      ? `</${currElement}>`
+      : `<${currElement}/>`;
   }
 
   let childrenNodes: string = '';
-  const componentChildren: string[] = isCopyCustomComp(comp) ? comp.children() : comp.children;
   for (const child of componentChildren) {
     childrenNodes += `${generateComponentCode(copies[child])}\n`;
   }
   return  `<${currElement}> 
               ${childrenNodes} 
-          </${currElement}>\n`;
+          </${currElement}>`;
 };
 
 /**
@@ -278,7 +256,7 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp): string => {
  * @input - name of the custom component to generate the code for
  * @output - string of the code necessary for the custom component passed in
  */
-const generateCustomComponentCode = (component: OrigCustomComp): string => {
+const generateCustomComponentCode = (component: OrigCustomComp | AppInterface): string => {
   // store to save all native core components to be imported
   const importNative: {[key: string]: boolean} = {};
   // store to save all the custom components to be imported
@@ -318,7 +296,7 @@ const generateCustomComponentCode = (component: OrigCustomComp): string => {
 
   return `
       ${importStatements}
-      const ${component.name} = () => {
+      const ${component.type === 'App' ? component.type : component.name} = () => {
         ${stateVariables}
         return (
           <div>
@@ -326,7 +304,7 @@ const generateCustomComponentCode = (component: OrigCustomComp): string => {
           </div>
         );
       };\n      
-      ${addCustomCompExport(component.name)}
+      ${addCustomCompExport(component.type === 'App' ? component.type : component.name)}
   `;
 };
 
@@ -339,10 +317,14 @@ const formatCode = (code: string): string => {
 }
 
 const customComponent = generateCustomComponentCode(originals['TestComponent'] as OrigCustomComp);
+// console.log(customComponent);
 console.log(formatCode(customComponent));
 const customComponent2 = generateCustomComponentCode(originals['CoolComponent'] as OrigCustomComp);
+// console.log(customComponent2);
 console.log(formatCode(customComponent2));
-
+const customComponent3 = generateCustomComponentCode(originals['App'] as AppInterface);
+// console.log(customComponent3);
+console.log(formatCode(customComponent3));
 
 /*
   --- view: <View> </View>

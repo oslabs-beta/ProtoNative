@@ -54,7 +54,7 @@ module.exports = [
         },
         {
           test: /.(css|scss)$/,
-          exclude: /node_modules/,
+          exclude: /node_modules\/(?!(prism-themes|prismjs)\/).*/,
           use: ['style-loader', 'css-loader', 'sass-loader'],
         },
       ],
