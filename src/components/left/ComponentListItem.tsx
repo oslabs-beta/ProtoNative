@@ -3,10 +3,10 @@ import AppContext from '../../context/AppContext';
 import { CopyCustomComp, CopyNativeEl, OrigCustomComp, AppInterface, OrigNativeEl } from '../../parser/interfaces';
 import { Originals, Copies } from '../../parser/interfaces';
 import Modal from './Modal';
-
-const isCopyCustomComp = (comp: CopyNativeEl | CopyCustomComp): comp is CopyCustomComp => {
-  return comp.type === 'custom';
-}
+import { isCopyCustomComp } from '../../parser/parser';
+// const isCopyCustomComp = (comp: CopyNativeEl | CopyCustomComp): comp is CopyCustomComp => {
+//   return comp.type === 'custom';
+// }
 
 type ComponentListItemProps = {
 	comp: AppInterface | OrigCustomComp;
@@ -62,7 +62,7 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 				const parentChildren: string[] = origParent.children;
 				const parentChildIdx = parentChildren.indexOf(compToDelete.name);
 				parentChildren.splice(parentChildIdx, 1);
-			} else if (compToDeleteParent.origin === 'copies'){
+			} else if (compToDeleteParent.origin === 'copies') {
 				const parentChildToDelete = copyCopies[compToDeleteParent.key];
 				const originalElement = copyOriginals[parentChildToDelete.pointer] as OrigCustomComp;
 				const parentChildren: string[] = isCopyCustomComp(parentChildToDelete) ? originalElement.children : parentChildToDelete.children;
@@ -105,7 +105,7 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 			if (typeof collection !== "object" || collection === null) return collection;
 			const output: {[key: string]: any} = Array.isArray(collection) ? [] : {};
 			for (const [key, value] of Object.entries(collection)) {
-				output[key] = deepCopy (value);
+				output[key] = deepCopy(value);
 			}
 			return output;
 		}

@@ -154,7 +154,7 @@ const isDoubleTagElement = (elementName: string): boolean => {
  * @output - boolean -> true if input is of interface CopyCustomComp
  * (technically, output is a type guard)
  */
-const isCopyCustomComp = (comp: CopyNativeEl | CopyCustomComp): comp is CopyCustomComp => {
+export const isCopyCustomComp = (comp: CopyNativeEl | CopyCustomComp): comp is CopyCustomComp => {
   return comp.type === 'custom';
 }
 
