@@ -15,6 +15,7 @@ type ComponentListItemProps = {
 
 const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 	const comp = props.comp;
+	const OriginalCustomComponent = comp as OrigCustomComp;
 	const { currentComponent, setCurrentComponent, originals, setOriginals, copies, setCopies } = useContext(AppContext);
 	const [ComponentItem, setComponentItem] = useState(null);
 
@@ -131,15 +132,17 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 	}
 
 	const handleStateSaveClick = (event: any): void => {
-		console.log(`new state for ${name}: ${newState}`);
+		console.log(`new state for ${OriginalCustomComponent.name ?? comp.type}: ${newState}`);
 		// create a copy of the originals object
-		const updatedOriginals = { ...originals };  
 		// update the componant with the added state in the copies
-		updatedOriginals[name].state.push(newState);
+		setOriginals((prevOriginals) => {
+			const updatedOriginals = { ...prevOriginals };
+			const originalElement = updatedOriginals[OriginalCustomComponent.name ?? comp.type] as OrigCustomComp | AppInterface;
+			originalElement.state.push(newState);
+			return updatedOriginals;
+		})
 		setIsOpen(false);
 		setNewState('');
-		setOriginals(updatedOriginals);
-		console.log(originals, copies);
 	}
 	const handleClose = (): void => {
 		
@@ -155,7 +158,7 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 						
 						<div>
 							<div id='stateModal'>
-								<h3>Add State to {name}</h3>
+								<h3>Add State to {comp.type ?? OriginalCustomComponent.name}</h3>
 								<label htmlFor="stateInput">New State</label>
 								<input 
 								  id='stateInput' 
