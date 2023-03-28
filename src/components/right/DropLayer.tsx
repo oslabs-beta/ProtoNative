@@ -165,6 +165,7 @@ const DropLayer = ({
   };
 
   const addItem = (name: string, hoverIndex: number, parent: string) => {
+    console.log('hi');
     let newElement = {} as CopyCustomComp | CopyNativeEl;
     let newEleObj = originals[name];
     if (originals[name].type === 'custom') {
@@ -174,7 +175,6 @@ const DropLayer = ({
         parent: { origin: 'original', key: parent },
         pointer: name,
       };
-      // console.log(newElement);
 
       if (originals[parent]) {
         //drop array is correct and splices correctly
@@ -259,7 +259,6 @@ const DropLayer = ({
           positionRelative
         );
       } else {
-        console.log('hi');
         addItem(item.name, hoverIndex, parent);
       }
     },
