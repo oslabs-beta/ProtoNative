@@ -74,6 +74,7 @@ const addItem = (name: string, hoverIndex: number, parent: string) => {
       });
     }
   } else {
+    newEleObj = copies[name];
     newElement = {
       name: .type + originalElement.index,
       type: originalElement.type,
