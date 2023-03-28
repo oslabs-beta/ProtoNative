@@ -10,108 +10,139 @@ import {
 
 const { format } = require('prettier');
 
+const originals: Originals = {
+  App: { type: 'App', children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2'], state: [] } as AppInterface,
+  View: { type: 'View', index: 3 } as OrigNativeEl,
+  Button: { type: 'Button', index: 3 } as OrigNativeEl,
+  Text: { type: 'Text', index: 1 } as OrigNativeEl,
+  Image: { type: 'Image', index: 0 } as OrigNativeEl,
+  TextInput: { type: 'TextInput', index: 0 } as OrigNativeEl,
+  ScrollView: { type: 'ScrollView', index: 0 } as OrigNativeEl,
+  FlatList: { type: 'FlatList', index: 0 } as OrigNativeEl,
+  SectionList: { type: 'SectionList', index: 0 } as OrigNativeEl,
+  Switch: { type: 'Switch', index: 0 } as OrigNativeEl,
+  TouchableHighlight: { type: 'TouchableHighlight', index: 0 } as OrigNativeEl,
+  TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
+  StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
+  ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
+  TestComponent: {
+    name: 'TestComponent',
+    type: 'custom',
+    children: ['Button0', 'CoolComponent0'],
+    state: [],
+    index: 3,
+    copies: ['TestComponent0', 'TestComponent1', 'TestComponent2'],
+  } as OrigCustomComp,
+  CoolComponent: {
+    name: 'CoolComponent',
+    type: 'custom',
+    children: ['Button2', 'View1', 'View2', 'GahlComponent0'],
+    state: [],
+    index: 1,
+    copies: ['CoolComponent0'],
+  } as OrigCustomComp,
+  GahlComponent: {
+    name: 'GahlComponent',
+    type: 'custom',
+    children: ['Button3', 'View3'],
+    state: [],
+    index: 1,
+    copies: ['GahlComponent0'],
+  } as OrigCustomComp
+}
 
-// const originals: Originals = {
-//   App: { type: 'App', children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2', 'Button3'], state: [] } as AppInterface,
-//   View: { type: 'View', index: 2 } as OrigNativeEl,
-//   Button: { type: 'Button', index: 4 } as OrigNativeEl,
-//   Text: { type: 'Text', index: 1 } as OrigNativeEl,
-//   Image: { type: 'Image', index: 0 } as OrigNativeEl,
-//   TextInput: { type: 'TextInput', index: 0 } as OrigNativeEl,
-//   ScrollView: { type: 'ScrollView', index: 0 } as OrigNativeEl,
-//   FlatList: { type: 'FlatList', index: 0 } as OrigNativeEl,
-//   SectionList: { type: 'SectionList', index: 0 } as OrigNativeEl,
-//   Switch: { type: 'Switch', index: 0 } as OrigNativeEl,
-//   TouchableHighlight: { type: 'TouchableHighlight', index: 0 } as OrigNativeEl,
-//   TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
-//   StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
-//   ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
-//   TestComponent: {
-//     name: 'TestComponent',
-//     type: 'custom',
-//     children: ['Button0', 'CoolComponent0'],
-//     state: ['state1', 'state2'],
-//     index: 3,
-//     copies: ['TestComponent0', 'TestComponent1', 'TestComponent2'],
-//   } as OrigCustomComp,
-//   CoolComponent: {
-//     name: 'CoolComponent',
-//     type: 'custom',
-//     children: ['Button2', 'View1'],
-//     state: [],
-//     index: 1,
-//     copies: ['CoolComponent0'],
-//   } as OrigCustomComp
-// };
-
-// const copies: Copies = {
-//   Button0: {
-//     name: 'Button0',
-//     type: 'Button',
-//     parent: { origin: 'original', key: 'TestComponent' },
-//     children: [],
-//   } as CopyNativeEl,
-//   Button3: {
-//     name: 'Button3',
-//     type: 'Button',
-//     parent: { origin: 'original', key: 'App' },
-//     children: [],
-//   } as CopyNativeEl,
-//   Text0: {
-//     name: 'Text0',
-//     type: 'Text',
-//     parent: { origin: 'copies', key: 'View1' },
-//     children: ['Button1'],
-//   } as CopyNativeEl,
-//   View0: {
-//     name: 'View0',
-//     type: 'View',
-//     parent: { origin: 'original', key: 'App' },
-//     children: ['Button1', 'View1'],
-//   } as CopyNativeEl,
-//   Button1: {
-//     name: 'Button1',
-//     type: 'Button',
-//     parent: { origin: 'copies', key: 'Text0' },
-//     children: [],
-//   } as CopyNativeEl,
-//   View1: {
-//     name: 'View1',
-//     type: 'View',
-//     parent: { origin: 'original', key: 'CoolComponent' },
-//     children: ['Text0'],
-//   } as CopyNativeEl,
-//   Button2: {
-//     name: 'Button2',
-//     type: 'Button',
-//     parent: { origin: 'original', key: 'CoolComponent' },
-//     children: [],
-//   } as CopyNativeEl,
-//   TestComponent0: {
-//     name: 'TestComponent0',
-//     type: 'custom',
-//     parent: { origin: 'original', key: 'App' },
-//     pointer: 'TestComponent',
-//   } as CopyCustomComp,
-//   TestComponent1: {
-//     name: 'TestComponent1',
-//     type: 'custom',
-//     parent: { origin: 'original', key: 'App' },
-//     pointer: 'TestComponent',
-//   } as CopyCustomComp,
-//   TestComponent2: {
-//     name: 'TestComponent2',
-//     type: 'custom',
-//     parent: { origin: 'original', key: 'App' },
-//     pointer: 'TestComponent',
-//   } as CopyCustomComp,
-//   CoolComponent0: {
-//     name: 'CoolComponent0',
-//     type: 'custom',
-//     parent: { origin: 'original', key: 'TestComponent' },
-//     pointer: 'CoolComponent',
-//   } as CopyCustomComp,
-// };
+const copies: Copies = {
+  Button0: {
+    name: 'Button0',
+    type: 'Button',
+    parent: { origin: 'original', key: 'TestComponent' },
+    children: [],
+  } as CopyNativeEl,
+  Button3: {
+    name: 'Button3',
+    type: 'Button',
+    parent: { origin: 'original', key: 'GahlComponent' },
+    children: [],
+  } as CopyNativeEl,
+  Button4: {
+    name: 'Button4',
+    type: 'Button',
+    parent: { origin: 'copies', key: 'View3' },
+    children: [],
+  } as CopyNativeEl,
+  View2: {
+    name: 'View2',
+    type: 'View',
+    parent: { origin: 'original', key: 'CoolComponent' },
+    children: [],
+  } as CopyNativeEl,
+  View3: {
+    name: 'View3',
+    type: 'View',
+    parent: { origin: 'original', key: 'GahlComponent' },
+    children: ['Button4'],
+  } as CopyNativeEl,
+  Text0: {
+    name: 'Text0',
+    type: 'Text',
+    parent: { origin: 'copies', key: 'View1' },
+    children: ['Button1'],
+  } as CopyNativeEl,
+  View0: {
+    name: 'View0',
+    type: 'View',
+    parent: { origin: 'original', key: 'App' },
+    children: [],
+  } as CopyNativeEl,
+  Button1: {
+    name: 'Button1',
+    type: 'Button',
+    parent: { origin: 'copies', key: 'Text0' },
+    children: [],
+  } as CopyNativeEl,
+  View1: {
+    name: 'View1',
+    type: 'View',
+    parent: { origin: 'original', key: 'CoolComponent' },
+    children: ['Text0'],
+  } as CopyNativeEl,
+  Button2: {
+    name: 'Button2',
+    type: 'Button',
+    parent: { origin: 'original', key: 'CoolComponent' },
+    children: [],
+  } as CopyNativeEl,
+  TestComponent0: {
+    name: 'TestComponent0',
+    type: 'custom',
+    parent: { origin: 'original', key: 'App' },
+    pointer: 'TestComponent',
+  } as CopyCustomComp,
+  TestComponent1: {
+    name: 'TestComponent1',
+    type: 'custom',
+    parent: { origin: 'original', key: 'App' },
+    pointer: 'TestComponent',
+  } as CopyCustomComp,
+  TestComponent2: {
+    name: 'TestComponent2',
+    type: 'custom',
+    parent: { origin: 'original', key: 'App' },
+    pointer: 'TestComponent',
+  } as CopyCustomComp,
+  CoolComponent0: {
+    name: 'CoolComponent0',
+    type: 'custom',
+    parent: { origin: 'original', key: 'TestComponent' },
+    pointer: 'CoolComponent',
+  } as CopyCustomComp,
+  GahlComponent0: {
+    name: 'GahlComponent0',
+    type: 'custom',
+    parent: { origin: 'original', key: 'CoolComponent' },
+    pointer: 'GahlComponent',
+  } as CopyCustomComp,
+}
 
 /**
  * @method capitalizeFirst
@@ -138,11 +169,11 @@ const importReact = (): string => `import React from 'react';\n`;
  */
 const isDoubleTagElement = (elementName: string): boolean => {
   const DOUBLE_TAG_ELEMENTS: {[key: string]: boolean} = {
-    view: true,
-    text: true,
-    scrollView: true,
-    touchableHighlight: true,
-    touchableOpacity: true,
+    View: true,
+    Text: true,
+    ScrollView: true,
+    TouchableHighlight: true,
+    TouchableOpacity: true,
   };
   return DOUBLE_TAG_ELEMENTS[elementName] !== undefined;
 };
@@ -241,8 +272,9 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp, originals: O
   const componentChildren: string[] = isCopyCustomComp(comp) ? originalsComp.children : comp.children;
 
   if (componentChildren.length === 0 || comp.type === 'custom') {
-    return isDoubleTagElement(comp.name)
-      ? `</${currElement}>`
+    return isDoubleTagElement(currElement)
+      ? `<${currElement}>
+         </${currElement}>`
       : `<${currElement}/>`;
   }
 
@@ -320,15 +352,18 @@ export const formatCode = (code: string): string => {
   });
 }
 
-// const customComponent = generateCustomComponentCode(originals['TestComponent'] as OrigCustomComp);
-// // console.log(customComponent);
+const customComponent = generateCustomComponentCode(originals['TestComponent'] as OrigCustomComp, originals, copies);
+// console.log(customComponent);
 // console.log(formatCode(customComponent));
-// const customComponent2 = generateCustomComponentCode(originals['CoolComponent'] as OrigCustomComp);
-// // console.log(customComponent2);
-// console.log(formatCode(customComponent2));
-// const customComponent3 = generateCustomComponentCode(originals['App'] as AppInterface);
-// // console.log(customComponent3);
+const customComponent2 = generateCustomComponentCode(originals['CoolComponent'] as OrigCustomComp, originals, copies);
+console.log(customComponent2);
+console.log(formatCode(customComponent2));
+const customComponent3 = generateCustomComponentCode(originals['GahlComponent'] as OrigCustomComp, originals, copies);
+// console.log(customComponent3);
 // console.log(formatCode(customComponent3));
+const customComponent4 = generateCustomComponentCode(originals['App'] as AppInterface, originals, copies);
+// console.log(customComponent4);
+// console.log(formatCode(customComponent4));
 
 // TODO: look into exporting app
 // TODO: create files function
