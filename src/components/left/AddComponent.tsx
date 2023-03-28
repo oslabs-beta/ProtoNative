@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import AppContext from '../../context/AppContext';
 import Modal from './Modal';
+import { Originals } from '../../parser/interfaces';
 
 
 // user clicks Add CC button, modal opens
@@ -17,27 +18,23 @@ const AddComponent = () => {
     event.preventDefault();
      // this regex tests that name is PascalCase:
     // it looks for CAP Letter followed by lower case & if more words follow same pattern: CAP then lower 
-    if (/^[A-Z][a-z]+(?:[A-Z][a-z]*)*$/.test(componentName)) {
-      if (componentName in originals) return alert('Component name already exists!');
-      setOriginals((previous: typeof originals): typeof originals => {
-        return {
-          ...previous,
-          [componentName]: {
-            name: componentName,
-            type: 'custom',
-            children: [],
-            state: [],
-            index: 0,
-            copies: [],
-          }
-        };
-      });
-      setComponentName('');
-      setCurrentComponent(componentName);
-      setIsOpen(false);
-    } else {
-      alert('Component name should be in PascalCase format!');
-    }
+    if (componentName in originals) return alert('Component name already exists!');
+    setOriginals((previous: Originals): Originals => {
+      return {
+        ...previous,
+        [componentName]: {
+          name: componentName,
+          type: 'custom',
+          children: [],
+          state: [],
+          index: 0,
+          copies: [],
+        }
+      };
+    });
+    setComponentName('');
+    setCurrentComponent(componentName);
+    setIsOpen(false);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

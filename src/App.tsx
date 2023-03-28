@@ -19,19 +19,19 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 const App = () => {
   const [originals, setOriginals] = React.useState<Originals>({
     App: { type: 'App', children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2'], state: [] } as AppInterface,
-    View: { type: 'View', children: [], index: 2 } as OrigNativeEl,
-    Button: { type: 'Button', children: [], index: 3 } as OrigNativeEl,
-    Text: { type: 'Text', children: [], index: 1 } as OrigNativeEl,
-    Image: { type: 'Image', children: [], index: 0 } as OrigNativeEl,
-    TextInput: { type: 'TextInput', children: [], index: 0 } as OrigNativeEl,
-    ScrollView: { type: 'ScrollView', children: [], index: 0 } as OrigNativeEl,
-    FlatList: { type: 'FlatList', children: [], index: 0 } as OrigNativeEl,
-    SectionList: { type: 'SectionList', children: [], index: 0 } as OrigNativeEl,
-    Switch: { type: 'Switch', children: [], index: 0 } as OrigNativeEl,
-    TouchableHighlight: { type: 'TouchableHighlight', children: [], index: 0 } as OrigNativeEl,
-    TouchableOpacity: { type: 'TouchableOpacity', children: [], index: 0 } as OrigNativeEl,
-    StatusBar: { type: 'StatusBar', children: [], index: 0 } as OrigNativeEl,
-    ActivityIndicator: { type: 'ActivityIndicator', children: [], index: 0 } as OrigNativeEl,
+    View: { type: 'View', index: 2 } as OrigNativeEl,
+    Button: { type: 'Button', index: 3 } as OrigNativeEl,
+    Text: { type: 'Text', index: 1 } as OrigNativeEl,
+    Image: { type: 'Image', index: 0 } as OrigNativeEl,
+    TextInput: { type: 'TextInput', index: 0 } as OrigNativeEl,
+    ScrollView: { type: 'ScrollView', index: 0 } as OrigNativeEl,
+    FlatList: { type: 'FlatList', index: 0 } as OrigNativeEl,
+    SectionList: { type: 'SectionList', index: 0 } as OrigNativeEl,
+    Switch: { type: 'Switch', index: 0 } as OrigNativeEl,
+    TouchableHighlight: { type: 'TouchableHighlight', index: 0 } as OrigNativeEl,
+    TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
+    StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
+    ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
     TestComponent: {
       name: 'TestComponent',
       type: 'custom',
@@ -91,48 +91,24 @@ const App = () => {
       type: 'custom',
       parent: { origin: 'original', key: 'App' },
       pointer: 'TestComponent',
-      children: function () {
-        return originals[this.pointer].children;
-      },
-      state: function () {
-        return originals[this.pointer].state;
-      }
     } as CopyCustomComp,
     TestComponent1: {
       name: 'TestComponent1',
       type: 'custom',
       parent: { origin: 'original', key: 'App' },
       pointer: 'TestComponent',
-      children: function () {
-        return originals[this.pointer].children;
-      },
-      state: function () {
-        return originals[this.pointer].state;
-      }
     } as CopyCustomComp,
     TestComponent2: {
       name: 'TestComponent2',
       type: 'custom',
       parent: { origin: 'original', key: 'App' },
       pointer: 'TestComponent',
-      children: function () {
-        return originals[this.pointer].children;
-      },
-      state: function () {
-        return originals[this.pointer].state;
-      }
     } as CopyCustomComp,
     CoolComponent0: {
       name: 'CoolComponent0',
       type: 'custom',
       parent: { origin: 'original', key: 'TestComponent' },
       pointer: 'CoolComponent',
-      children: function () {
-        return originals[this.pointer].children;
-      },
-      state: function () {
-        return originals[this.pointer].state;
-      }
     } as CopyCustomComp,
   });
   const [currentComponent, setCurrentComponent] = React.useState('App');
