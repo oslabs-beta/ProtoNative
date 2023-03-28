@@ -4,7 +4,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  // outline: 1px solid lime;
 }
 
 
@@ -12,6 +11,7 @@ body {
   display: flex;
   flex-direction: column;
   font-family: $main-font;
+  overflow-y: hidden;
 }
 
 

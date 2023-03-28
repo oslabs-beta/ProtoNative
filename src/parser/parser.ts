@@ -8,8 +8,8 @@ import {
   Copies
 } from './interfaces';
 
-const { format } = require('prettier');
-
+declare const prettier: any;
+declare const prettierPlugins: any;
 
 // const originals: Originals = {
 //   App: { type: 'App', children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2', 'Button3'], state: [] } as AppInterface,
@@ -312,9 +312,11 @@ export const generateCustomComponentCode = (component: OrigCustomComp | AppInter
   `;
 };
 
-export const formatCode = (code: string): string => {
-  return format(code, {
+export const formatCode = (code: string) => {
+
+  return prettier.format(code, {
     parser: 'babel',
+    plugins: prettierPlugins,
     jsxBracketSameLine: true,
     singleQuote: true
   });
