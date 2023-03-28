@@ -22,11 +22,12 @@ body {
   padding: .5rem;
   gap: 10px;
   background-color: rgb(85, 85, 85);
+  overflow-y: hidden;
 }
 
 #right-container {
   display: grid;
-  grid-template-rows: .53fr .08fr .53fr;
+  grid-template-rows: .5fr .08fr .5fr;
 }
 
 #left-container {
