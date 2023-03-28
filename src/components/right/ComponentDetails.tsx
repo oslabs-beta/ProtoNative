@@ -31,14 +31,15 @@ const ComponentDetails = (): JSX.Element => {
     setChildrenOfCurrent(originals[currentComponent].children)
     // console.log('children of current', originals[currentComponent].children)
     setChildElements(
-     originals[currentComponent].children.map((childName: string, index: number) => {
+      originals[currentComponent].children.map((childName: string, index: number) => {
         if (currentComponent !== 'App' && currentComponent !== null) {
           console.log('mapping', childName);
           return (
             <ElementBlock
               key={index}
               componentName={childName}
-              // components={copies}
+              components={copies}
+              originals={originals}
               index={index}
               moveItem={moveItem}
               location={'details'}

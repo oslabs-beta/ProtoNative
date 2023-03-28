@@ -1,11 +1,20 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import AppContext from '../../context/AppContext';
-import { CopyCustomComp, CopyNativeEl } from '../../parser/interfaces';
+import { CopyCustomComp, CopyNativeEl, OrigCustomComp, AppInterface, OrigNativeEl } from '../../parser/interfaces';
 import { Originals, Copies } from '../../parser/interfaces';
 import Modal from './Modal';
 
-const ComponentListItem = (props: {name: string}): JSX.Element => {
-	const name = props.name;
+const isCopyCustomComp = (comp: CopyNativeEl | CopyCustomComp): comp is CopyCustomComp => {
+  return comp.type === 'custom';
+}
+const _ = require('lodash');
+
+type ComponentListItemProps = {
+	comp: AppInterface | OrigCustomComp;
+}
+
+const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
+	const comp = props.comp;
 	const { currentComponent, setCurrentComponent, originals, setOriginals, copies, setCopies } = useContext(AppContext);
 	const [ComponentItem, setComponentItem] = useState(null);
 
@@ -19,104 +28,87 @@ const ComponentListItem = (props: {name: string}): JSX.Element => {
 	}
 	
 	useEffect(() => {
-		if (name === 'App') {
-			currentComponent === name
-				? setComponentItem(
-					<div className='highlightedComponentListItem'>
-						<span> {name} </span>
-					</div>
-				)
-				: setComponentItem(
-					<div className='componentListItem' onClick={() => setCurrentComponent(name)}>
-						<span> {name} </span>
+		if (comp.type === 'App') {
+				setComponentItem(
+					<div className={currentComponent === comp.type ? 'highlightedComponentListItem' : 'componentListItem'}  onClick={() => setCurrentComponent(comp.type)}>
+						<span> {comp.type} </span>
 					</div>
 				)
 		} else {
-			currentComponent === name
-				? setComponentItem(
-					<div className='highlightedComponentListItem'>
-						<span> {name} </span>
-						<button onClick={(e) => handleStateClick(e)}>State</button>
+			setComponentItem(
+				<div className={currentComponent === comp.name ? 'highlightedComponentListItem' : 'componentListItem'}  onClick={() => setCurrentComponent(comp.name)}>
+					<span> {comp.name} </span>
+					<button onClick={(e) => handleStateClick(e)}>State</button>
 						<button onClick={(e) => handleDeleteClick(e)}>Delete</button>
-					</div>
-				)
-				: setComponentItem(
-					<div className='componentListItem' onClick={() => setCurrentComponent(name)}>
-						<span> {name} </span>
-						<button onClick={(e) => handleStateClick(e)}>State</button>
-						<button onClick={(e) => handleDeleteClick(e)}>Delete</button>
-					</div>
-				)
+				</div>
+			)
 		}
 	}, [currentComponent, originals, copies]);
 
-	
-	// Deletes all children and the component itself from the copies object and any references to the component in the originals object
-	const trashCan = (name: string, copyCopies: Copies, copyOriginals: Originals): void => {
-		const deletedComponent: (CopyNativeEl | CopyCustomComp) = copyCopies[name];
+	const trashCan = (compToDelete: CopyNativeEl | CopyCustomComp, copyCopies: Copies, copyOriginals: Originals) => {
 		
-		let children: string[];
-		// if the component is custom, use the pointer to find the children of its original
-		// if the component is native, use the children array
-		deletedComponent.type === 'custom'
-			? children = copyOriginals[deletedComponent.pointer].children
-			: children = deletedComponent.children;
-		
-		// recursively call trashCan on all children
-		children.forEach((child: string): void => trashCan(child, copyCopies, copyOriginals));
-		// delete the custom component from the parent's children array in ORIGINALS or COPIES
-		deletedComponent.parent.origin === 'original'
-			?	copyOriginals[deletedComponent.parent.key].children = copyOriginals[deletedComponent.parent.key].children.filter((child: string): boolean => child !== name)
-			: copyCopies[deletedComponent.parent.key].children = copyCopies[deletedComponent.parent.key].children.filter((child: string): boolean => child !== name);
 
-		// delete the custom component from original's copies array
-		deletedComponent.type === 'custom' &&
-			(copyOriginals[deletedComponent.pointer].copies = copyOriginals[deletedComponent.pointer].copies.filter((copy: string): boolean => copy !== name));
-		
-		// delete the copy component instance from COPIES
-		delete copyCopies[name];
+		const deleteCompInCopies = (compToDelete: CopyNativeEl | CopyCustomComp) => {
+			const compToDeleteParent = compToDelete.parent;
+			// delete child from parent's children array
+			if (compToDeleteParent.origin === 'original') {
+				const parentChildren: string[] = copyOriginals[compToDeleteParent.key].children;
+				const parentChildIdx = parentChildren.indexOf(compToDelete.name);
+				parentChildren.splice(parentChildIdx, 1);
+			} else if (compToDeleteParent.origin === 'copies'){
+				const parentChildToDelete: CopyNativeEl | CopyCustomComp = copyCopies[compToDeleteParent.key];
+				const parentChildren: string[] = isCopyCustomComp(parentChildToDelete) ? copyOriginals[parentChildToDelete.pointer].children : parentChildToDelete.children;
+				const parentChildIdx = parentChildren.indexOf(compToDelete.name);
+				parentChildren.splice(parentChildIdx, 1);
+			}
+
+			const compToDeleteChildren = isCopyCustomComp(compToDelete) ? copyOriginals[compToDelete.pointer].children : compToDelete.children;
+
+			if (compToDeleteChildren.length === 0) {
+				delete copyCopies[compToDelete.name];
+				return;
+			}
+
+			for (const child of compToDeleteChildren) {
+				console.log('CHILD', child);
+				if (isCopyCustomComp(copyCopies[child])) {
+					const allCopiesInOriginals = copyOriginals[copyCopies[child].pointer].copies;
+					allCopiesInOriginals.splice(allCopiesInOriginals.indexOf(copyCopies[child].name), 1);
+				}
+				if (copyCopies[child]) {
+					deleteCompInCopies(copyCopies[child]);
+				} 
+			}
+			delete copyCopies[compToDelete.name];
+		}
+			deleteCompInCopies(compToDelete);
 	}
 
+	// TODO: Add a modal that asks the user if they are sure they want to delete the component
 	// TODO: import type of event object
 	// type for event React.MouseEvent<HTMLElement> but hasn't been working, so using any for now
 	const handleDeleteClick = (event: any): void => {
-
 		// prevent the click from propagating to the parent div
 		event.cancelBubble = true;
-		event.stopPropagation && event.stopPropagation();
-		
-		// TODO: Add a modal that asks the user if they are sure they want to delete the component
-		setCurrentModal('delete')
-		setIsOpen(true);
-		
-		// Function to deep copy an object
-		const deepCopy = (obj: any): any => {
-			if (typeof obj === 'object') {
-				if (Array.isArray(obj)) {
-					let copy: string[] = [];
-					obj.forEach((item: string): number => copy.push(item));
-					return copy;
-				} else {
-					let copy: {[key: string]: {}} = {};
-					for (let key in obj) {
-						copy[key] = deepCopy(obj[key]);
-					}
-					return copy;
-				}
-			} else return obj;
-		}
-		let [newCopies, newOriginals] = [deepCopy(copies), deepCopy(originals)];
-		originals[name].copies.forEach((copyName: string) => trashCan(copyName, newCopies, newOriginals));
+		if (event.stopPropagation) event.stopPropagation();
 
-		// delete the custom component from originals context
-		delete newOriginals[name];
+		console.log('ORIGINALS b4', originals);
+		console.log('COPIES b4', copies);
+		
+		let [newCopies, newOriginals] = [_.cloneDeep(copies), _.cloneDeep(originals)];
+
+		originals[comp.name].copies.forEach((copyName: string) => {
+			trashCan(newCopies[copyName], newCopies, newOriginals)
+		});
+		// delete the custom component from originals
+		delete newOriginals[comp.name];
 
 		// set copies and originals to the new copies and originals
 		setCopies(newCopies);
 		setOriginals(newOriginals);
-		
+
 		// if the deleted component is the current component, set current component to null
-		currentComponent === name && setCurrentComponent('App');
+		if (currentComponent === comp.name) setCurrentComponent('App');
 	}
 	
 	// TODO: Add a modal for the user to input state

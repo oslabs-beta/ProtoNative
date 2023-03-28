@@ -18,7 +18,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const App = () => {
   const [originals, setOriginals] = React.useState<Originals>({
-    App: { type: 'App', children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2', 'CoolComponent0'], state: [] } as AppInterface,
+    App: { type: 'App', children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2'], state: [] } as AppInterface,
     View: { type: 'View', children: [], index: 2 } as OrigNativeEl,
     Button: { type: 'Button', children: [], index: 3 } as OrigNativeEl,
     Text: { type: 'Text', children: [], index: 1 } as OrigNativeEl,
@@ -125,7 +125,7 @@ const App = () => {
     CoolComponent0: {
       name: 'CoolComponent0',
       type: 'custom',
-      parent: { origin: 'original', key: 'App' },
+      parent: { origin: 'original', key: 'TestComponent' },
       pointer: 'CoolComponent',
       children: function () {
         return originals[this.pointer].children;

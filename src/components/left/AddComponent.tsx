@@ -59,7 +59,7 @@ const AddComponent = () => {
       </button>
       {isOpen && (
         <div id="modal">
-          <Modal isOpen={isOpen} handleClick={()=> setIsOpen(false)}>
+          <Modal handleClick={()=> setIsOpen(false)}>
             <div id="modal-content">
               <h2>Add Custom Component</h2>
               <form onSubmit={handleSubmit}>
