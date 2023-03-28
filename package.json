@@ -12,6 +12,24 @@
     "preview": "vite preview"
   },
   "author": "Team ProtoNative",
+  "contributors": [
+    "Matthew Kymn", 
+    "Michelle Leong",
+    "Jonathan Klibansky",
+    "Patricia Good",
+    "Raymond Ferrer"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oslabs-beta/ProtoNative.git"
+  },
+  "keywords": [
+    "electron",
+    "prototyping",
+    "react",
+    "native"
+  ],
+  "homepage": "https://github.com/oslabs-beta/ProtoNative#readme",
   "license": "MIT",
   "devDependencies": {
     "concurrently": "7.6.0",
