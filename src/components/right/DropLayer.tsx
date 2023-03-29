@@ -7,6 +7,7 @@ import {
   Copies,
   CopyCustomComp,
   CopyNativeEl,
+  OrigNativeEl,
 } from '../../parser/interfaces';
 
 type DropLayerProps = {
@@ -46,6 +47,7 @@ const DropLayer = ({
     let item: string;
     let itemParent: { origin: string; key: string };
     let newSpot: any; //copy comp or originals comp type
+
     // const originalPosition = originals[parentComp] ? originals[parentComp] as AppInterface | OrigCustomComp: copies;
 
     //parentComp = dragged item's parent vs
@@ -185,22 +187,22 @@ const DropLayer = ({
   };
 
   const addItem = (name: string, hoverIndex: number, parent: string) => {
-    console.log('hi');
     let newElement = {} as CopyCustomComp | CopyNativeEl;
     let newEleObj = originals[name];
+    //adding a  custom element
     if (originals[name].type === 'custom') {
-      newElement = {
-        name: newEleObj.name + newEleObj.index,
-        type: newEleObj.type,
-        parent: { origin: 'original', key: parent },
-        pointer: name,
-      };
-
+      //custom component dropped to top level
       if (originals[parent]) {
+        newElement = {
+          name: newEleObj.name + newEleObj.index,
+          type: newEleObj.type,
+          parent: { origin: 'original', key: parent },
+          pointer: name,
+        };
         //drop array is correct and splices correctly
         const dropArr = [...originals[parent].children];
-        // console.log('dropArr', dropArr);
         dropArr.splice(hoverIndex, 0, newElement.name);
+        console.log('dropArr', dropArr);
 
         setOriginals((previous: Originals): Originals => {
           const prevDroppedElement = previous[name] as OrigCustomComp;
@@ -222,18 +224,37 @@ const DropLayer = ({
             [parent]: newUpdatedComponent,
           };
         });
+
+        setCopies((previous: Copies): Copies => {
+          return {
+            ...previous,
+            [newElement.name]: newElement,
+          };
+        });
+
+        //custom component dropped to a nested element (FIX: code block breaks here)
       } else {
-        const dropArr = copies[parent].children;
+        //new element points to copies array instead
+        newElement = {
+          name: newEleObj.name + newEleObj.index,
+          type: newEleObj.type,
+          parent: { origin: 'copies', key: parent },
+          pointer: name,
+        };
+
+        //also splicing correctly
+        const dropArr = [...copies[parent].children];
         dropArr.splice(hoverIndex, 0, newElement.name);
 
+        //incrementing index + adding copies to the originals!
         setOriginals((previous: Originals): Originals => {
           const prevDroppedElement = previous[name] as OrigCustomComp;
+
           const newDroppedElement = {
             ...prevDroppedElement,
             index: prevDroppedElement.index + 1,
             copies: [...prevDroppedElement.copies, newElement.name],
           };
-
           return {
             ...previous,
             [name]: newDroppedElement,
@@ -244,6 +265,41 @@ const DropLayer = ({
           const prevUpdatedComponent = previous[parent] as
             | CopyNativeEl
             | CopyCustomComp;
+
+          const newUpdatedComponent = {
+            ...prevUpdatedComponent,
+            children: dropArr,
+          };
+          return {
+            ...previous,
+            [parent]: newUpdatedComponent,
+            [newElement.name]: newElement,
+          };
+        });
+      }
+    }
+    //adding a new native element
+    else {
+      //dropped to a top level component
+      if (originals[parent]) {
+        newElement = {
+          name: newEleObj.type + newEleObj.index,
+          type: newEleObj.type,
+          parent: { origin: 'original', key: parent },
+          children: [],
+        };
+        //drop array is correct and splices correctly
+        const dropArr = [...originals[parent].children];
+        dropArr.splice(hoverIndex, 0, newElement.name);
+
+        setOriginals((previous: any) => {
+          const prevDroppedElement = previous[name];
+          const newDroppedElement = {
+            ...prevDroppedElement,
+            index: prevDroppedElement.index + 1,
+          };
+
+          const prevUpdatedComponent = previous[parent];
           const newUpdatedComponent = {
             ...prevUpdatedComponent,
             children: dropArr,
@@ -251,11 +307,57 @@ const DropLayer = ({
 
           return {
             ...previous,
-            [newElement.name]: newUpdatedComponent,
+            [name]: newDroppedElement,
+            [parent]: newUpdatedComponent,
+          };
+        });
+
+        setCopies((previous: Copies): Copies => {
+          return {
+            ...previous,
+            [newElement.name]: newElement,
+          };
+        });
+
+        //dropped native element into native element
+      } else {
+        newElement = {
+          name: newEleObj.type + newEleObj.index,
+          type: newEleObj.type,
+          parent: { origin: 'copies', key: parent },
+          children: [],
+        };
+
+        const dropArr = [...copies[parent].children];
+        dropArr.splice(hoverIndex, 0, newElement.name);
+
+        setOriginals((previous: Originals): Originals => {
+          const prevDroppedElement = previous[name] as OrigNativeEl;
+          const newDroppedElement = {
+            ...prevDroppedElement,
+            index: prevDroppedElement.index + 1,
+          };
+
+          return {
+            ...previous,
+            [name]: newDroppedElement,
+          };
+        });
+
+        setCopies((previous: Copies): Copies => {
+          const prevUpdatedComponent = previous[parent] as CopyNativeEl;
+          const newUpdatedComponent = {
+            ...prevUpdatedComponent,
+            children: dropArr,
+          };
+
+          return {
+            ...previous,
+            [parent]: newUpdatedComponent,
+            [newElement.name]: newElement,
           };
         });
       }
-    } else {
     }
     setCounter((prev) => ++prev);
   };
