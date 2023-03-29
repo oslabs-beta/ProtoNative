@@ -17,7 +17,11 @@ const CodeBlock = (): JSX.Element => {
   useEffect(() => {
     console.log(originals);
     console.log(copies);
-    const code = formattedCompCode(originals[currentComponent] as OrigCustomComp,originals,copies);
+    const code = formattedCompCode(
+      originals[currentComponent] as OrigCustomComp,
+      originals,
+      copies
+    );
     setCode(code);
 
     Prism.highlightAll(null, () => {
