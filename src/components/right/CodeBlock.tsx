@@ -7,7 +7,7 @@ import 'prismjs/plugins/line-numbers/prism-line-numbers.min.js';
 import 'prism-themes/themes/prism-shades-of-purple.css';
 import 'prismjs/plugins/match-braces/prism-match-braces.min';
 import 'prismjs/plugins/match-braces/prism-match-braces.css';
-import { generateCustomComponentCode, formatCode } from '../../parser/parser';
+import { formattedCompCode } from '../../parser/parser';
 import { OrigCustomComp } from '../../parser/interfaces';
 
 const CodeBlock = (): JSX.Element => {
@@ -17,13 +17,7 @@ const CodeBlock = (): JSX.Element => {
   useEffect(() => {
     console.log(originals);
     console.log(copies);
-    const code = formatCode(
-      generateCustomComponentCode(
-        originals[currentComponent] as OrigCustomComp,
-        originals,
-        copies
-      )
-    );
+    const code = formattedCompCode(originals[currentComponent] as OrigCustomComp,originals,copies);
     setCode(code);
 
     Prism.highlightAll(null, () => {

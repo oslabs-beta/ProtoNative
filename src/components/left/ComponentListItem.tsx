@@ -52,55 +52,48 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 	}, [currentComponent, originals, copies]);
 
 	const trashCan = (compToDelete: CopyNativeEl | CopyCustomComp, copyCopies: Copies, copyOriginals: Originals) => {
+		// For any CopyNativeEl, we need to delete:
+		// (1) the reference in parent's children array
+		// (2) itself in the copies context
+		// all its children and the children's (1), (2)
 		
+		// For any CopyCustomComp, we need to delete:
+		// (1) the reference in parent's children array
+		// (2) itself in the copies context
+		// (3) the reference in its pointer's copies array
+		// all its children and the children's (1), (2), (3)
+
 		const deleteCompInCopies = (compToDelete: CopyNativeEl | CopyCustomComp) => {
-
-			console.log('NAME', compToDelete.name);
-			console.log('COMP TO DELETE', compToDelete);
-			
 			const compToDeleteParent: Parent = compToDelete.parent;
-			// delete child from parent's children array
+			// delete child from compToDelete's parent's children array
 			if (compToDeleteParent.origin === 'original') {
-
-				// TestComponent
 				const origParent = copyOriginals[compToDeleteParent.key] as OrigCustomComp;
-				console.log('ORIG PARENT', origParent);
-				
 				const parentChildren: string[] = origParent.children;
 				const parentChildIdx = parentChildren.indexOf(compToDelete.name);
 				parentChildren.splice(parentChildIdx, 1);
 			} else if (compToDeleteParent.origin === 'copies') {
-				const parentChildToDelete = copyCopies[compToDeleteParent.key];
-				const originalParentElement = copyOriginals[parentChildToDelete.pointer] as OrigCustomComp;
-				const parentChildren: string[] = isCopyCustomComp(parentChildToDelete) ? originalParentElement.children : parentChildToDelete.children;
+				const parentChildToDelete = copyCopies[compToDeleteParent.key] as CopyNativeEl;
+				const parentChildren: string[] = parentChildToDelete.children;
 				const parentChildIdx = parentChildren.indexOf(compToDelete.name);
 				parentChildren.splice(parentChildIdx, 1);
 			}
 
-			// find the children of the component to delete
-			// ['Button2', 'View1', 'View2', 'BruhComponent0']
+			// find the children of compToDelete
 			const originalElement = copyOriginals[compToDelete.pointer] as OrigCustomComp;
 			const compToDeleteChildren = isCopyCustomComp(compToDelete) ? originalElement.children : compToDelete.children;
 			
+			// if compToDelete has no children, delete its instance from the copies context
 			if (compToDeleteChildren.length === 0) {
 				delete copyCopies[compToDelete.name];
 				return;
 			}
-			// [CoolComponent0]
-			// View0 child is CoolComponent0
-			// originals => coolcomponent copies is emptied
-			console.log('COMP TO DELETE CHILDREN', compToDeleteChildren);
+			
+			// make copy of children array since splicing elements from it while looping over it causes errors 
 			const copyOfCompToDeleteChildren = [...compToDeleteChildren];
 			for (const child of copyOfCompToDeleteChildren) {
-				console.log('CHILD------------', child);
-				
-				// child = CoolComponent0
-				// Delete the copy in copies array in originals
+				// if the child of compToDelete is a CopyCustomComp
 				if (isCopyCustomComp(copyCopies[child])) {
-					// TestComponent => children array is in originals, the children array still has CoolComponent0
-					// testcomponent1 => children array is in originals
-					// delete the copy reference in the parent's children array (from originals)
-					// TestComponent in Originals .children [Button0, CoolComponent0]
+					// delete the copy reference of the child in the parent's children array (from originals context)
 					if (copyCopies[child].parent.origin === 'original') {
 						const parentOfCopy = copyOriginals[copyCopies[child].parent.key] as OrigCustomComp;
 						const parentChildren = parentOfCopy.children;
@@ -113,35 +106,34 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 						parentChildren.splice(parentChildIdx, 1);
 					}
 
-
-					// delete the copy reference in the original's copies array (from copies)
+					// child will be a copy of OrigCustomComp, meaning that child appears in the copies array of its pointer
+					// delete the copy reference of the child in the original's copies array (from originals context)
 					const originalElement = copyOriginals[copyCopies[child].pointer] as OrigCustomComp;
 					const allCopiesInOriginals = originalElement.copies;
 					allCopiesInOriginals.splice(allCopiesInOriginals.indexOf(copyCopies[child].name), 1);
 
-
-					console.log('DELETED CHILD!!!!!!!!!!!!!', child);
-					// delete the copy object from the copies context
+					// delete the child copy object from the copies context
 					delete copyCopies[child];
-				} else if (copyCopies[child]) { // Button0
-					console.log('this is the child that will be deleted: ', child);
+				} 
+				// else if child is NOT a CopyCustomComp and the child has not yet been deleted from copies context
+				else if (copyCopies[child]) { 
+					// recursively delete the child in copies context and all of its children and copies
 					deleteCompInCopies(copyCopies[child]);
 				}
 			}
 
-			// delete the copy from the original's copies array if it is a copy of a custom component
+			// delete the copy from the original's copies array (in originals context) if it is a copy of a custom component
 			if (isCopyCustomComp(compToDelete)) {
 				const copyInOriginals = copyOriginals[compToDelete.pointer] as OrigCustomComp;
 				const copyCompToDelete: string[] = copyInOriginals.copies;
 				const copyCompToDeleteIdx = copyCompToDelete.indexOf(compToDelete.name);
 				copyCompToDelete.splice(copyCompToDeleteIdx, 1);
 			}
-
+			// delete compToDelete in copies context
 			delete copyCopies[compToDelete.name];
 		}
+		
 		deleteCompInCopies(compToDelete);
-		console.log('ORIGINALS', copyOriginals);
-		console.log('COPIES', copyCopies);
 	}
 
 	const handleDeleteClick = (event: any): void => {
@@ -173,7 +165,7 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		const OriginalCustomComponent = comp as OrigCustomComp;
 		const originalElement = originals[OriginalCustomComponent.name] as OrigCustomComp;
 
-		// if the originalelement has no copies, delete the children of the original element
+		// if the original element has no copies, delete the children of the original element
 		// run trashcan on all children of the original element (children are typeof CopyNativeEl | CopyCustomComp)
 		if (originalElement.copies.length === 0) {
 			originalElement.children.forEach((childName: string) => {
