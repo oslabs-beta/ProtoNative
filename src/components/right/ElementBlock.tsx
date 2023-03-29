@@ -145,12 +145,8 @@ const ElementBlock = ({
         originals={originals}
         setOriginals={setOriginals}
       />
-      <div
-        style={{ border: '1px solid black', backgroundColor: 'rgba(0,0,0,.4)' }}
-        className='element'
-        ref={ref}
-      >
-        <p>
+      <div style={{ border: '1px solid black', backgroundColor :'rgba(0, 3, 0, .4)' }} className='element' ref={ref}>
+        <p style={{color: 'white'}}>
           {copies[componentName].type === 'custom'
             ? copies[componentName].pointer
             : copies[componentName].type}
