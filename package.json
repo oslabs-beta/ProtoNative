@@ -54,9 +54,6 @@
     "vite": "^4.2.1",
     "electron": "^23.2.0"
   },
-  "dependencies": {
-    "electron-serve": "^1.1.0"
-  },
   "build": {
     "appId": "protonative",
     "productName": "ProtoNative",

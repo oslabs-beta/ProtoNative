@@ -1,12 +1,9 @@
 // main.js
 const { app, BrowserWindow } = require('electron');
-const serve = require('electron-serve');
 const path = require('path');
 const url = require('url');
 
 const isDev = process.env.NODE_ENV === 'development';
-
-const loadURL = serve({ directory: 'build' });
 
 function createWindow() {
   const win = new BrowserWindow({
