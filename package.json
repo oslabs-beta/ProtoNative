@@ -5,7 +5,7 @@
   "main": "./src/electron.ts",
   "scripts": {
     "start": "electron .",
-    "dev": "concurrently \"npm run vite:dev\" \"node -e \\\"setTimeout(() => process.exit(0), 1000)\\\" && npm run electron:dev\"",
+    "dev": "concurrently \"npm run vite:dev\" \"node -e \\\"setTimeout(() => process.exit(0), 500)\\\" && npm run electron:dev\"",
     "vite:dev": "vite",
     "electron:dev": "cross-env NODE_ENV=development electron .",
     "build": "vite build",
