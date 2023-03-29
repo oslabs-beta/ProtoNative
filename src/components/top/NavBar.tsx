@@ -71,16 +71,23 @@ const NavBar = (): JSX.Element => {
       {isOpen ? (
         <Modal handleClick={handleClick}>
         {currentModal === 'clearAll' ? (
-          <div id='clearAll'>
-            <h1>Are you sure you want to clear all?</h1>
-            <button onClick={() => clearAll()}>Yes</button>
-            <button onClick={() => handleClick()}>No</button>
+          <div id='confirmModal'>
+            <h3>Are you sure you want to clear all?</h3>
+            <p>This will delete <b>absolutely everything</b> from your application!</p>
+            <p>Please confirm to proceed.</p>
+            <div>
+              <button onClick={() => clearAll()}>Confirm</button>
+              <button onClick={() => handleClick()}>Cancel</button>
+            </div>
           </div>
         ) : currentModal === 'export' ? (
-          <div id='export'>
-            <h1>Are you sure you want to export?</h1>
-            <button onClick={() => exportApp()}>Yes</button>
-            <button onClick={() => handleClick()}>No</button>
+          <div id='confirmModal'>
+            <h3>Export</h3>
+            <p>Save a folder containing all created components to your local machine</p>
+            <div>
+              <button onClick={() => exportApp()}>Confirm</button>
+              <button onClick={() => handleClick()}>Cancel</button>
+            </div>
           </div>
         ) : null}
         </Modal>

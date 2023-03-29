@@ -233,39 +233,32 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 			{isOpen ? (
 				 <Modal handleClick={handleClick}>
 					{currentModal === 'state' ? (
-						
-						<div>
-							<div id='stateModal'>
-								<h3>Add State to {comp.type ?? OriginalCustomComponent.name}</h3>
-								<label htmlFor="stateInput">New State</label>
-								<input 
-								  id='stateInput' 
-								  value={newState} 
-								  onChange={(e) => setNewState(e.target.value)}
-								   />
-								<button onClick={() => handleClose()}>Cancel</button>
-								<button onClick={handleStateSaveClick}>Save</button>
-							</div>
-						</div> 
+						<div id='stateModal'>
+							<h3>Add State to {OriginalCustomComponent.name ?? comp.type}</h3>
+							<p>Initialize or edit a state variable for {OriginalCustomComponent.name ?? comp.type}</p>
+							<label htmlFor="stateInput">New State</label>
+							<input 
+								id='stateInput' 
+								value={newState} 
+								onChange={(e) => setNewState(e.target.value)}
+									/>
+							<button onClick={() => handleClose()}>Cancel</button>
+							<button onClick={handleStateSaveClick}>Save</button>
+						</div>
 						)
-						: currentModal === 'delete' ? (
-
-							<div>
-								<div id='deleteModal'></div>
-						      <h3>Are you sure you want to delete {OriginalCustomComponent.name}?</h3>
-									<div>This will delete all occurrences of the component everywhere</div>
-									<button onClick={handleDeleteConfirmClick}>Confirm</button>
-									<button onClick={() => handleClose()}>Cancel</button>	
-								</div>
-						) : null
+					: currentModal === 'delete' ? (
+						<div id='deleteModal'>
+							<h3>Are you sure you want to delete {OriginalCustomComponent.name}?</h3>
+							<p>This will delete all occurrences of {OriginalCustomComponent.name} everywhere!</p>
+							<button onClick={handleDeleteConfirmClick}>Confirm</button>
+							<button onClick={() => handleClose()}>Cancel</button>	
+						</div>
+					) : null
 					}
 				</Modal>
 				
-				) : (
-				<></>
-            )}
+				) : null}
 		</>
-
 	);
 };
 
