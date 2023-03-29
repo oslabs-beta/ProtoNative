@@ -1,11 +1,17 @@
 import React, { useContext, useState } from 'react';
 import AppContext from '../../context/AppContext';
-import { AppInterface, Originals, OrigNativeEl } from '../../parser/interfaces';
+import { formattedCompCode } from '../../parser/parser';
+import { OrigCustomComp, OrigNativeEl, AppInterface } from '../../parser/interfaces';
 import Modal from '../left/Modal';
+import { saveAs } from 'file-saver';
+import JSZip from 'jszip';
+const isOrigCustomComp = (comp: OrigCustomComp | OrigNativeEl | AppInterface): comp is OrigCustomComp => {
+  return comp.type === 'custom';
+}
 
 const NavBar = (): JSX.Element => {
+
   const { setCopies, setOriginals, setCurrentComponent } = useContext(AppContext);
-  const [currentModal, setCurrentModal] = useState(null);
 	const [isOpen, setIsOpen] = useState(false);
 
   const clearAll = () => {
@@ -31,23 +37,26 @@ const NavBar = (): JSX.Element => {
   };
 
   const handleClearAllClick = () => {
-    setCurrentModal('clearAll');
     setIsOpen(true);
   };
 
-  const handleExportClick = () => {
-    setCurrentModal('export');
-    setIsOpen(true);
-  };
+  const { originals, copies } = useContext(AppContext);
 
-  const exportApp = () => {
-    // loop through all custom components in Originals context and create a new file for each one
-    // fill each file with the appropriate code using the parser.ts file
-    // ask users where they want to save the files
-    // save the files
-    // close the modal
-    
-  };
+  const exportFiles = (): void => {
+    const zip = new JSZip();
+    zip.file('App.jsx', formattedCompCode(originals['App'] as AppInterface, originals, copies));
+    for (const component in originals) {
+      const currComponent = originals[component];
+      if (isOrigCustomComp(currComponent)) {
+        const fileName = `${currComponent.name}.jsx`;
+        const componentCode = formattedCompCode(originals[currComponent.name] as OrigCustomComp, originals, copies);
+        zip.file(fileName, componentCode);
+      }
+    }
+    zip.generateAsync({ type: 'blob' }).then(function(allFiles) {
+      saveAs(allFiles, 'App.zip');
+    });
+  }
 
   const handleClick = () => {
 		setIsOpen(false);
@@ -64,13 +73,13 @@ const NavBar = (): JSX.Element => {
 
         <div id='master-button-container'>
           <button className='master-button' onClick={() => handleClearAllClick()}>Clear All</button>
-          <button className='master-button' onClick={() => handleExportClick()}>Export</button>
+          <button onClick={exportFiles} className='master-button'>Export</button>
         </div>
       </div>
 
-      {isOpen ? (
+      {isOpen && (
         <Modal handleClick={handleClick}>
-        {currentModal === 'clearAll' ? (
+        {
           <div id='confirmModal'>
             <h3>Are you sure you want to clear all?</h3>
             <p>This will delete <b>absolutely everything</b> from your application!</p>
@@ -80,18 +89,9 @@ const NavBar = (): JSX.Element => {
               <button onClick={() => handleClick()}>Cancel</button>
             </div>
           </div>
-        ) : currentModal === 'export' ? (
-          <div id='confirmModal'>
-            <h3>Export</h3>
-            <p>Save a folder containing all created components to your local machine</p>
-            <div>
-              <button onClick={() => exportApp()}>Confirm</button>
-              <button onClick={() => handleClick()}>Cancel</button>
-            </div>
-          </div>
-        ) : null}
+        }
         </Modal>
-      ) : null}
+      )}
     </>
   )
 }
