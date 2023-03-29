@@ -1,5 +1,5 @@
 {
-  "name": "proto-native",
+  "name": "protonative",
   "version": "1.0.0",
   "description": "A React Native prototyping tool",
   "main": "./src/electron.ts",
@@ -8,7 +8,9 @@
     "vite": "vite",
     "electron": "cross-env NODE_ENV=development electron .",
     "build": "vite build",
-    "electron-builder": "electron-builder --windows",
+    "build:windows": "electron-builder --windows",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
     "preview": "vite preview"
   },
   "author": "Team ProtoNative",
@@ -59,7 +61,16 @@
     "productName": "ProtoNative",
     "asar": true,
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "./build/icons/icon.png"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "./build/icons/icon.png"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "./build/icons/icon.png"
     },
     "files": [
       "build/**/*",
