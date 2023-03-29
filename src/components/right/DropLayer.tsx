@@ -11,8 +11,6 @@ import {
 } from '../../parser/interfaces';
 
 type DropLayerProps = {
-  component: string;
-  position: string;
   index: number;
   setCounter: (value: number) => number;
   parent: string;
@@ -23,8 +21,6 @@ type DropLayerProps = {
 };
 
 const DropLayer = ({
-  component,
-  position,
   index,
   setCounter,
   parent,
@@ -54,6 +50,7 @@ const DropLayer = ({
     //parent = dragLayer's parent to know which array to be splicing
     //item is in the top level custom component
     if (originals[parentComp]) {
+      console.log('in originals');
       item = originals[parentComp].children[dragIndex];
       //item being moved is in the same level
       if (parentComp === parent) {
@@ -93,7 +90,7 @@ const DropLayer = ({
     }
     if (parent === parentComp) {
       dragArr.splice(dragIndex, 1);
-      if (hoverIndex === 0) {
+      if (hoverIndex < dragIndex) {
         dropArr.splice(hoverIndex, 0, item);
       } else {
         dropArr.splice(hoverIndex - 1, 0, item);
@@ -122,19 +119,31 @@ const DropLayer = ({
             [name]: newChildObj,
           };
         });
+        setOriginals((prevState: any) => {
+          const oldParentObj = prevState[parentComp];
+          const newParentObj = {
+            ...oldParentObj,
+            children: dragArr,
+          };
+          return {
+            ...prevState,
+            [parentComp]: newParentObj,
+          };
+        });
+      } else {
+        //item is moving top level to top level
+        setOriginals((prevState: any) => {
+          const oldParentObj = prevState[parentComp];
+          const newParentObj = {
+            ...oldParentObj,
+            children: dropArr,
+          };
+          return {
+            ...prevState,
+            [parentComp]: newParentObj,
+          };
+        });
       }
-      //item is moving top level to top level, but also have to change originals if top to child
-      setOriginals((prevState: any) => {
-        const oldParentObj = prevState[parentComp];
-        const newParentObj = {
-          ...oldParentObj,
-          children: dragArr,
-        };
-        return {
-          ...prevState,
-          [parentComp]: newParentObj,
-        };
-      });
     }
     //nested item moved somewhere
     else {
@@ -210,7 +219,6 @@ const DropLayer = ({
         //drop array is correct and splices correctly
         const dropArr = [...originals[parent].children];
         dropArr.splice(hoverIndex, 0, newElement.name);
-        console.log('dropArr', dropArr);
 
         setOriginals((previous: Originals): Originals => {
           const prevDroppedElement = previous[name] as OrigCustomComp;
@@ -378,7 +386,6 @@ const DropLayer = ({
     ) => {
       const dragIndex: number = item.index;
       const hoverIndex: number = index;
-      const positionRelative: string = position;
       // if (dragIndex === hoverIndex) return;
       if (item.type === 'elements') {
         moveItem(dragIndex, hoverIndex, item.name, item.parentComp);
@@ -390,8 +397,8 @@ const DropLayer = ({
 
   return (
     <div ref={drop} id='drop-layer-area'>
-      <p>{parent}</p>
-      {/* {index} */}
+      {/* <p>{parent}</p> */}
+      <p style={{ textAlign: 'center', color: 'green' }}>{index}</p>
     </div>
   );
 };

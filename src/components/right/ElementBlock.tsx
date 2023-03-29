@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import {
   Copies,
@@ -8,6 +8,7 @@ import {
   OrigCustomComp,
 } from '../../parser/interfaces';
 import DropLayer from './DropLayer';
+import { isDoubleTagElement } from '../../parser/parser';
 // import { isCopyCustomComp } from '../../parser/parser';
 type ElementBlockProps = {
   componentName: string;
@@ -41,28 +42,6 @@ const ElementBlock = ({
   const componentDef = copies[componentName];
   let childElements = null;
   let children: string[] = null;
-  const ref = useRef(null);
-
-  const [, drop] = useDrop({
-    accept: ['elements', 'addableElement'],
-    drop: (
-      item: { name: number; index: number; type: string; parentComp: string },
-      monitor
-    ) => {
-      console.log(item.name, 'dropped in', componentName);
-      // if (!ref.current) return;
-
-      const dragIndex = item.index;
-      const hoverIndex = index;
-
-      if (item.type === 'elements') {
-      } else if (item.type === 'addableElement') console.log('hi');
-    },
-    // collect: (monitor) => ({
-    //   isOver: monitor.isOver(),
-    //   isOverCurrent: monitor.isOver({ shallow: true }),
-    // }),
-  });
 
   const [{ isDragging }, drag] = useDrag(
     () => ({
@@ -81,13 +60,10 @@ const ElementBlock = ({
     [componentName, index]
   );
 
-  drag(drop(ref));
-
   // console.log('component', componentDef);
   // console.log(originals);
   // console.log(copies);
   if (isCopyCustomComp(componentDef)) {
-    // if (componentDef.type === 'custom') {
     const originalElement = originals[componentDef.pointer] as OrigCustomComp;
     children = originalElement.children;
   } else {
@@ -134,21 +110,21 @@ const ElementBlock = ({
 
   return (
     <div>
-      <DropLayer
-        component={componentName}
-        position={'above'}
-        index={index}
-        setCounter={setCounter}
-        parent={copies[componentName].parent.key}
-        copies={copies}
-        setCopies={setCopies}
-        originals={originals}
-        setOriginals={setOriginals}
-      />
+      {location === 'app' && (
+        <DropLayer
+          index={index}
+          setCounter={setCounter}
+          parent={copies[componentName].parent.key}
+          copies={copies}
+          setCopies={setCopies}
+          originals={originals}
+          setOriginals={setOriginals}
+        />
+      )}
       <div
         style={{ border: '1px solid black', backgroundColor: 'rgba(0,0,0,.4)' }}
         className='element'
-        ref={ref}
+        ref={drag}
       >
         <p>
           {copies[componentName].type === 'custom'
@@ -157,18 +133,30 @@ const ElementBlock = ({
         </p>
 
         {childElements}
+        {children.length === 0 &&
+          isDoubleTagElement(copies[componentName].type) && (
+            <DropLayer
+              index={0}
+              setCounter={setCounter}
+              parent={componentDef.name}
+              copies={copies}
+              setCopies={setCopies}
+              originals={originals}
+              setOriginals={setOriginals}
+            />
+          )}
       </div>
-      <DropLayer
-        component={componentName}
-        position={'below'}
-        index={index + 1}
-        setCounter={setCounter}
-        parent={copies[componentName].parent.key}
-        copies={copies}
-        setCopies={setCopies}
-        originals={originals}
-        setOriginals={setOriginals}
-      />
+      {location === 'details' && (
+        <DropLayer
+          index={index + 1}
+          setCounter={setCounter}
+          parent={copies[componentName].parent.key}
+          copies={copies}
+          setCopies={setCopies}
+          originals={originals}
+          setOriginals={setOriginals}
+        />
+      )}
     </div>
   );
 };
