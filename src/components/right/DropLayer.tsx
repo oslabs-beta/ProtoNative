@@ -49,6 +49,7 @@ const DropLayer = ({
     //parentComp = dragged item's parent vs
     //parent = dragLayer's parent to know which array to be splicing
     //item is in the top level custom component
+
     if (originals[parentComp]) {
       console.log('in originals');
       item = originals[parentComp].children[dragIndex];
@@ -398,7 +399,7 @@ const DropLayer = ({
   return (
     <div ref={drop} id='drop-layer-area'>
       {/* <p>{parent}</p> */}
-      <p style={{ textAlign: 'center', color: 'green' }}>{index}</p>
+      {/* {index} */}
     </div>
   );
 };
