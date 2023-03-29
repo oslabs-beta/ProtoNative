@@ -8,48 +8,8 @@ import {
   Copies
 } from './interfaces';
 
-const { format } = require('prettier');
-
-const originals: Originals = {
-  App: { type: 'App', children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2'], state: [] } as AppInterface,
-  View: { type: 'View', index: 3 } as OrigNativeEl,
-  Button: { type: 'Button', index: 3 } as OrigNativeEl,
-  Text: { type: 'Text', index: 1 } as OrigNativeEl,
-  Image: { type: 'Image', index: 0 } as OrigNativeEl,
-  TextInput: { type: 'TextInput', index: 0 } as OrigNativeEl,
-  ScrollView: { type: 'ScrollView', index: 0 } as OrigNativeEl,
-  FlatList: { type: 'FlatList', index: 0 } as OrigNativeEl,
-  SectionList: { type: 'SectionList', index: 0 } as OrigNativeEl,
-  Switch: { type: 'Switch', index: 0 } as OrigNativeEl,
-  TouchableHighlight: { type: 'TouchableHighlight', index: 0 } as OrigNativeEl,
-  TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
-  StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
-  ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
-  TestComponent: {
-    name: 'TestComponent',
-    type: 'custom',
-    children: ['Button0', 'CoolComponent0'],
-    state: [],
-    index: 3,
-    copies: ['TestComponent0', 'TestComponent1', 'TestComponent2'],
-  } as OrigCustomComp,
-  CoolComponent: {
-    name: 'CoolComponent',
-    type: 'custom',
-    children: ['Button2', 'View1', 'View2', 'GahlComponent0'],
-    state: [],
-    index: 1,
-    copies: ['CoolComponent0'],
-  } as OrigCustomComp,
-  GahlComponent: {
-    name: 'GahlComponent',
-    type: 'custom',
-    children: ['Button3', 'View3'],
-    state: [],
-    index: 1,
-    copies: ['GahlComponent0'],
-  } as OrigCustomComp
-}
+declare const prettier: any;
+declare const prettierPlugins: any;
 
 const copies: Copies = {
   Button0: {
@@ -344,9 +304,11 @@ export const generateCustomComponentCode = (component: OrigCustomComp | AppInter
   `;
 };
 
-export const formatCode = (code: string): string => {
-  return format(code, {
+export const formatCode = (code: string) => {
+
+  return prettier.format(code, {
     parser: 'babel',
+    plugins: prettierPlugins,
     jsxBracketSameLine: true,
     singleQuote: true
   });

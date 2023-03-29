@@ -14,7 +14,7 @@ import { OrigCustomComp } from '../../parser/interfaces';
 
 const CodeBlock = (): JSX.Element => {
   const { currentComponent, originals, copies } = useContext(AppContext);
-  const [code, setCode] = useState(formatCode(generateCustomComponentCode(originals[currentComponent] as OrigCustomComp, originals, copies)));
+  const [code, setCode] = useState(null);
 
   useEffect(() => {
     const code = formatCode(generateCustomComponentCode(originals[currentComponent] as OrigCustomComp, originals, copies));
@@ -41,7 +41,7 @@ const CodeBlock = (): JSX.Element => {
         }
       });
     });
-  }, [currentComponent, originals]);
+  });
 
   return (
     <>

@@ -13,35 +13,35 @@ const ComponentDetails = (): JSX.Element => {
   const displayedComponent = originals[currentComponent] as
     | OrigCustomComp
     | AppInterface;
-  const [childrenOfCurrent, setChildrenOfCurrent] = useState([]);
+  const [counter, setCounter] = useState(0);
   const [childElements, setChildElements] = useState([]);
 
   useEffect(() => {
     const originalComponent = originals[currentComponent] as
       | OrigCustomComp
       | AppInterface;
-    setChildrenOfCurrent(originalComponent.children);
-    // console.log('children of current', originals[currentComponent].children)
     setChildElements(
       originalComponent.children.map((childName: string, index: number) => {
         if (currentComponent !== 'App' && currentComponent !== null) {
-          console.log('mapping', childName);
           return (
             <ElementBlock
               key={index + childName}
               componentName={childName}
-              components={copies}
+              copies={copies}
+              setCopies={setCopies}
               originals={originals}
+              setOriginals={setOriginals}
               index={index}
               location={'details'}
               parent={currentComponent}
-              setChildrenOfCurrent={setChildrenOfCurrent}
+              setCounter={setCounter}
             />
           );
         }
       })
     );
-  }, [currentComponent, childrenOfCurrent, copies]);
+    console.log(copies);
+  }, [currentComponent, counter, copies]);
 
   return (
     <div id='component-details-container'>
