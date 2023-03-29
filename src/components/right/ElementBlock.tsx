@@ -60,9 +60,6 @@ const ElementBlock = ({
     [componentName, index]
   );
 
-  // console.log('component', componentDef);
-  // console.log(originals);
-  // console.log(copies);
   if (isCopyCustomComp(componentDef)) {
     const originalElement = originals[componentDef.pointer] as OrigCustomComp;
     children = originalElement.children;
@@ -107,10 +104,17 @@ const ElementBlock = ({
     });
     childElements = arr;
   }
+  let showLayers;
+  if (
+    location === 'details' ||
+    (location === 'app' && componentDef.parent.key === 'App')
+  )
+    showLayers = true;
+  else showLayers = false;
 
   return (
     <div>
-      {location === 'app' && (
+      {showLayers && (
         <DropLayer
           index={index}
           setCounter={setCounter}
@@ -132,21 +136,20 @@ const ElementBlock = ({
             : copies[componentName].type}
         </p>
 
+        {isDoubleTagElement(copies[componentName].type) && (
+          <DropLayer
+            index={0}
+            setCounter={setCounter}
+            parent={componentDef.name}
+            copies={copies}
+            setCopies={setCopies}
+            originals={originals}
+            setOriginals={setOriginals}
+          />
+        )}
         {childElements}
-        {children.length === 0 &&
-          isDoubleTagElement(copies[componentName].type) && (
-            <DropLayer
-              index={0}
-              setCounter={setCounter}
-              parent={componentDef.name}
-              copies={copies}
-              setCopies={setCopies}
-              originals={originals}
-              setOriginals={setOriginals}
-            />
-          )}
       </div>
-      {location === 'details' && (
+      {showLayers && (
         <DropLayer
           index={index + 1}
           setCounter={setCounter}
