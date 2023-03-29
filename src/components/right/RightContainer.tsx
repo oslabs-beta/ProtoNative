@@ -8,7 +8,7 @@ const RightContainer = (): JSX.Element => {
     <div id='right-container'>
       <ComponentDetails />
       <TrashButton />
-      {/* <CodeBlock /> */}
+      <CodeBlock />
     </div>
   );
 };
