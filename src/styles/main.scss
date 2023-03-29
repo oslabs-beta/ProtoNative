@@ -4,7 +4,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  // outline: 1px solid lime;
 }
 
 
@@ -12,6 +11,7 @@ body {
   display: flex;
   flex-direction: column;
   font-family: $main-font;
+  overflow-y: hidden;
 }
 
 
@@ -32,7 +32,6 @@ body {
 
 #left-container {
   display: grid;
-  grid-template-rows: .15fr .6fr .6fr;
   gap: 10px
 }
 

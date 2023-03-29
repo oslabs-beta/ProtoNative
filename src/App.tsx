@@ -19,7 +19,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 const App = () => {
   const [originals, setOriginals] = React.useState<Originals>({
     App: { type: 'App', children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2'], state: [] } as AppInterface,
-    View: { type: 'View', index: 2 } as OrigNativeEl,
+    View: { type: 'View', index: 3 } as OrigNativeEl,
     Button: { type: 'Button', index: 3 } as OrigNativeEl,
     Text: { type: 'Text', index: 1 } as OrigNativeEl,
     Image: { type: 'Image', index: 0 } as OrigNativeEl,
@@ -43,7 +43,7 @@ const App = () => {
     CoolComponent: {
       name: 'CoolComponent',
       type: 'custom',
-      children: ['Button2', 'View1'],
+      children: ['Button2', 'View1', 'View2'],
       state: [],
       index: 1,
       copies: ['CoolComponent0'],
@@ -54,6 +54,12 @@ const App = () => {
       name: 'Button0',
       type: 'Button',
       parent: { origin: 'original', key: 'TestComponent' },
+      children: [],
+    } as CopyNativeEl,
+    View2: {
+      name: 'View2',
+      type: 'View',
+      parent: { origin: 'original', key: 'CoolComponent' },
       children: [],
     } as CopyNativeEl,
     Text0: {
