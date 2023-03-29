@@ -2,6 +2,7 @@
 const { app, BrowserWindow } = require('electron');
 const serve = require('electron-serve');
 const path = require('path');
+const url = require('url');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -16,11 +17,11 @@ function createWindow() {
       contextIsolation: false,
     },
   });
-
+  console.log(__dirname, '../build/index.html')
   if (isDev) {
     win.loadURL('http://localhost:3000');
   } else {
-    loadURL(win);
+    win.loadFile(path.join(__dirname, '../build/index.html'))
   }
 }
 
