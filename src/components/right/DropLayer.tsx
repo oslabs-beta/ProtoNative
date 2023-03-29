@@ -37,11 +37,11 @@ const DropLayer = ({
     dragIndex: number,
     hoverIndex: number,
     name: string,
-    parentComp: string, //dragged item's parent
-    position: string
+    parentComp: string //dragged item's parent
   ): void => {
     console.log('parentComp', parentComp);
     console.log('name', name);
+
     let dragArr: string[];
     let dropArr: string[];
     let item: string;
@@ -91,9 +91,17 @@ const DropLayer = ({
         }
       }
     }
-
-    dragArr.splice(dragIndex, 1);
-    dropArr.splice(hoverIndex, 0, item);
+    if (parent === parentComp) {
+      dragArr.splice(dragIndex, 1);
+      if (hoverIndex === 0) {
+        dropArr.splice(hoverIndex, 0, item);
+      } else {
+        dropArr.splice(hoverIndex - 1, 0, item);
+      }
+    } else {
+      dragArr.splice(dragIndex, 1);
+      dropArr.splice(hoverIndex, 0, item);
+    }
 
     //item is from top layer element
     if (originals[parentComp]) {
@@ -373,13 +381,7 @@ const DropLayer = ({
       const positionRelative: string = position;
       // if (dragIndex === hoverIndex) return;
       if (item.type === 'elements') {
-        moveItem(
-          dragIndex,
-          hoverIndex,
-          item.name,
-          item.parentComp,
-          positionRelative
-        );
+        moveItem(dragIndex, hoverIndex, item.name, item.parentComp);
       } else {
         addItem(item.name, hoverIndex, parent);
       }
