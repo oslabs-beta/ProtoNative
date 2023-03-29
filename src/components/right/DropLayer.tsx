@@ -53,6 +53,7 @@ const DropLayer = ({
     //parentComp = dragged item's parent vs
     //parent = dragLayer's parent to know which array to be splicing
     //item is in the top level custom component
+
     if (originals[parentComp]) {
       item = originals[parentComp].children[dragIndex];
       //item being moved is in the same level
