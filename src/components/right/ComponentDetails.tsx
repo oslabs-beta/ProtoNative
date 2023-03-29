@@ -40,7 +40,6 @@ const ComponentDetails = (): JSX.Element => {
         }
       })
     );
-    console.log(copies);
   }, [currentComponent, counter, copies]);
 
   return (

@@ -127,6 +127,7 @@ const ElementBlock = ({
     });
     childElements = arr;
   }
+  // console.log(copies);
 
   return (
     <div>

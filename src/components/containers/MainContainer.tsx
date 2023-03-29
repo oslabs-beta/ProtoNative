@@ -10,7 +10,7 @@ const MainContainer = (): JSX.Element => {
     <DndProvider backend={HTML5Backend}>
       <div id='main-container'>
         <LeftContainer />
-        <AppCanvas />
+        {/* <AppCanvas /> */}
         <RightContainer />
       </div>
     </DndProvider>
