@@ -18,7 +18,11 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const App = () => {
   const [originals, setOriginals] = React.useState<Originals>({
-    App: { type: 'App', children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2'], state: [] } as AppInterface,
+    App: {
+      type: 'App',
+      children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2'],
+      state: [],
+    } as AppInterface,
     View: { type: 'View', index: 3 } as OrigNativeEl,
     Button: { type: 'Button', index: 3 } as OrigNativeEl,
     Text: { type: 'Text', index: 1 } as OrigNativeEl,
@@ -28,7 +32,10 @@ const App = () => {
     FlatList: { type: 'FlatList', index: 0 } as OrigNativeEl,
     SectionList: { type: 'SectionList', index: 0 } as OrigNativeEl,
     Switch: { type: 'Switch', index: 0 } as OrigNativeEl,
-    TouchableHighlight: { type: 'TouchableHighlight', index: 0 } as OrigNativeEl,
+    TouchableHighlight: {
+      type: 'TouchableHighlight',
+      index: 0,
+    } as OrigNativeEl,
     TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
     StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
     ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
@@ -55,7 +62,7 @@ const App = () => {
       state: [],
       index: 1,
       copies: ['BruhComponent0'],
-    } as OrigCustomComp
+    } as OrigCustomComp,
   });
   const [copies, setCopies] = React.useState<Copies>({
     Button0: {
