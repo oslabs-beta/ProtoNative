@@ -144,14 +144,20 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		console.log('COPIES', copyCopies);
 	}
 
-	// TODO: Add a modal that asks the user if they are sure they want to delete the component
-	// TODO: import type of event object
-	// type for event React.MouseEvent<HTMLElement> but hasn't been working, so using any for now
 	const handleDeleteClick = (event: any): void => {
 		// prevent the click from propagating to the parent div
 		event.cancelBubble = true;
 		if (event.stopPropagation) event.stopPropagation();
-		
+
+		setIsOpen(true);
+		setCurrentModal('delete');
+	}
+
+	// TODO: Add a modal that asks the user if they are sure they want to delete the component
+	// TODO: import type of event object
+	// type for event React.MouseEvent<HTMLElement> but hasn't been working, so using any for now
+	const handleDeleteConfirmClick = (event: any): void => {
+
 		// create deep copies
 		const deepCopy = (collection: (Originals | Copies)): (Originals | Copies) => {
 			if (typeof collection !== "object" || collection === null) return collection;
@@ -242,10 +248,16 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 							</div>
 						</div> 
 						)
-						:
-						<div>
-							Delete
-						</div>
+						: currentModal === 'delete' ? (
+
+							<div>
+								<div id='deleteModal'></div>
+						      <h3>Are you sure you want to delete {OriginalCustomComponent.name}?</h3>
+									<div>This will delete all occurrences of the component everywhere</div>
+									<button onClick={handleDeleteConfirmClick}>Confirm</button>
+									<button onClick={() => handleClose()}>Cancel</button>	
+								</div>
+						) : null
 					}
 				</Modal>
 				
