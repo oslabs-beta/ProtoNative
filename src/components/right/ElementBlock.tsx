@@ -8,7 +8,7 @@ import {
   OrigCustomComp,
 } from '../../parser/interfaces';
 import DropLayer from './DropLayer';
-import { isCopyCustomComp } from '../../parser/parser';
+// import { isCopyCustomComp } from '../../parser/parser';
 type ElementBlockProps = {
   componentName: string;
   copies: Copies;
@@ -21,11 +21,11 @@ type ElementBlockProps = {
   setCounter: (value: number) => number;
 };
 
-// const isCopyCustomComp = (
-//   comp: CopyNativeEl | CopyCustomComp
-// ): comp is CopyCustomComp => {
-//   return comp.type === 'custom';
-// };
+const isCopyCustomComp = (
+  comp: CopyNativeEl | CopyCustomComp
+): comp is CopyCustomComp => {
+  return comp.type === 'custom';
+};
 
 const ElementBlock = ({
   componentName,
@@ -83,7 +83,11 @@ const ElementBlock = ({
 
   drag(drop(ref));
 
+  // console.log('component', componentDef);
+  // console.log(originals);
+  // console.log(copies);
   if (isCopyCustomComp(componentDef)) {
+    // if (componentDef.type === 'custom') {
     const originalElement = originals[componentDef.pointer] as OrigCustomComp;
     children = originalElement.children;
   } else {
@@ -127,7 +131,6 @@ const ElementBlock = ({
     });
     childElements = arr;
   }
-  // console.log(copies);
 
   return (
     <div>

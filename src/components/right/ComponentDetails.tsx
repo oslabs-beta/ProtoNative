@@ -40,7 +40,10 @@ const ComponentDetails = (): JSX.Element => {
         }
       })
     );
+    console.log(originals);
   }, [currentComponent, counter, copies]);
+
+  // console.log(originals[currentComponent]);
 
   return (
     <div id='component-details-container'>
