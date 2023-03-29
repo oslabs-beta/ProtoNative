@@ -217,7 +217,6 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 			  return updatedOriginals;
 		}
 		})
-		setIsOpen(false);
 		setNewState('');
 	}
 	const handleClose = (): void => {
@@ -229,12 +228,11 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		setOriginals((prevOriginals) => {
 			const updatedOriginals = { ...prevOriginals };
 			const originalElement = updatedOriginals[OriginalCustomComponent.name ?? comp.type] as OrigCustomComp | AppInterface;
-			originalElement.state.filter((el) => el !== value);
+			originalElement.state = originalElement.state.filter((el) => el !== value);
 				
 			return updatedOriginals;
 			
 		})
-		setIsOpen(false);
 		setNewState('');
 	}
 
@@ -246,7 +244,17 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 					{currentModal === 'state' ? (
 						<div id='stateModal'>
 							<h3>Add State to {OriginalCustomComponent.name ?? comp.type}</h3>
-							<p>Initialize or edit a state variable for {OriginalCustomComponent.name ?? comp.type}</p>
+							<p>
+								Initialize or edit a state variable for {OriginalCustomComponent.name ?? comp.type}
+								<div className="state-box">
+									{OriginalCustomComponent.state.map((stateValue, index) => (
+									<div key={index} className="state-item">
+										{stateValue}
+										<button onClick={() => handleDeleteState(stateValue)}>X</button>
+									</div>
+									))}
+								  </div>
+								</p>
 							<label htmlFor="stateInput">New State</label>
 							<input 
 								id='stateInput' 
