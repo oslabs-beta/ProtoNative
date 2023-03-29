@@ -3,11 +3,12 @@
   border: 1px solid black;
   padding: 20px 20px 0px 20px;
   border-radius: 10px;
-  height: 100%;
+  height: 50%;
   background-color: $container-background;
   h2 {
     margin-bottom: 20px;
-  }
+}
+
 #componentListContainer {
     display: flex;
     flex-direction: column;
@@ -16,27 +17,22 @@
     padding: 10px;
     border-radius: 10px;
     height: 80%;
-
-}
-#customComps {
-    border: 1px solid black;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    width: 100%;
-    background-color: white;
-    h2 {
-        margin-bottom: 20px;
-    }
 }
 
 #customComps {
+  border: 1px solid black;
+  padding: 20px;
+  margin-bottom: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  width: 100%;
+  background-color: white;
   display: flex;
   flex-direction: column;
   border-radius: 10px;
-  height: 30vh;
-  overflow-y: auto;
   gap: 16px;
+  height: 80%;
+  overflow-y: scroll;
 }
 
 #customComps::-webkit-scrollbar{
@@ -64,6 +60,7 @@
     width: 150px;
     height: 60%;
     border-radius: 8px;
+    padding: 5px 10px;
   }
   button:hover{
     cursor: pointer;
@@ -92,6 +89,7 @@
     width: 150px;
     height: 60%;
     border-radius: 8px;
+    padding: 5px 10px;
   }
   button:hover{
     cursor: pointer;
