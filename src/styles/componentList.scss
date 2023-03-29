@@ -18,7 +18,6 @@
     height: 80%;
 
 }
-
 #customComps {
     border: 1px solid black;
     padding: 20px;
@@ -72,7 +71,7 @@
 }
 
 .highlightedComponentListItem {
-  background-color: rgba(255, 0, 0, 0.2);
+  background-color: rgba(191, 0, 255, 0.2);
   border: 1px solid black;
   display: flex;
   align-items: center;
@@ -98,3 +97,15 @@
     cursor: pointer;
   }
 }}
+// need to figure out styles for the existing states & add state
+#state-item {
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 10px;
+  height: 100%;
+
+
+h2 {
+  margin-bottom: 20px;
+}
+}
