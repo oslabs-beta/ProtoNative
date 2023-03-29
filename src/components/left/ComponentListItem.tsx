@@ -165,11 +165,11 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		setIsOpen(false);
 	};
 
-	const handleDeleteState = () => {
+	const handleDeleteState = (value: string): void => {
 		setOriginals((prevOriginals) => {
 			const updatedOriginals = { ...prevOriginals };
 			const originalElement = updatedOriginals[OriginalCustomComponent.name ?? comp.type] as OrigCustomComp | AppInterface;
-			originalElement.state.filter((el) => el !== stateValue);
+			originalElement.state.filter((el) => el !== value);
 				
 			return updatedOriginals;
 			
@@ -192,7 +192,10 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 									{OriginalCustomComponent.state.map((stateValue, index) => (
 										<div key={index} className="state-item">
 											{stateValue}
-											<button onClick={() => handleDeleteState(index)}> X </button>
+											<button 
+											onClick={() => handleDeleteState(stateValue)}
+											className="componentListItem"
+											 > X </button>
 											</div>
 									))}
 								</div>

@@ -18,17 +18,6 @@
     height: 80%;
 
 }
-#state-item {
-  text-align: center;
-  border: 1px solid black;
-  border-radius: 10px;
-  height: 100%;
-}
-
-  h2 {
-    margin-bottom: 20px;
-  }
-
 #customComps {
     border: 1px solid black;
     padding: 20px;
@@ -108,3 +97,15 @@
     cursor: pointer;
   }
 }}
+// need to figure out styles for the existing states & add state
+#state-item {
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 10px;
+  height: 100%;
+
+
+h2 {
+  margin-bottom: 20px;
+}
+}
