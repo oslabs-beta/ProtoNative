@@ -156,7 +156,7 @@ const App = () => {
   // FIXME: Turn off strict mode when unnecesary
   // FIXME: Turn off strict mode when unnecesary
   return (
-    // <React.StrictMode>
+    <React.StrictMode>
     <AppContext.Provider
       value={{
         originals,
@@ -174,7 +174,7 @@ const App = () => {
         </div>
       </DndProvider>
     </AppContext.Provider>
-    // </React.StrictMode>
+    </React.StrictMode>
   );
 };
 
