@@ -97,15 +97,38 @@
     cursor: pointer;
   }
 }}
-// need to figure out styles for the existing states & add state
+
+#stateModal {
+  text-align: center;
+  border: 1px solid black;
+  padding: 20px 20px 0px 20px;
+  border-radius: 10px;
+  height: 100%;
+  background-color: rgba(191, 0, 255, 0.2);
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  .state-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 10px;
+    height: 80%;
+    background-color: whitesmoke;
+
+  }
 #state-item {
   text-align: center;
   border: 1px solid black;
   border-radius: 10px;
   height: 100%;
-
+  background-color: whitesmoke;
 
 h2 {
   margin-bottom: 20px;
+}
 }
 }
