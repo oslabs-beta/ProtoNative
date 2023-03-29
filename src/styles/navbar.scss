@@ -35,3 +35,9 @@
   border: none;
   border-radius: 5px;
 }
+
+#confirmModal{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

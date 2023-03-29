@@ -8,14 +8,17 @@ import {
   OrigCustomComp,
 } from '../../parser/interfaces';
 import DropLayer from './DropLayer';
+// import { isCopyCustomComp } from '../../parser/parser';
 type ElementBlockProps = {
   componentName: string;
-  components: Copies;
+  copies: Copies;
+  setCopies: any;
   originals: Originals;
+  setOriginals: any;
   index: number;
   location: string;
   parent: string;
-  setChildrenOfCurrent: (value: string[]) => void;
+  setCounter: (value: number) => number;
 };
 
 const isCopyCustomComp = (
@@ -26,14 +29,16 @@ const isCopyCustomComp = (
 
 const ElementBlock = ({
   componentName,
-  components,
+  copies,
+  setCopies,
   originals,
+  setOriginals,
   index,
   location,
   parent,
-  setChildrenOfCurrent,
+  setCounter,
 }: ElementBlockProps) => {
-  const componentDef = components[componentName];
+  const componentDef = copies[componentName];
   let childElements = null;
   let children: string[] = null;
   const ref = useRef(null);
@@ -49,10 +54,8 @@ const ElementBlock = ({
 
       const dragIndex = item.index;
       const hoverIndex = index;
-      // if (dragIndex === hoverIndex) return;
 
       if (item.type === 'elements') {
-        // moveItem(dragIndex, hoverIndex);
       } else if (item.type === 'addableElement') console.log('hi');
     },
     // collect: (monitor) => ({
@@ -77,10 +80,14 @@ const ElementBlock = ({
     }),
     [componentName, index]
   );
-  //
+
   drag(drop(ref));
 
+  // console.log('component', componentDef);
+  // console.log(originals);
+  // console.log(copies);
   if (isCopyCustomComp(componentDef)) {
+    // if (componentDef.type === 'custom') {
     const originalElement = originals[componentDef.pointer] as OrigCustomComp;
     children = originalElement.children;
   } else {
@@ -89,35 +96,35 @@ const ElementBlock = ({
 
   if (children.length) {
     const arr: JSX.Element[] = [];
-    children.forEach((childName: string) => {
-      if (location === 'app' && components[childName].type === 'custom') {
-        // console.log(childName)
+    children.forEach((childName: string, idx) => {
+      if (location === 'app' && copies[childName].type === 'custom') {
         arr.push(
           <ElementBlock
-            key={index + childName}
+            key={idx + childName}
             componentName={childName}
-            components={components}
+            copies={copies}
+            setCopies={setCopies}
             originals={originals}
-            index={index}
+            setOriginals={setOriginals}
+            index={idx}
             location={'app'}
-            parent={components[childName].parent.key}
-            setChildrenOfCurrent={setChildrenOfCurrent}
+            parent={copies[childName].parent.key}
+            setCounter={setCounter}
           />
         );
-      } else if (
-        location === 'details' &&
-        components[childName].type !== 'custom'
-      ) {
+      } else if (location === 'details' && componentDef.type !== 'custom') {
         arr.push(
           <ElementBlock
-            key={index + childName}
+            key={idx + childName}
             componentName={childName}
-            components={components}
+            copies={copies}
+            setCopies={setCopies}
             originals={originals}
-            index={index}
+            setOriginals={setOriginals}
+            index={idx}
             location={'details'}
-            parent={components[childName].parent.key}
-            setChildrenOfCurrent={setChildrenOfCurrent}
+            parent={copies[childName].parent.key}
+            setCounter={setCounter}
           />
         );
       }
@@ -131,14 +138,22 @@ const ElementBlock = ({
         component={componentName}
         position={'above'}
         index={index}
-        setChildrenOfCurrent={setChildrenOfCurrent}
-        parent={components[componentName].parent.key}
+        setCounter={setCounter}
+        parent={copies[componentName].parent.key}
+        copies={copies}
+        setCopies={setCopies}
+        originals={originals}
+        setOriginals={setOriginals}
       />
-      <div style={{ border: '1px solid black', backgroundColor :'rgba(0, 0, 0, .4)' }} className='element' ref={ref}>
-        <p style={{color: 'white'}}>
-          {components[componentName].type === 'custom'
-            ? components[componentName].pointer
-            : components[componentName].type}
+      <div
+        style={{ border: '1px solid black', backgroundColor: 'rgba(0,0,0,.4)' }}
+        className='element'
+        ref={ref}
+      >
+        <p>
+          {copies[componentName].type === 'custom'
+            ? copies[componentName].pointer
+            : copies[componentName].type}
         </p>
 
         {childElements}
@@ -146,9 +161,13 @@ const ElementBlock = ({
       <DropLayer
         component={componentName}
         position={'below'}
-        index={index}
-        setChildrenOfCurrent={setChildrenOfCurrent}
-        parent={components[componentName].parent.key}
+        index={index + 1}
+        setCounter={setCounter}
+        parent={copies[componentName].parent.key}
+        copies={copies}
+        setCopies={setCopies}
+        originals={originals}
+        setOriginals={setOriginals}
       />
     </div>
   );

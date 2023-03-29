@@ -18,7 +18,11 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const App = () => {
   const [originals, setOriginals] = React.useState<Originals>({
-    App: { type: 'App', children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2'], state: [] } as AppInterface,
+    App: {
+      type: 'App',
+      children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2'],
+      state: [],
+    } as AppInterface,
     View: { type: 'View', index: 3 } as OrigNativeEl,
     Button: { type: 'Button', index: 3 } as OrigNativeEl,
     Text: { type: 'Text', index: 1 } as OrigNativeEl,
@@ -28,7 +32,10 @@ const App = () => {
     FlatList: { type: 'FlatList', index: 0 } as OrigNativeEl,
     SectionList: { type: 'SectionList', index: 0 } as OrigNativeEl,
     Switch: { type: 'Switch', index: 0 } as OrigNativeEl,
-    TouchableHighlight: { type: 'TouchableHighlight', index: 0 } as OrigNativeEl,
+    TouchableHighlight: {
+      type: 'TouchableHighlight',
+      index: 0,
+    } as OrigNativeEl,
     TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
     StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
     ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
@@ -43,11 +50,19 @@ const App = () => {
     CoolComponent: {
       name: 'CoolComponent',
       type: 'custom',
-      children: ['Button2', 'View1', 'View2'],
+      children: ['Button2', 'View1', 'View2', 'BruhComponent0'],
       state: [],
       index: 1,
       copies: ['CoolComponent0'],
-    } as OrigCustomComp
+    } as OrigCustomComp,
+    BruhComponent: {
+      name: 'BruhComponent',
+      type: 'custom',
+      children: ['Button3', 'View3'],
+      state: [],
+      index: 1,
+      copies: ['BruhComponent0'],
+    } as OrigCustomComp,
   });
   const [copies, setCopies] = React.useState<Copies>({
     Button0: {
@@ -56,11 +71,29 @@ const App = () => {
       parent: { origin: 'original', key: 'TestComponent' },
       children: [],
     } as CopyNativeEl,
+    Button3: {
+      name: 'Button3',
+      type: 'Button',
+      parent: { origin: 'original', key: 'BruhComponent' },
+      children: [],
+    } as CopyNativeEl,
+    Button4: {
+      name: 'Button4',
+      type: 'Button',
+      parent: { origin: 'copies', key: 'View3' },
+      children: [],
+    } as CopyNativeEl,
     View2: {
       name: 'View2',
       type: 'View',
       parent: { origin: 'original', key: 'CoolComponent' },
       children: [],
+    } as CopyNativeEl,
+    View3: {
+      name: 'View3',
+      type: 'View',
+      parent: { origin: 'original', key: 'BruhComponent' },
+      children: ['Button4'],
     } as CopyNativeEl,
     Text0: {
       name: 'Text0',
@@ -116,6 +149,12 @@ const App = () => {
       parent: { origin: 'original', key: 'TestComponent' },
       pointer: 'CoolComponent',
     } as CopyCustomComp,
+    BruhComponent0: {
+      name: 'BruhComponent0',
+      type: 'custom',
+      parent: { origin: 'original', key: 'CoolComponent' },
+      pointer: 'BruhComponent',
+    } as CopyCustomComp,
   });
   const [currentComponent, setCurrentComponent] = React.useState('App');
 
@@ -124,7 +163,7 @@ const App = () => {
   // FIXME: Turn off strict mode when unnecesary
   // FIXME: Turn off strict mode when unnecesary
   return (
-    // <React.StrictMode>
+    <React.StrictMode>
     <AppContext.Provider
       value={{
         originals,
@@ -142,7 +181,7 @@ const App = () => {
         </div>
       </DndProvider>
     </AppContext.Provider>
-    // </React.StrictMode>
+    </React.StrictMode>
   );
 };
 

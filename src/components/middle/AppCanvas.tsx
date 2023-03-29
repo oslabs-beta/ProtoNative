@@ -25,11 +25,14 @@ const AppCanvas = (): JSX.Element => {
           <ElementBlock
             key={index}
             componentName={child}
-            components={copies}
+            copies={copies}
+            setCopies={setCopies}
             originals={originals}
+            setOriginals={setOriginals}
             index={index}
             location={'app'}
             parent={'App'}
+            setChildrenOfCurrent={setAppComponents}
           />
         );
       } else {
@@ -37,11 +40,14 @@ const AppCanvas = (): JSX.Element => {
           <ElementBlock
             key={index}
             componentName={child}
-            components={copies}
+            copies={copies}
+            setCopies={setCopies}
             originals={originals}
+            setOriginals={setOriginals}
             index={index}
             location={'details'}
             parent={'App'}
+            setChildrenOfCurrent={setAppComponents}
           />
         );
       }
@@ -50,8 +56,8 @@ const AppCanvas = (): JSX.Element => {
   }, [copies]);
 
   // make the phone screen container droppable accepting addableElement
-  const [{ isOver }, drop] = useDrop({
-    accept: ItemTypes.ADDABLE_ELEMENT,
+  const [, drop] = useDrop({
+    accept: 'newElement, elements',
     drop: (item: { name: string }, monitor) => {
       const didDrop = monitor.didDrop();
       if (didDrop) {
@@ -61,6 +67,7 @@ const AppCanvas = (): JSX.Element => {
         | OrigNativeEl
         | OrigCustomComp;
       let newElement = {} as CopyCustomComp | CopyNativeEl;
+
       // if originalElement is a custom element use custom element template
       if (originalElement.type === 'custom') {
         newElement = {
@@ -104,10 +111,13 @@ const AppCanvas = (): JSX.Element => {
         // increment index of originalElement, add newElement to copies, add newElement to App's children
         setOriginals((previous: Originals): Originals => {
           const prevApp = previous['App'] as AppInterface;
+
+          //splicing
           const newApp = {
             ...prevApp,
             children: [...prevApp.children, newElement.name], // TODO: Put child element in correct location
           };
+
           const prevOriginalElement = previous[item.name] as
             | OrigNativeEl
             | OrigCustomComp;
@@ -115,6 +125,7 @@ const AppCanvas = (): JSX.Element => {
             ...prevOriginalElement,
             index: prevOriginalElement.index + 1,
           };
+
           return {
             ...previous,
             [item.name]: newOriginalElement,

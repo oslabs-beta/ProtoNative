@@ -4,11 +4,11 @@
   "description": "A React Native prototyping tool",
   "main": "./src/electron.ts",
   "scripts": {
-    "start": "electron .",
-    "dev": "concurrently \"npm run vite:dev\" \"node -e \\\"setTimeout(() => process.exit(0), 1000)\\\" && npm run electron:dev\"",
-    "vite:dev": "vite",
-    "electron:dev": "cross-env NODE_ENV=development electron .",
+    "start": "concurrently \"npm run vite\" \"node -e \\\"setTimeout(() => process.exit(0), 500)\\\" && npm run electron\"",
+    "vite": "vite",
+    "electron": "cross-env NODE_ENV=development electron .",
     "build": "vite build",
+    "electron-builder": "electron-builder --windows",
     "preview": "vite preview"
   },
   "author": "Team ProtoNative",
@@ -32,14 +32,15 @@
   "homepage": "https://github.com/oslabs-beta/ProtoNative#readme",
   "license": "MIT",
   "devDependencies": {
+    "electron-builder": "^23.6.0",
     "@types/prismjs": "^1.26.0",
-    "@types/react": "^18.0.30",
+    "@types/react": "^18.0.31",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^3.1.0",
-    "concurrently": "7.6.0",
+    "concurrently": "8.0.1",
     "cross-env": "^7.0.3",
     "electron-reloader": "1.2.3",
-    "eslint": "^8.36.0",
+    "eslint": "^8.37.0",
     "prism-themes": "^1.9.0",
     "prismjs": "^1.29.0",
     "react": "^18.2.0",
@@ -50,10 +51,22 @@
     "scss": "^0.2.4",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.2",
-    "vite": "^4.2.1"
+    "vite": "^4.2.1",
+    "electron": "^23.2.0"
   },
-  "dependencies": {
-    "electron": "^23.2.0",
-    "electron-serve": "^1.1.0"
+  "build": {
+    "appId": "protonative",
+    "productName": "ProtoNative",
+    "asar": true,
+    "win": {
+      "target": "nsis"
+    },
+    "files": [
+      "build/**/*",
+      "src/electron.ts"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
   }
 }
