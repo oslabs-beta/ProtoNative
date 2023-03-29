@@ -388,7 +388,7 @@ const DropLayer = ({
 
   return (
     <div ref={drop} id='drop-layer-area'>
-      <p>{parent}</p>
+      {/* <p>{parent}</p> */}
       {/* {index} */}
     </div>
   );

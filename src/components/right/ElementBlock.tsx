@@ -147,9 +147,9 @@ const ElementBlock = ({
       />
       <div style={{ border: '1px solid black', backgroundColor :'rgba(0, 3, 0, .4)' }} className='element' ref={ref}>
         <p style={{color: 'white'}}>
-          {components[componentName].type === 'custom'
-            ? components[componentName].pointer
-            : components[componentName].type}
+          {copies[componentName].type === 'custom'
+            ? copies[componentName].pointer
+            : copies[componentName].type}
         </p>
 
         {childElements}
