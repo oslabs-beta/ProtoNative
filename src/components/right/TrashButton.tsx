@@ -15,7 +15,7 @@ const TrashButton = (): JSX.Element => {
       const comp = copies[item.name];
       const copyOriginals = deepCopy(originals) as Originals;
       const copyCopies = deepCopy(copies) as Copies;
-      trashCan(comp, copyOriginals, copyCopies);
+      trashCan(comp, copyOriginals, copyCopies, true);
       setOriginals(copyOriginals);
       setCopies(copyCopies);
     }
