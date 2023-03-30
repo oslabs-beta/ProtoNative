@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import AppContext from '../../context/AppContext';
 import ElementBlock from './ElementBlock';
+import DropLayer from './DropLayer';
 import {
   AppInterface,
   OrigCustomComp,
@@ -40,11 +41,7 @@ const ComponentDetails = (): JSX.Element => {
         }
       })
     );
-    // console.log(copies);
-    // console.log(originals);
-  }, [currentComponent, counter, copies]);
-
-  // console.log(originals[currentComponent]);
+  }, [currentComponent, counter]);
 
   return (
     <div id='component-details-container'>
@@ -55,6 +52,17 @@ const ComponentDetails = (): JSX.Element => {
 
       {currentComponent !== 'App' && currentComponent && (
         <div style={{ border: '1px solid black' }} id='component-box'>
+          {childElements.length === 0 && (
+            <DropLayer
+              index={0}
+              setCounter={setCounter}
+              parent={currentComponent}
+              copies={copies}
+              setCopies={setCopies}
+              originals={originals}
+              setOriginals={setOriginals}
+            />
+          )}
           {childElements}
         </div>
       )}

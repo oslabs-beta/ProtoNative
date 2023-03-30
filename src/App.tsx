@@ -20,7 +20,8 @@ const App = () => {
   const [originals, setOriginals] = React.useState<Originals>({
     App: {
       type: 'App',
-      children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2'],
+      // children: [],
+      children: [],
       state: [],
     } as AppInterface,
     View: { type: 'View', index: 3 } as OrigNativeEl,
@@ -101,12 +102,12 @@ const App = () => {
       parent: { origin: 'copies', key: 'View1' },
       children: ['Button1'],
     } as CopyNativeEl,
-    View0: {
-      name: 'View0',
-      type: 'View',
-      parent: { origin: 'original', key: 'App' },
-      children: [],
-    } as CopyNativeEl,
+    // View0: {
+    //   name: 'View0',
+    //   type: 'View',
+    //   parent: { origin: 'original', key: 'App' },
+    //   children: [],
+    // } as CopyNativeEl,
     Button1: {
       name: 'Button1',
       type: 'Button',
@@ -125,24 +126,24 @@ const App = () => {
       parent: { origin: 'original', key: 'CoolComponent' },
       children: [],
     } as CopyNativeEl,
-    TestComponent0: {
-      name: 'TestComponent0',
-      type: 'custom',
-      parent: { origin: 'original', key: 'App' },
-      pointer: 'TestComponent',
-    } as CopyCustomComp,
-    TestComponent1: {
-      name: 'TestComponent1',
-      type: 'custom',
-      parent: { origin: 'original', key: 'App' },
-      pointer: 'TestComponent',
-    } as CopyCustomComp,
-    TestComponent2: {
-      name: 'TestComponent2',
-      type: 'custom',
-      parent: { origin: 'original', key: 'App' },
-      pointer: 'TestComponent',
-    } as CopyCustomComp,
+    // TestComponent0: {
+    //   name: 'TestComponent0',
+    //   type: 'custom',
+    //   parent: { origin: 'original', key: 'App' },
+    //   pointer: 'TestComponent',
+    // } as CopyCustomComp,
+    // TestComponent1: {
+    //   name: 'TestComponent1',
+    //   type: 'custom',
+    //   parent: { origin: 'original', key: 'App' },
+    //   pointer: 'TestComponent',
+    // } as CopyCustomComp,
+    // TestComponent2: {
+    //   name: 'TestComponent2',
+    //   type: 'custom',
+    //   parent: { origin: 'original', key: 'App' },
+    //   pointer: 'TestComponent',
+    // } as CopyCustomComp,
     CoolComponent0: {
       name: 'CoolComponent0',
       type: 'custom',
@@ -164,23 +165,23 @@ const App = () => {
   // FIXME: Turn off strict mode when unnecesary
   return (
     <React.StrictMode>
-    <AppContext.Provider
-      value={{
-        originals,
-        setOriginals,
-        copies,
-        setCopies,
-        currentComponent,
-        setCurrentComponent,
-      }}
-    >
-      <DndProvider backend={HTML5Backend}>
-        <div>
-          <NavBar />
-          <MainContainer />
-        </div>
-      </DndProvider>
-    </AppContext.Provider>
+      <AppContext.Provider
+        value={{
+          originals,
+          setOriginals,
+          copies,
+          setCopies,
+          currentComponent,
+          setCurrentComponent,
+        }}
+      >
+        <DndProvider backend={HTML5Backend}>
+          <div>
+            <NavBar />
+            <MainContainer />
+          </div>
+        </DndProvider>
+      </AppContext.Provider>
     </React.StrictMode>
   );
 };

@@ -181,7 +181,7 @@ const importReact = (): string => `import React from 'react';\n`;
  * @input - string of the name of element
  * @output - boolean -> true if element is a double tag element, false if not
  */
-const isDoubleTagElement = (elementName: string): boolean => {
+export const isDoubleTagElement = (elementName: string): boolean => {
   const DOUBLE_TAG_ELEMENTS: {[key: string]: boolean} = {
     View: true,
     Text: true,
