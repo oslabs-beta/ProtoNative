@@ -54,7 +54,7 @@ const AppCanvas = (): JSX.Element => {
       }
     });
     setAppComponents(appChildren);
-  }, [counter]);
+  }, [counter, originals, copies]);
 
   return (
     <div id='app-canvas'>

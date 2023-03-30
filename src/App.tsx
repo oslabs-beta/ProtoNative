@@ -45,8 +45,8 @@ const App = () => {
       type: 'custom',
       children: ['Button0', 'CoolComponent0'],
       state: [],
-      index: 3,
-      copies: ['TestComponent0', 'TestComponent1', 'TestComponent2'],
+      index: 0,
+      copies: [''],
     } as OrigCustomComp,
     CoolComponent: {
       name: 'CoolComponent',

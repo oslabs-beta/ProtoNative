@@ -24,7 +24,8 @@ export const trashCan = (compToDelete: CopyNativeEl | CopyCustomComp, copyOrigin
       parentChildren.splice(parentChildIdx, 1);
     } else if (compToDeleteParent.origin === 'copies') {
       const parentChildToDelete = copyCopies[compToDeleteParent.key] as CopyNativeEl;
-      const parentChildren: string[] = parentChildToDelete.children;
+      const originalParentElement = copyOriginals[parentChildToDelete.pointer] as OrigCustomComp;
+      const parentChildren: string[] = isCopyCustomComp(parentChildToDelete) ? originalParentElement.children : parentChildToDelete.children;
       const parentChildIdx = parentChildren.indexOf(compToDelete.name);
       parentChildren.splice(parentChildIdx, 1);
     }
