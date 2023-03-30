@@ -9,8 +9,6 @@ export const moveItem = (
   parentComp: string, //dragged item's parent
   parent: string,
 ): void => {
-  console.log('parentComp', parentComp);
-  console.log('name', name);
 
   let dragArr: string[];
   let dropArr: string[];
@@ -25,7 +23,6 @@ export const moveItem = (
   //item is in the top level custom component
 
   if (originals[parentComp]) {
-    console.log('in originals');
     item = originals[parentComp].children[dragIndex];
     //item being moved is in the same level
     if (parentComp === parent) {
@@ -49,28 +46,37 @@ export const moveItem = (
       newSpot = originals[parent];
       itemParent = { origin: 'originals', key: newSpot.name };
     }
-    //moving to another nested element
+    //moving to a native element
     else {
-      //moving in the same nested element
+      //moving in the same native  element
       if (parent === parentComp) {
         dropArr = dragArr = [...copies[parent].children];
-        console.log('hello buddy');
         // newSpot = copies[parent];
-      } else {
+      } 
+      //moving to a different native element
+      else {
         dropArr = [...copies[parent].children];
         newSpot = copies[parent];
         itemParent = { origin: 'copies', key: newSpot.name };
       }
     }
   }
+  //moving within the same element
   if (parent === parentComp) {
     dragArr.splice(dragIndex, 1);
+    //splicing changes index of the hover index if you're moving component down
+    //moving up
     if (hoverIndex < dragIndex) {
       dropArr.splice(hoverIndex, 0, item);
-    } else {
+    
+    } 
+    //moving down
+    else {
       dropArr.splice(hoverIndex - 1, 0, item);
     }
-  } else {
+  } 
+  //moving between different elements
+  else {
     dragArr.splice(dragIndex, 1);
     dropArr.splice(hoverIndex, 0, item);
   }
@@ -79,6 +85,7 @@ export const moveItem = (
   if (originals[parentComp]) {
     //if item is moving top level to nested level
     if (parentComp !== parent) {
+      //change children + change parent of the item that was moved
       setCopies((prevState: any) => {
         const newParentObj = {
           ...prevState[parent],
@@ -94,6 +101,7 @@ export const moveItem = (
           [name]: newChildObj,
         };
       });
+      //change children array of top level component
       setOriginals((prevState: any) => {
         const oldParentObj = prevState[parentComp];
         const newParentObj = {
@@ -151,7 +159,6 @@ export const moveItem = (
     } else {
       setCopies((prevState: any) => {
         const oldDropObj = prevState[parent];
-        // console.log(oldDropObj);
         const newDropObj = {
           ...oldDropObj,
           children: dropArr,
@@ -163,9 +170,9 @@ export const moveItem = (
       });
     }
 
+    //change parent pointer if moving to different element
     if (parentComp !== parent) {
       setCopies((prevState: any) => {
-        console.log('in updating parent');
         const itemUpdate = { ...prevState[name] };
         itemUpdate.parent = itemParent;
         return {

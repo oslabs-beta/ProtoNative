@@ -65,6 +65,7 @@ const ElementBlock = ({
 
   if (children.length) {
     childElements = children.map((childName, idx) => {
+      //showing custom components within custom components in app
       if (location === 'app' && copies[childName].type === 'custom') {
         return (
           <ElementBlock
@@ -80,7 +81,26 @@ const ElementBlock = ({
             setCounter={setCounter}
           />
         );
-      } else if (location === 'details' && componentDef.type !== 'custom') {
+      }
+      //showing native elements within native elements in app
+      else if (location === 'app' && componentDef.type !== 'custom') {
+        return (
+          <ElementBlock
+            key={idx + childName}
+            componentName={childName}
+            copies={copies}
+            setCopies={setCopies}
+            originals={originals}
+            setOriginals={setOriginals}
+            index={idx}
+            location={'details'}
+            parent={copies[childName].parent.key}
+            setCounter={setCounter}
+          />
+        );
+      }
+      //showing only first level of custom components in component details
+      else if (location === 'details' && componentDef.type !== 'custom') {
         return (
           <ElementBlock
             key={idx + childName}
@@ -98,12 +118,18 @@ const ElementBlock = ({
       }
     });
   }
-  const showLayers: boolean =
-    location === 'details' ||
-    (location === 'app' && componentDef.parent.key === 'App')
-      ? true
-      : false;
 
+  //creating a top drop layer at the top level (app or in component details)
+  let showLayers: boolean;
+  if (location === 'details') showLayers = true;
+  else if (location === 'app') {
+    if (componentDef.parent.key === 'App') showLayers = true;
+    else if (copies[parent]) {
+      if (isDoubleTagElement(copies[parent].type)) showLayers = true;
+    }
+  }
+
+  //creating a drop layer at the bottom of nested native elements
   const inNative: boolean =
     copies[parent] && copies[parent].children.length - 1 === index
       ? true
@@ -135,7 +161,7 @@ const ElementBlock = ({
             ? copies[componentName].pointer
             : copies[componentName].type}
         </p>
-
+        {/* creating a starter drop layer for empty native elements */}
         {isDoubleTagElement(copies[componentName].type) &&
           copies[componentName].children.length === 0 && (
             <DropLayer
