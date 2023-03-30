@@ -175,8 +175,11 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 						<div id='deleteModal'>
 							<h3>Are you sure you want to delete {OriginalCustomComponent.name}?</h3>
 							<p>This will delete all occurrences of {OriginalCustomComponent.name} everywhere!</p>
-							<button onClick={handleDeleteConfirmClick}>Confirm</button>
-							<button onClick={() => handleClose()}>Cancel</button>	
+							<div id='delete-modal-buttons'>
+								<button onClick={handleDeleteConfirmClick}>Confirm</button>
+								<button onClick={() => handleClose()}>Cancel</button>	
+							</div>
+						
 						</div>
 					) : null
 					}
