@@ -6,7 +6,7 @@ import {
   CopyCustomComp,
   Originals,
   OrigCustomComp,
-} from '../../parser/interfaces';
+} from '../../utils/interfaces';
 import DropLayer from './DropLayer';
 // import { isCopyCustomComp } from '../../parser/parser';
 type ElementBlockProps = {

@@ -11,7 +11,7 @@ import {
   OrigCustomComp,
   CopyNativeEl,
   CopyCustomComp,
-} from './parser/interfaces';
+} from './utils/interfaces';
 import './styles/main.scss';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';

@@ -11,7 +11,7 @@ import {
   CopyCustomComp,
   CopyNativeEl,
   Copies,
-} from '../../parser/interfaces';
+} from '../../utils/interfaces';
 
 const AppCanvas = (): JSX.Element => {
   const { setCopies, setOriginals, originals, copies } = useContext(AppContext);

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import AppContext from '../../context/AppContext';
 import Modal from './Modal';
-import { Originals } from '../../parser/interfaces';
+import { Originals } from '../../utils/interfaces';
 
 
 // user clicks Add CC button, modal opens
