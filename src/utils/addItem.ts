@@ -19,7 +19,7 @@ export const addItem =
   hoverIndex: number, 
   parent: string) => {
   let newElement = {} as CopyCustomComp | CopyNativeEl;
-  let newEleObj = originals[name] as OrigNativeEl | OrigCustomComp | CopyNativeEl;
+  let newEleObj = originals[name] as OrigNativeEl | OrigCustomComp;
   //adding a  custom element
   if (originals[name].type === 'custom') {
     //custom component dropped to top level
@@ -31,7 +31,7 @@ export const addItem =
         pointer: name,
       };
       //drop array is correct and splices correctly
-      const dropArr = [...originals[parent].children];
+      const dropArr: string[] = [...originals[parent].children];
       dropArr.splice(hoverIndex, 0, newElement.name);
 
       setOriginals((previous: Originals): Originals => {
@@ -73,7 +73,7 @@ export const addItem =
       };
 
       //also splicing correctly
-      const dropArr = [...copies[parent].children];
+      const dropArr: string[] = [...copies[parent].children];
       dropArr.splice(hoverIndex, 0, newElement.name);
 
       //incrementing index + adding copies to the originals!

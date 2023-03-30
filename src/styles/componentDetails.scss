@@ -27,6 +27,7 @@
   margin: 0 10px;
   text-align: center;
   border-radius: 5px;
+  transform: translate(0, 0);
 }
 
 .element p {
@@ -35,13 +36,16 @@
 }
 
 #drop-layer-area{
-  height:20px;
+  height:25px;
   width: 100%;
+  border-radius: 5px;
+  // margin: 0 10px;
 }
 
 #drop-layer-large{
   align-items: stretch;
+  min-height: 25px;
   height: 100%;
   width: 100%;
-  border-radius: 20px;
+  border-radius: 5px;
 }
