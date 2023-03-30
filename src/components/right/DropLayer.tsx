@@ -11,6 +11,7 @@ import {
 } from '../../utils/interfaces';
 
 type DropLayerProps = {
+  hasChildren: number;
   index: number;
   setCounter: (value: number) => number;
   parent: string;
@@ -21,6 +22,7 @@ type DropLayerProps = {
 };
 
 const DropLayer = ({
+  hasChildren,
   index,
   setCounter,
   parent,
@@ -397,7 +399,7 @@ const DropLayer = ({
   });
 
   return (
-    <div ref={drop} id='drop-layer-area'>
+    <div ref={drop} id={hasChildren === 0 ? 'drop-layer-large': 'drop-layer-area'}>
       {/* <p>{parent}</p> */}
       {/* {index} */}
     </div>

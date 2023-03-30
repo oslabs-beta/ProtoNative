@@ -54,6 +54,7 @@ const ComponentDetails = (): JSX.Element => {
         <div style={{ border: '1px solid black' }} id='component-box'>
           {childElements.length === 0 && (
             <DropLayer
+              hasChildren={childElements.length}
               index={0}
               setCounter={setCounter}
               parent={currentComponent}
