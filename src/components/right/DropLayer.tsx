@@ -8,7 +8,7 @@ import {
   CopyCustomComp,
   CopyNativeEl,
   OrigNativeEl,
-} from '../../parser/interfaces';
+} from '../../utils/interfaces';
 
 type DropLayerProps = {
   hasChildren: number;
