@@ -41,7 +41,6 @@ const DropLayer = ({
     ) => {
       const dragIndex: number = item.index;
       const hoverIndex: number = index;
-      // if (dragIndex === hoverIndex) return;
       if (item.type === 'elements') {
         moveItem(
           originals,
@@ -74,7 +73,7 @@ const DropLayer = ({
   let backgroundColor;
   if (isOver) backgroundColor = 'yellow';
 
-  let lastChild = false;
+  let lastChild: boolean = false;
 
   if (hasChildren === 0) lastChild = true;
 
@@ -83,8 +82,6 @@ const DropLayer = ({
       lastChild = true;
     }
   }
-  console.log('parent', parent);
-  console.log('lastchild', lastChild);
 
   return (
     <div

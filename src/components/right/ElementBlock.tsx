@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { useDrag, useDrop } from 'react-dnd';
+import React from 'react';
+import { useDrag } from 'react-dnd';
 import {
   Copies,
   CopyNativeEl,
@@ -19,7 +19,7 @@ type ElementBlockProps = {
   index: number;
   location: string;
   parent: string;
-  setCounter: (value: number) => number;
+  setCounter: (prev: number) => void;
 };
 
 const isCopyCustomComp = (
@@ -40,10 +40,10 @@ const ElementBlock = ({
   setCounter,
 }: ElementBlockProps) => {
   const componentDef = copies[componentName];
-  let childElements = null;
-  let children: string[] = null;
+  let childElements: JSX.Element[];
+  let children: string[];
 
-  const [{ isDragging }, drag] = useDrag(
+  const [, drag] = useDrag(
     () => ({
       type: 'elements',
       item: {
@@ -52,10 +52,6 @@ const ElementBlock = ({
         type: 'elements',
         parentComp: parent,
       },
-      collect: (monitor) => ({
-        //boolean to see if component is being dragged (isDragging)
-        isDragging: monitor.isDragging(),
-      }),
     }),
     [componentName, index]
   );
@@ -68,10 +64,9 @@ const ElementBlock = ({
   }
 
   if (children.length) {
-    const arr: JSX.Element[] = [];
-    children.forEach((childName: string, idx) => {
+    childElements = children.map((childName, idx) => {
       if (location === 'app' && copies[childName].type === 'custom') {
-        arr.push(
+        return (
           <ElementBlock
             key={idx + childName}
             componentName={childName}
@@ -86,7 +81,7 @@ const ElementBlock = ({
           />
         );
       } else if (location === 'details' && componentDef.type !== 'custom') {
-        arr.push(
+        return (
           <ElementBlock
             key={idx + childName}
             componentName={childName}
@@ -102,17 +97,14 @@ const ElementBlock = ({
         );
       }
     });
-    childElements = arr;
   }
-  let showLayers;
-  if (
+  const showLayers: boolean =
     location === 'details' ||
     (location === 'app' && componentDef.parent.key === 'App')
-  )
-    showLayers = true;
-  else showLayers = false;
+      ? true
+      : false;
 
-  const inNative =
+  const inNative: boolean =
     copies[parent] && copies[parent].children.length - 1 === index
       ? true
       : false;
