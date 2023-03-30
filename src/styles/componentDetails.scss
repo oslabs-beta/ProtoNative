@@ -16,7 +16,7 @@
   flex-direction: column;
   overflow-y: scroll;
   height: 375px;
-  background-color: white;
+  background-color: $scroll-container;
 }
 
 #component-box::-webkit-scrollbar{

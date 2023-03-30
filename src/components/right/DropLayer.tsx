@@ -71,7 +71,7 @@ const DropLayer = ({
     }),
   });
   let backgroundColor;
-  if (isOver) backgroundColor = 'yellow';
+  if (isOver) backgroundColor = '#f0c142';
 
   let lastChild: boolean = false;
 

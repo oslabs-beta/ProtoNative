@@ -38,14 +38,14 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 			? setComponentItem(
 					<div className={currentComponent === comp.type ? 'highlightedComponentListItem' : 'componentListItem'}  onClick={() => setCurrentComponent(comp.type)}>
 						<span> {comp.type} </span>
-						<button onClick={(e) => handleStateClick(e)}>State</button>
+						<button className='list-state-button'onClick={(e) => handleStateClick(e)}>State</button>
 					</div>
 				)
 			: setComponentItem(
 				<div className={currentComponent === comp.name ? 'highlightedComponentListItem' : 'componentListItem'}  onClick={() => setCurrentComponent(comp.name)}>
 					<span> {comp.name} </span>
-					<button onClick={(e) => handleStateClick(e)}>State</button>
-					<button onClick={(e) => handleDeleteClick(e)}>Delete</button>
+					<button className='list-state-button' onClick={(e) => handleStateClick(e)}>State</button>
+					<button className='list-delete-button'onClick={(e) => handleDeleteClick(e)}>Delete</button>
 				</div>
 			)
 	}, [currentComponent, originals, copies]);
@@ -150,10 +150,7 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 				 <Modal handleClick={handleClick}>
 					{currentModal === 'state' ? (
 						<div id='stateModal'>
-							<h3>Add State to {OriginalCustomComponent.name ?? comp.type}</h3>
-							<p>
-								Add or delete a state variable for {OriginalCustomComponent.name ?? comp.type}
-							</p>
+							<h3>Add/delete State from {OriginalCustomComponent.name ?? comp.type}</h3>
 							<form id='state-modal-form' onSubmit={handleStateSaveClick}>
 								<input 
 									id='state-modal-input' 
@@ -176,8 +173,8 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 							<h3>Are you sure you want to delete {OriginalCustomComponent.name}?</h3>
 							<p>This will delete all occurrences of {OriginalCustomComponent.name} everywhere!</p>
 							<div id='delete-modal-buttons'>
-								<button onClick={handleDeleteConfirmClick}>Confirm</button>
-								<button onClick={() => handleClose()}>Cancel</button>	
+								<button className='list-state-button delete-confirm-button' onClick={handleDeleteConfirmClick}>Confirm</button>
+								<button className='list-delete-button' onClick={() => handleClose()}>Cancel</button>	
 							</div>
 						
 						</div>
