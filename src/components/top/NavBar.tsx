@@ -1,15 +1,11 @@
 import React, { useContext, useState } from 'react';
 import AppContext from '../../context/AppContext';
-import { formattedCompCode } from '../../utils/parser';
+import { formattedCompCode, isOrigCustomComp } from '../../utils/parser';
 import { OrigCustomComp, OrigNativeEl, AppInterface } from '../../utils/interfaces';
 import Modal from '../left/Modal';
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 import { expoFiles } from '../../utils/expoFiles';
-
-const isOrigCustomComp = (comp: OrigCustomComp | OrigNativeEl | AppInterface): comp is OrigCustomComp => {
-  return comp.type === 'custom';
-}
 
 const NavBar = (): JSX.Element => {
 
