@@ -24,9 +24,9 @@ const App = () => {
       children: [],
       state: [],
     } as AppInterface,
-    View: { type: 'View', index: 3 } as OrigNativeEl,
-    Button: { type: 'Button', index: 3 } as OrigNativeEl,
-    Text: { type: 'Text', index: 1 } as OrigNativeEl,
+    View: { type: 'View', index: 0 } as OrigNativeEl,
+    Button: { type: 'Button', index: 0 } as OrigNativeEl,
+    Text: { type: 'Text', index: 0 } as OrigNativeEl,
     Image: { type: 'Image', index: 0 } as OrigNativeEl,
     TextInput: { type: 'TextInput', index: 0 } as OrigNativeEl,
     ScrollView: { type: 'ScrollView', index: 0 } as OrigNativeEl,
@@ -40,123 +40,8 @@ const App = () => {
     TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
     StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
     ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
-    TestComponent: {
-      name: 'TestComponent',
-      type: 'custom',
-      children: ['Button0', 'CoolComponent0'],
-      state: [],
-      index: 0,
-      copies: [''],
-    } as OrigCustomComp,
-    CoolComponent: {
-      name: 'CoolComponent',
-      type: 'custom',
-      children: ['Button2', 'View1', 'View2', 'BruhComponent0'],
-      state: [],
-      index: 1,
-      copies: ['CoolComponent0'],
-    } as OrigCustomComp,
-    BruhComponent: {
-      name: 'BruhComponent',
-      type: 'custom',
-      children: ['Button3', 'View3'],
-      state: [],
-      index: 1,
-      copies: ['BruhComponent0'],
-    } as OrigCustomComp,
   });
-  const [copies, setCopies] = React.useState<Copies>({
-    Button0: {
-      name: 'Button0',
-      type: 'Button',
-      parent: { origin: 'original', key: 'TestComponent' },
-      children: [],
-    } as CopyNativeEl,
-    Button3: {
-      name: 'Button3',
-      type: 'Button',
-      parent: { origin: 'original', key: 'BruhComponent' },
-      children: [],
-    } as CopyNativeEl,
-    Button4: {
-      name: 'Button4',
-      type: 'Button',
-      parent: { origin: 'copies', key: 'View3' },
-      children: [],
-    } as CopyNativeEl,
-    View2: {
-      name: 'View2',
-      type: 'View',
-      parent: { origin: 'original', key: 'CoolComponent' },
-      children: [],
-    } as CopyNativeEl,
-    View3: {
-      name: 'View3',
-      type: 'View',
-      parent: { origin: 'original', key: 'BruhComponent' },
-      children: ['Button4'],
-    } as CopyNativeEl,
-    Text0: {
-      name: 'Text0',
-      type: 'Text',
-      parent: { origin: 'copies', key: 'View1' },
-      children: ['Button1'],
-    } as CopyNativeEl,
-    // View0: {
-    //   name: 'View0',
-    //   type: 'View',
-    //   parent: { origin: 'original', key: 'App' },
-    //   children: [],
-    // } as CopyNativeEl,
-    Button1: {
-      name: 'Button1',
-      type: 'Button',
-      parent: { origin: 'copies', key: 'Text0' },
-      children: [],
-    } as CopyNativeEl,
-    View1: {
-      name: 'View1',
-      type: 'View',
-      parent: { origin: 'original', key: 'CoolComponent' },
-      children: ['Text0'],
-    } as CopyNativeEl,
-    Button2: {
-      name: 'Button2',
-      type: 'Button',
-      parent: { origin: 'original', key: 'CoolComponent' },
-      children: [],
-    } as CopyNativeEl,
-    // TestComponent0: {
-    //   name: 'TestComponent0',
-    //   type: 'custom',
-    //   parent: { origin: 'original', key: 'App' },
-    //   pointer: 'TestComponent',
-    // } as CopyCustomComp,
-    // TestComponent1: {
-    //   name: 'TestComponent1',
-    //   type: 'custom',
-    //   parent: { origin: 'original', key: 'App' },
-    //   pointer: 'TestComponent',
-    // } as CopyCustomComp,
-    // TestComponent2: {
-    //   name: 'TestComponent2',
-    //   type: 'custom',
-    //   parent: { origin: 'original', key: 'App' },
-    //   pointer: 'TestComponent',
-    // } as CopyCustomComp,
-    CoolComponent0: {
-      name: 'CoolComponent0',
-      type: 'custom',
-      parent: { origin: 'original', key: 'TestComponent' },
-      pointer: 'CoolComponent',
-    } as CopyCustomComp,
-    BruhComponent0: {
-      name: 'BruhComponent0',
-      type: 'custom',
-      parent: { origin: 'original', key: 'CoolComponent' },
-      pointer: 'BruhComponent',
-    } as CopyCustomComp,
-  });
+  const [copies, setCopies] = React.useState<Copies>({});
   const [currentComponent, setCurrentComponent] = React.useState('App');
 
   // FIXME: Turn off strict mode when unnecesary

@@ -1,17 +1,15 @@
 import React, { useContext, useState } from 'react';
 import AppContext from '../../context/AppContext';
-import { formattedCompCode } from '../../utils/parser';
+import { formattedCompCode, isOrigCustomComp } from '../../utils/parser';
 import { OrigCustomComp, OrigNativeEl, AppInterface } from '../../utils/interfaces';
 import Modal from '../left/Modal';
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
-const isOrigCustomComp = (comp: OrigCustomComp | OrigNativeEl | AppInterface): comp is OrigCustomComp => {
-  return comp.type === 'custom';
-}
+import { expoFiles } from '../../utils/expoFiles';
 
 const NavBar = (): JSX.Element => {
 
-  const { setCopies, setOriginals, setCurrentComponent } = useContext(AppContext);
+  const { setCopies, setOriginals, setCurrentComponent, originals, copies } = useContext(AppContext);
 	const [isOpen, setIsOpen] = useState(false);
 
   const clearAll = () => {
@@ -40,18 +38,21 @@ const NavBar = (): JSX.Element => {
     setIsOpen(true);
   };
 
-  const { originals, copies } = useContext(AppContext);
-
   const exportFiles = (): void => {
     const zip = new JSZip();
-    zip.file('App.jsx', formattedCompCode(originals['App'] as AppInterface, originals, copies));
+    zip.file('App.js', formattedCompCode(originals['App'] as AppInterface, originals, copies));
+
+    const allCustomComponents = zip.folder('Components');
     for (const component in originals) {
       const currComponent = originals[component];
       if (isOrigCustomComp(currComponent)) {
-        const fileName = `${currComponent.name}.jsx`;
+        const fileName = `${currComponent.name}.js`;
         const componentCode = formattedCompCode(originals[currComponent.name] as OrigCustomComp, originals, copies);
-        zip.file(fileName, componentCode);
+        allCustomComponents.file(fileName, componentCode);
       }
+    }
+    for (const file of expoFiles) {
+      zip.file(file.name, file.contents);
     }
     zip.generateAsync({ type: 'blob' }).then(function(allFiles) {
       saveAs(allFiles, 'App.zip');

@@ -46,7 +46,7 @@ const AppCanvas = (): JSX.Element => {
             originals={originals}
             setOriginals={setOriginals}
             index={index}
-            location={'details'}
+            location={'app'} //changed from details
             parent={'App'}
             setCounter={setCounter}
           />
@@ -54,25 +54,25 @@ const AppCanvas = (): JSX.Element => {
       }
     });
     setAppComponents(appChildren);
-  }, [counter, originals, copies]);
+  }, [counter, originals]);
+
+  const dropLayerIndex = App.children.length ? App.children.length : 0;
 
   return (
     <div id='app-canvas'>
       <h1 id='app-canvas-title'>My App</h1>
       <div id='phone-screen-container'>
         {appComponents}
-        {App.children.length === 0 && (
-          <DropLayer
-            hasChildren={App.children.length}
-            index={0}
-            setCounter={setCounter}
-            parent={'App'}
-            copies={copies}
-            setCopies={setCopies}
-            originals={originals}
-            setOriginals={setOriginals}
-          />
-        )}
+        <DropLayer
+          hasChildren={App.children.length}
+          index={dropLayerIndex}
+          setCounter={setCounter}
+          parent={'App'}
+          copies={copies}
+          setCopies={setCopies}
+          originals={originals}
+          setOriginals={setOriginals}
+        />
       </div>
     </div>
   );

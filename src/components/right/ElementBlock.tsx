@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { useDrag, useDrop } from 'react-dnd';
+import React from 'react';
+import { useDrag } from 'react-dnd';
 import {
   Copies,
   CopyNativeEl,
@@ -19,7 +19,7 @@ type ElementBlockProps = {
   index: number;
   location: string;
   parent: string;
-  setCounter: (value: number) => number;
+  setCounter: (prev: number) => void;
 };
 
 const isCopyCustomComp = (
@@ -40,10 +40,10 @@ const ElementBlock = ({
   setCounter,
 }: ElementBlockProps) => {
   const componentDef = copies[componentName];
-  let childElements = null;
-  let children: string[] = null;
+  let childElements: JSX.Element[];
+  let children: string[];
 
-  const [{ isDragging }, drag] = useDrag(
+  const [, drag] = useDrag(
     () => ({
       type: 'elements',
       item: {
@@ -52,10 +52,6 @@ const ElementBlock = ({
         type: 'elements',
         parentComp: parent,
       },
-      collect: (monitor) => ({
-        //boolean to see if component is being dragged (isDragging)
-        isDragging: monitor.isDragging(),
-      }),
     }),
     [componentName, index]
   );
@@ -68,10 +64,10 @@ const ElementBlock = ({
   }
 
   if (children.length) {
-    const arr: JSX.Element[] = [];
-    children.forEach((childName: string, idx) => {
+    childElements = children.map((childName, idx) => {
+      //showing custom components within custom components in app
       if (location === 'app' && copies[childName].type === 'custom') {
-        arr.push(
+        return (
           <ElementBlock
             key={idx + childName}
             componentName={childName}
@@ -85,8 +81,27 @@ const ElementBlock = ({
             setCounter={setCounter}
           />
         );
-      } else if (location === 'details' && componentDef.type !== 'custom') {
-        arr.push(
+      }
+      //showing native elements within native elements in app
+      else if (location === 'app' && componentDef.type !== 'custom') {
+        return (
+          <ElementBlock
+            key={idx + childName}
+            componentName={childName}
+            copies={copies}
+            setCopies={setCopies}
+            originals={originals}
+            setOriginals={setOriginals}
+            index={idx}
+            location={'details'}
+            parent={copies[childName].parent.key}
+            setCounter={setCounter}
+          />
+        );
+      }
+      //showing only first level of custom components in component details
+      else if (location === 'details' && componentDef.type !== 'custom') {
+        return (
           <ElementBlock
             key={idx + childName}
             componentName={childName}
@@ -102,15 +117,23 @@ const ElementBlock = ({
         );
       }
     });
-    childElements = arr;
   }
-  let showLayers;
-  if (
-    location === 'details' ||
-    (location === 'app' && componentDef.parent.key === 'App')
-  )
-    showLayers = true;
-  else showLayers = false;
+
+  //creating a top drop layer at the top level (app or in component details)
+  let showLayers: boolean;
+  if (location === 'details') showLayers = true;
+  else if (location === 'app') {
+    if (componentDef.parent.key === 'App') showLayers = true;
+    else if (copies[parent]) {
+      if (isDoubleTagElement(copies[parent].type)) showLayers = true;
+    }
+  }
+
+  //creating a drop layer at the bottom of nested native elements
+  const inNative: boolean =
+    copies[parent] && copies[parent].children.length - 1 === index
+      ? true
+      : false;
 
   return (
     <div>
@@ -126,7 +149,10 @@ const ElementBlock = ({
         />
       )}
       <div
-        style={{ border: '1px solid black', backgroundColor: 'rgba(50, 2, 59, 0.8)' }}
+        style={{
+          border: '2px solid black',
+          backgroundColor: 'rgba(50, 2, 59, 0.6)',
+        }}
         className='element'
         ref={drag}
       >
@@ -135,21 +161,22 @@ const ElementBlock = ({
             ? copies[componentName].pointer
             : copies[componentName].type}
         </p>
-
-        {isDoubleTagElement(copies[componentName].type) && (
-          <DropLayer
-            index={0}
-            setCounter={setCounter}
-            parent={componentDef.name}
-            copies={copies}
-            setCopies={setCopies}
-            originals={originals}
-            setOriginals={setOriginals}
-          />
-        )}
+        {/* creating a starter drop layer for empty native elements */}
+        {isDoubleTagElement(copies[componentName].type) &&
+          copies[componentName].children.length === 0 && (
+            <DropLayer
+              index={0}
+              setCounter={setCounter}
+              parent={componentDef.name}
+              copies={copies}
+              setCopies={setCopies}
+              originals={originals}
+              setOriginals={setOriginals}
+            />
+          )}
         {childElements}
       </div>
-      {showLayers && (
+      {inNative && (
         <DropLayer
           index={index + 1}
           setCounter={setCounter}

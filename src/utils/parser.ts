@@ -173,7 +173,13 @@ const capitalizeFirst = (str: string): string => {
  * @method importReact
  * @description - returns the main react import statement
  */
-const importReact = (): string => `import React from 'react';\n`;
+const importReact = (component: OrigCustomComp | AppInterface): string => {
+  let hooksToImport = '';
+  if (component.state.length !== 0) {
+    hooksToImport += 'useState';
+  }
+  return `import React ${hooksToImport !== '' ? `, { ${hooksToImport} }` : ''} from 'react';\n`;
+};
 
 /**
  * @method isDoubleTagElement
@@ -194,12 +200,23 @@ export const isDoubleTagElement = (elementName: string): boolean => {
 
 /**
  * @method isCopyCustomComp
- * @description - checks whether of interface CopyCustomComp
- * @input - either CopyNativeEl or CopyCustomComp
+ * @description - checks whether comp is of interface CopyCustomComp
+ * @input - either CopyNativeEl or CopyCustomComp (anything in copies)
  * @output - boolean -> true if input is of interface CopyCustomComp
  * (technically, output is a type guard)
  */
 export const isCopyCustomComp = (comp: CopyNativeEl | CopyCustomComp): comp is CopyCustomComp => {
+  return comp.type === 'custom';
+}
+
+/**
+ * @method isOrigCustomComp
+ * @description - checks whether comp is of interface OrigCustomComp
+ * @input - either OrigCustomComp or OrigNativeEl or AppInterface (anything in originals)
+ * @output - boolean -> true if input is of interface OrigCustomComp
+ * (technically, output is a type guard)
+ */
+export const isOrigCustomComp = (comp: OrigCustomComp | OrigNativeEl | AppInterface): comp is OrigCustomComp => {
   return comp.type === 'custom';
 }
 
@@ -212,7 +229,7 @@ export const isCopyCustomComp = (comp: CopyNativeEl | CopyCustomComp): comp is C
 const addState = (stateNames: string[]): string => {
   let stateVariables: string = '';
   for (const stateVar of stateNames) {
-    stateVariables += `const [${stateVar}, set${capitalizeFirst(stateVar)}] = React.useState(null);\n`;
+    stateVariables += `const [${stateVar}, set${capitalizeFirst(stateVar)}] = useState(null);\n`;
   }
   return stateVariables;
 };
@@ -259,11 +276,11 @@ const addNativeImports = (toImport: {}): string => {
 /**
  * @method addCustomCompImport
  * @description - generates the import statement for importing custom components
- * @input - string name of the custom component
+ * @input - string name of the custom component, boolean to check whether the current component in generateCustomComponentCode is App
  * @output - import statement for importing the custom component 
  */
-const addCustomCompImport = (toImport: string): string => {
-  return `import ${toImport} from './${toImport}';\n`;
+const addCustomCompImport = (toImport: string, isCompApp: boolean): string => {
+  return `import ${toImport} from '.${isCompApp ? '/Components' : ''}/${toImport}';\n`;
 };
 
 /**
@@ -311,7 +328,8 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp, originals: O
  */
 const generateCustomComponentCode = (component: OrigCustomComp | AppInterface, originals: Originals, copies: Copies): string => {
   // store to save all native core components to be imported
-  const importNative: {[key: string]: boolean} = {};
+  // always import View 
+  const importNative: {[key: string]: boolean} = { View: true };
   // store to save all the custom components to be imported
   const importCustom: {[key: string]: boolean} = {};
   // returnedComponentCode will contain everything that goes into the return statement of component
@@ -336,12 +354,12 @@ const generateCustomComponentCode = (component: OrigCustomComp | AppInterface, o
   }
   // generate all import statements
   let importStatements: string = '';
-  importStatements += importReact();
+  importStatements += importReact(component);
   // get import statements for native components
   importStatements += addNativeImports(importNative);
   // get import statements for custom components
   for (const customComponent in importCustom) {
-    importStatements += addCustomCompImport(customComponent);
+    importStatements += component.type === 'App' ? addCustomCompImport(customComponent, true) : addCustomCompImport(customComponent, false);
   }
   // generate all state code
   const stateVariables: string = addState(component.state);

@@ -15,8 +15,6 @@ const CodeBlock = (): JSX.Element => {
   const [code, setCode] = useState(null);
 
   useEffect(() => {
-    console.log(originals);
-    console.log(copies);
     const code = formattedCompCode(
       originals[currentComponent] as OrigCustomComp,
       originals,
