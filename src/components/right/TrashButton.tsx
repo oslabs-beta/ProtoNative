@@ -27,7 +27,7 @@ const TrashButton = (): JSX.Element => {
   // use the item object in the drop method that we will declare
   // deep copy the two contexts' and feed that as well as item.name to the trashCan function
 
-  const hover = isOver ? 'yellow' : null;
+  const hover = isOver ? 'rgb(128, 29, 29)' : null;
 
   return (
     <div
