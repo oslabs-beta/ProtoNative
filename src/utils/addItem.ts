@@ -30,10 +30,11 @@ export const addItem =
         parent: { origin: 'original', key: parent },
         pointer: name,
       };
-      //drop array is correct and splices correctly
       const dropArr: string[] = [...originals[parent].children];
       dropArr.splice(hoverIndex, 0, newElement.name);
 
+      //incrementing index + adding copies to the originals 
+      //update children of the parent 
       setOriginals((previous: Originals): Originals => {
         const prevDroppedElement = previous[name] as OrigCustomComp;
         const newDroppedElement = {
@@ -62,7 +63,7 @@ export const addItem =
         };
       });
 
-      //custom component dropped to a nested element (FIX: code block breaks here)
+      //custom component dropped to a nested element
     } else {
       //new element points to copies array instead
       newElement = {
@@ -72,14 +73,12 @@ export const addItem =
         pointer: name,
       };
 
-      //also splicing correctly
       const dropArr: string[] = [...copies[parent].children];
       dropArr.splice(hoverIndex, 0, newElement.name);
 
-      //incrementing index + adding copies to the originals!
+      //incrementing index + adding copies to the originals
       setOriginals((previous: Originals): Originals => {
         const prevDroppedElement = previous[name] as OrigCustomComp;
-
         const newDroppedElement = {
           ...prevDroppedElement,
           index: prevDroppedElement.index + 1,
@@ -91,6 +90,7 @@ export const addItem =
         };
       });
 
+      //updatng children array and making a copy of the added element
       setCopies((previous: Copies): Copies => {
         const prevUpdatedComponent = previous[parent] as
           | CopyNativeEl
@@ -141,7 +141,7 @@ export const addItem =
           [parent]: newUpdatedComponent,
         };
       });
-
+      //add the new element to copies
       setCopies((previous: Copies): Copies => {
         return {
           ...previous,
@@ -161,6 +161,7 @@ export const addItem =
       const dropArr = [...copies[parent].children];
       dropArr.splice(hoverIndex, 0, newElement.name);
 
+      //update index of dropped element
       setOriginals((previous: Originals): Originals => {
         const prevDroppedElement = previous[name] as OrigNativeEl;
         const newDroppedElement = {
@@ -173,7 +174,8 @@ export const addItem =
           [name]: newDroppedElement,
         };
       });
-
+      
+      //update children array and create new copy
       setCopies((previous: Copies): Copies => {
         const prevUpdatedComponent = previous[parent] as CopyNativeEl;
         const newUpdatedComponent = {

@@ -70,13 +70,13 @@ const DropLayer = ({
       isOver: monitor.isOver(),
     }),
   });
-  let backgroundColor;
-  if (isOver) backgroundColor = 'yellow';
 
+  //hover color
+  const backgroundColor = isOver ? 'yellow' : null;
+
+  //make the last drop layer take up the rest of the screen
   let lastChild: boolean = false;
-
   if (hasChildren === 0) lastChild = true;
-
   if (originals[parent]) {
     if (index === originals[parent].children.length) {
       lastChild = true;
@@ -88,10 +88,7 @@ const DropLayer = ({
       ref={drop}
       id={lastChild ? 'drop-layer-large' : 'drop-layer-area'}
       style={{ backgroundColor: backgroundColor }}
-    >
-      {/* <p>{parent}</p> */}
-      {/* {index} */}
-    </div>
+    ></div>
   );
 };
 
