@@ -200,12 +200,23 @@ export const isDoubleTagElement = (elementName: string): boolean => {
 
 /**
  * @method isCopyCustomComp
- * @description - checks whether of interface CopyCustomComp
- * @input - either CopyNativeEl or CopyCustomComp
+ * @description - checks whether comp is of interface CopyCustomComp
+ * @input - either CopyNativeEl or CopyCustomComp (anything in copies)
  * @output - boolean -> true if input is of interface CopyCustomComp
  * (technically, output is a type guard)
  */
 export const isCopyCustomComp = (comp: CopyNativeEl | CopyCustomComp): comp is CopyCustomComp => {
+  return comp.type === 'custom';
+}
+
+/**
+ * @method isOrigCustomComp
+ * @description - checks whether comp is of interface OrigCustomComp
+ * @input - either OrigCustomComp or OrigNativeEl or AppInterface (anything in originals)
+ * @output - boolean -> true if input is of interface OrigCustomComp
+ * (technically, output is a type guard)
+ */
+export const isOrigCustomComp = (comp: OrigCustomComp | OrigNativeEl | AppInterface): comp is OrigCustomComp => {
   return comp.type === 'custom';
 }
 
@@ -265,11 +276,11 @@ const addNativeImports = (toImport: {}): string => {
 /**
  * @method addCustomCompImport
  * @description - generates the import statement for importing custom components
- * @input - string name of the custom component
+ * @input - string name of the custom component, boolean to check whether the current component in generateCustomComponentCode is App
  * @output - import statement for importing the custom component 
  */
-const addCustomCompImport = (toImport: string): string => {
-  return `import ${toImport} from './Components/${toImport}';\n`;
+const addCustomCompImport = (toImport: string, isCompApp: boolean): string => {
+  return `import ${toImport} from '.${isCompApp ? '/Components' : ''}/${toImport}';\n`;
 };
 
 /**
@@ -348,7 +359,7 @@ const generateCustomComponentCode = (component: OrigCustomComp | AppInterface, o
   importStatements += addNativeImports(importNative);
   // get import statements for custom components
   for (const customComponent in importCustom) {
-    importStatements += addCustomCompImport(customComponent);
+    importStatements += component.type === 'App' ? addCustomCompImport(customComponent, true) : addCustomCompImport(customComponent, false);
   }
   // generate all state code
   const stateVariables: string = addState(component.state);
