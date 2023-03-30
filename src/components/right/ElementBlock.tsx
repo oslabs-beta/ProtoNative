@@ -137,7 +137,7 @@ const ElementBlock = ({
         </p>
 
         {isDoubleTagElement(copies[componentName].type) && (
-          <DropLayer
+          /*copies[componentName].children.length === 0 && */ <DropLayer
             index={0}
             setCounter={setCounter}
             parent={componentDef.name}

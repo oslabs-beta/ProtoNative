@@ -1,12 +1,17 @@
-const moveItem = (
+export const moveItem = (
+  originals: any,
+  setOriginals: any,
+  copies: any,
+  setCopies: any,
   dragIndex: number,
   hoverIndex: number,
   name: string,
   parentComp: string, //dragged item's parent
-  position: string
+  parent: string,
 ): void => {
   console.log('parentComp', parentComp);
   console.log('name', name);
+
   let dragArr: string[];
   let dropArr: string[];
   let item: string;
@@ -18,7 +23,9 @@ const moveItem = (
   //parentComp = dragged item's parent vs
   //parent = dragLayer's parent to know which array to be splicing
   //item is in the top level custom component
+
   if (originals[parentComp]) {
+    console.log('in originals');
     item = originals[parentComp].children[dragIndex];
     //item being moved is in the same level
     if (parentComp === parent) {
@@ -56,9 +63,17 @@ const moveItem = (
       }
     }
   }
-
-  dragArr.splice(dragIndex, 1);
-  dropArr.splice(hoverIndex, 0, item);
+  if (parent === parentComp) {
+    dragArr.splice(dragIndex, 1);
+    if (hoverIndex < dragIndex) {
+      dropArr.splice(hoverIndex, 0, item);
+    } else {
+      dropArr.splice(hoverIndex - 1, 0, item);
+    }
+  } else {
+    dragArr.splice(dragIndex, 1);
+    dropArr.splice(hoverIndex, 0, item);
+  }
 
   //item is from top layer element
   if (originals[parentComp]) {
@@ -79,19 +94,31 @@ const moveItem = (
           [name]: newChildObj,
         };
       });
+      setOriginals((prevState: any) => {
+        const oldParentObj = prevState[parentComp];
+        const newParentObj = {
+          ...oldParentObj,
+          children: dragArr,
+        };
+        return {
+          ...prevState,
+          [parentComp]: newParentObj,
+        };
+      });
+    } else {
+      //item is moving top level to top level
+      setOriginals((prevState: any) => {
+        const oldParentObj = prevState[parentComp];
+        const newParentObj = {
+          ...oldParentObj,
+          children: dropArr,
+        };
+        return {
+          ...prevState,
+          [parentComp]: newParentObj,
+        };
+      });
     }
-    //item is moving top level to top level, but also have to change originals if top to child
-    setOriginals((prevState: any) => {
-      const oldParentObj = prevState[parentComp];
-      const newParentObj = {
-        ...oldParentObj,
-        children: dragArr,
-      };
-      return {
-        ...prevState,
-        [parentComp]: newParentObj,
-      };
-    });
   }
   //nested item moved somewhere
   else {
@@ -148,5 +175,4 @@ const moveItem = (
       });
     }
   }
-  setCounter((prev) => ++prev);
 };
