@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import reactPlugin from '@vitejs/plugin-react';
 
 module.exports = defineConfig({
+  base: '',
   plugins: [
     reactPlugin(),
   ],
