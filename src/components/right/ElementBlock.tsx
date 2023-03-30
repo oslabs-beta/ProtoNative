@@ -150,8 +150,8 @@ const ElementBlock = ({
       )}
       <div
         style={{
-          border: '1px solid black',
-          backgroundColor: 'rgba(50, 2, 59, 0.8)',
+          border: '2px solid black',
+          backgroundColor: 'rgba(50, 2, 59, 0.6)',
         }}
         className='element'
         ref={drag}

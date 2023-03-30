@@ -72,7 +72,7 @@ const DropLayer = ({
   });
 
   //hover color
-  const backgroundColor = isOver ? 'yellow' : null;
+  const backgroundColor = isOver ? '#f0c142' : null;
 
   //make the last drop layer take up the rest of the screen
   let lastChild: boolean = false;

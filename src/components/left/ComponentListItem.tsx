@@ -38,14 +38,14 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 			? setComponentItem(
 					<div className={currentComponent === comp.type ? 'highlightedComponentListItem' : 'componentListItem'}  onClick={() => setCurrentComponent(comp.type)}>
 						<span> {comp.type} </span>
-						<button onClick={(e) => handleStateClick(e)}>State</button>
+						<button className='list-state-button'onClick={(e) => handleStateClick(e)}>State</button>
 					</div>
 				)
 			: setComponentItem(
 				<div className={currentComponent === comp.name ? 'highlightedComponentListItem' : 'componentListItem'}  onClick={() => setCurrentComponent(comp.name)}>
 					<span> {comp.name} </span>
-					<button onClick={(e) => handleStateClick(e)}>State</button>
-					<button onClick={(e) => handleDeleteClick(e)}>Delete</button>
+					<button className='list-state-button' onClick={(e) => handleStateClick(e)}>State</button>
+					<button className='list-delete-button'onClick={(e) => handleDeleteClick(e)}>Delete</button>
 				</div>
 			)
 	}, [currentComponent, originals, copies]);
@@ -111,6 +111,7 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		console.log(`new state for ${OriginalCustomComponent.name ?? comp.type}: ${newState}`);
 		// create a copy of the originals object
 		// update the componant with the added state in the copies
+		event.preventDefault();
 		setOriginals((prevOriginals) => {
 			const updatedOriginals = { ...prevOriginals };
 			const originalElement = updatedOriginals[OriginalCustomComponent.name ?? comp.type] as OrigCustomComp | AppInterface;
@@ -125,8 +126,8 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		})
 		setNewState('');
 	}
+
 	const handleClose = (): void => {
-		
 		setIsOpen(false);
 	};
 
@@ -149,34 +150,33 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 				 <Modal handleClick={handleClick}>
 					{currentModal === 'state' ? (
 						<div id='stateModal'>
-							<h3>Add State to {OriginalCustomComponent.name ?? comp.type}</h3>
-							<p>
-								Initialize or edit a state variable for {OriginalCustomComponent.name ?? comp.type}
-								<div className="state-box">
+							<h3>Add/delete State from {OriginalCustomComponent.name ?? comp.type}</h3>
+							<form id='state-modal-form' onSubmit={handleStateSaveClick}>
+								<input 
+									id='state-modal-input' 
+									value={newState} 
+									onChange={(e) => setNewState(e.target.value)}
+										/>
+								<label htmlFor="stateInput" id='state-modal-label'>New State</label>
+							</form>
+							<div className="states-container">
 									{OriginalCustomComponent.state.map((stateValue, index) => (
-									<div key={index} className="state-item">
-										{stateValue}
-										<button onClick={() => handleDeleteState(stateValue)}>X</button>
-									</div>
+										<div key={index} className="state-item" onClick={() => handleDeleteState(stateValue)}>
+											<span className='strike'>{stateValue}</span>
+										</div>
 									))}
-								  </div>
-								</p>
-							<label htmlFor="stateInput">New State</label>
-							<input 
-								id='stateInput' 
-								value={newState} 
-								onChange={(e) => setNewState(e.target.value)}
-									/>
-							<button onClick={() => handleClose()}>Cancel</button>
-							<button onClick={handleStateSaveClick}>Save</button>
+							</div>
 						</div>
 						)
 					: currentModal === 'delete' ? (
 						<div id='deleteModal'>
 							<h3>Are you sure you want to delete {OriginalCustomComponent.name}?</h3>
 							<p>This will delete all occurrences of {OriginalCustomComponent.name} everywhere!</p>
-							<button onClick={handleDeleteConfirmClick}>Confirm</button>
-							<button onClick={() => handleClose()}>Cancel</button>	
+							<div id='delete-modal-buttons'>
+								<button className='list-state-button delete-confirm-button' onClick={handleDeleteConfirmClick}>Confirm</button>
+								<button className='list-delete-button' onClick={() => handleClose()}>Cancel</button>	
+							</div>
+						
 						</div>
 					) : null
 					}

@@ -57,21 +57,19 @@ const AddComponent = () => {
         Add Custom Component 
       </button>
       {isOpen && (
-        <div id="modal">
-          <Modal handleClick={()=> setIsOpen(false)}>
-            <div id="modal-content">
-              <h2>Add Custom Component</h2>
-              <form onSubmit={handleSubmit}>
-                <label>
-                  Component Name:
-                  <input type="text" value={componentName} onChange={handleInputChange} />
-                </label>
-                <button type="submit">Add</button>
-                <button onClick={handleClose}>Cancel</button>
-              </form>
-            </div>
-          </Modal>
-        </div>
+        <Modal handleClick={()=> setIsOpen(false)}>
+          <div id="modal-content">
+            <h2>Add Custom Component</h2>
+            <form onSubmit={handleSubmit} id='add-component-form'>
+              <input id='add-component-input' name="name" type="text" value={componentName} onChange={handleInputChange}/>
+              <label id='add-component-label'>
+                Component Name
+              </label>
+              {/* <button type="submit">Add</button>
+              <button onClick={handleClose}>Cancel</button> */}
+            </form>
+          </div>
+        </Modal>
       )}
     </div>
   );
