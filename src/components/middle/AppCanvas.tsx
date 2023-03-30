@@ -63,6 +63,7 @@ const AppCanvas = (): JSX.Element => {
         {appComponents}
         {App.children.length === 0 && (
           <DropLayer
+            hasChildren={App.children.length}
             index={0}
             setCounter={setCounter}
             parent={'App'}

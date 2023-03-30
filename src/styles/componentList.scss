@@ -7,6 +7,7 @@
   background-color: $container-background;
   h2 {
     margin-bottom: 20px;
+    color: $title-color;
 }
 
 #componentListContainer {
@@ -26,7 +27,7 @@
   border-radius: 10px;
   text-align: center;
   width: 100%;
-  background-color: white;
+  background-color: $scroll-container;
   display: flex;
   flex-direction: column;
   border-radius: 10px;
@@ -40,6 +41,7 @@
 }
 
 .componentListItem {
+  background-color: white;
   border: 1px solid black;
   display: flex;
   align-items: center;
@@ -68,7 +70,8 @@
 }
 
 .highlightedComponentListItem {
-  background-color: rgba(191, 0, 255, 0.2);
+  background-color: $highlight-color;
+  color: white;
   border: 1px solid black;
   display: flex;
   align-items: center;
