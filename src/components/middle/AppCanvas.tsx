@@ -46,7 +46,7 @@ const AppCanvas = (): JSX.Element => {
             originals={originals}
             setOriginals={setOriginals}
             index={index}
-            location={'details'}
+            location={'app'} //changed from details
             parent={'App'}
             setCounter={setCounter}
           />

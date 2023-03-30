@@ -95,14 +95,47 @@ const ElementBlock = ({
             setCounter={setCounter}
           />
         );
+      } else if (location === 'app' && componentDef.type !== 'custom') {
+        return (
+          <ElementBlock
+            key={idx + childName}
+            componentName={childName}
+            copies={copies}
+            setCopies={setCopies}
+            originals={originals}
+            setOriginals={setOriginals}
+            index={idx}
+            location={'details'}
+            parent={copies[childName].parent.key}
+            setCounter={setCounter}
+          />
+        );
       }
     });
   }
-  const showLayers: boolean =
-    location === 'details' ||
-    (location === 'app' && componentDef.parent.key === 'App')
-      ? true
-      : false;
+
+  // Button2: {
+  //   name: 'Button2',
+  //   type: 'Button',
+  //   parent: { origin: 'original', key: 'CoolComponent' },
+  //   children: [],
+  // }
+  // CoolComponent: {
+  //   name: 'CoolComponent',
+  //   type: 'custom',
+  //   children: ['Button2', 'View1', 'View2', 'BruhComponent0'],
+  //   state: [],
+  //   index: 1,
+  //   copies: ['CoolComponent0'],
+  // } as OrigCustomComp,
+  let showLayers;
+  if (location === 'details') showLayers = true;
+  else if (location === 'app') {
+    if (componentDef.parent.key === 'App') showLayers = true;
+    else if (copies[parent]) {
+      if (isDoubleTagElement(copies[parent].type)) showLayers = true;
+    }
+  }
 
   const inNative: boolean =
     copies[parent] && copies[parent].children.length - 1 === index
