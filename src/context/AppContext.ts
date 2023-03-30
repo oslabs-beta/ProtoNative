@@ -1,5 +1,5 @@
 import {createContext} from 'react';
-import { Originals, Copies } from '../parser/interfaces';
+import { Originals, Copies } from '../utils/interfaces';
 
 interface AppContextTypes {
   originals: Originals

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import AppContext from '../../context/AppContext';
-import { formattedCompCode } from '../../parser/parser';
-import { OrigCustomComp, OrigNativeEl, AppInterface } from '../../parser/interfaces';
+import { formattedCompCode } from '../../utils/parser';
+import { OrigCustomComp, OrigNativeEl, AppInterface } from '../../utils/interfaces';
 import Modal from '../left/Modal';
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';

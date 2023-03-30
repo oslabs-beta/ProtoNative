@@ -6,7 +6,7 @@ import {
   AppInterface,
   OrigCustomComp,
   Originals,
-} from '../../parser/interfaces';
+} from '../../utils/interfaces';
 
 const ComponentDetails = (): JSX.Element => {
   const { currentComponent, originals, setOriginals, copies, setCopies } =
@@ -41,7 +41,7 @@ const ComponentDetails = (): JSX.Element => {
         }
       })
     );
-  }, [currentComponent, counter]);
+  }, [currentComponent, counter, originals, copies]);
 
   return (
     <div id='component-details-container'>

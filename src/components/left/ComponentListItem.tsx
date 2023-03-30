@@ -1,12 +1,11 @@
 import React, { useContext, useState, useEffect, useCallback } from 'react';
 import AppContext from '../../context/AppContext';
-import { CopyCustomComp, CopyNativeEl, OrigCustomComp, AppInterface, Parent } from '../../parser/interfaces';
-import { Originals, Copies } from '../../parser/interfaces';
+import { CopyCustomComp, CopyNativeEl, OrigCustomComp, AppInterface, Parent } from '../../utils/interfaces';
+import { Originals, Copies } from '../../utils/interfaces';
 import Modal from './Modal';
-import { isCopyCustomComp } from '../../parser/parser';
-// const isCopyCustomComp = (comp: CopyNativeEl | CopyCustomComp): comp is CopyCustomComp => {
-//   return comp.type === 'custom';
-// }
+import { isCopyCustomComp } from '../../utils/parser';
+import { trashCan } from '../../utils/trashCan';
+import { deepCopy } from '../../utils/deepCopy';
 
 type ComponentListItemProps = {
 	comp: AppInterface | OrigCustomComp;
@@ -51,91 +50,6 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 			)
 	}, [currentComponent, originals, copies]);
 
-	const trashCan = (compToDelete: CopyNativeEl | CopyCustomComp, copyCopies: Copies, copyOriginals: Originals) => {
-		// For any CopyNativeEl, we need to delete:
-		// (1) the reference in parent's children array
-		// (2) itself in the copies context
-		// all its children and the children's (1), (2)
-		
-		// For any CopyCustomComp, we need to delete:
-		// (1) the reference in parent's children array
-		// (2) itself in the copies context
-		// (3) the reference in its pointer's copies array
-		// all its children and the children's (1), (2), (3)
-
-		const deleteCompInCopies = (compToDelete: CopyNativeEl | CopyCustomComp) => {
-			const compToDeleteParent: Parent = compToDelete.parent;
-			// delete child from compToDelete's parent's children array
-			if (compToDeleteParent.origin === 'original') {
-				const origParent = copyOriginals[compToDeleteParent.key] as OrigCustomComp;
-				const parentChildren: string[] = origParent.children;
-				const parentChildIdx = parentChildren.indexOf(compToDelete.name);
-				parentChildren.splice(parentChildIdx, 1);
-			} else if (compToDeleteParent.origin === 'copies') {
-				const parentChildToDelete = copyCopies[compToDeleteParent.key] as CopyNativeEl;
-				const parentChildren: string[] = parentChildToDelete.children;
-				const parentChildIdx = parentChildren.indexOf(compToDelete.name);
-				parentChildren.splice(parentChildIdx, 1);
-			}
-
-			// find the children of compToDelete
-			const originalElement = copyOriginals[compToDelete.pointer] as OrigCustomComp;
-			const compToDeleteChildren = isCopyCustomComp(compToDelete) ? originalElement.children : compToDelete.children;
-			
-			// if compToDelete has no children, delete its instance from the copies context
-			if (compToDeleteChildren.length === 0) {
-				delete copyCopies[compToDelete.name];
-				return;
-			}
-			
-			// make copy of children array since splicing elements from it while looping over it causes errors 
-			const copyOfCompToDeleteChildren = [...compToDeleteChildren];
-			for (const child of copyOfCompToDeleteChildren) {
-				// if the child of compToDelete is a CopyCustomComp
-				if (isCopyCustomComp(copyCopies[child])) {
-					// delete the copy reference of the child in the parent's children array (from originals context)
-					if (copyCopies[child].parent.origin === 'original') {
-						const parentOfCopy = copyOriginals[copyCopies[child].parent.key] as OrigCustomComp;
-						const parentChildren = parentOfCopy.children;
-						const parentChildIdx = parentChildren.indexOf(child);
-						parentChildren.splice(parentChildIdx, 1);
-					} else if (copyCopies[child].parent.origin === 'copies') {
-						const parentOfCopy = copyCopies[copyCopies[child].parent.key] as CopyNativeEl;
-						const parentChildren = parentOfCopy.children;
-						const parentChildIdx = parentChildren.indexOf(child);
-						parentChildren.splice(parentChildIdx, 1);
-					}
-
-					// child will be a copy of OrigCustomComp, meaning that child appears in the copies array of its pointer
-					// delete the copy reference of the child in the original's copies array (from originals context)
-					const originalElement = copyOriginals[copyCopies[child].pointer] as OrigCustomComp;
-					const allCopiesInOriginals = originalElement.copies;
-					allCopiesInOriginals.splice(allCopiesInOriginals.indexOf(copyCopies[child].name), 1);
-
-					// delete the child copy object from the copies context
-					delete copyCopies[child];
-				} 
-				// else if child is NOT a CopyCustomComp and the child has not yet been deleted from copies context
-				else if (copyCopies[child]) { 
-					// recursively delete the child in copies context and all of its children and copies
-					deleteCompInCopies(copyCopies[child]);
-				}
-			}
-
-			// delete the copy from the original's copies array (in originals context) if it is a copy of a custom component
-			if (isCopyCustomComp(compToDelete)) {
-				const copyInOriginals = copyOriginals[compToDelete.pointer] as OrigCustomComp;
-				const copyCompToDelete: string[] = copyInOriginals.copies;
-				const copyCompToDeleteIdx = copyCompToDelete.indexOf(compToDelete.name);
-				copyCompToDelete.splice(copyCompToDeleteIdx, 1);
-			}
-			// delete compToDelete in copies context
-			delete copyCopies[compToDelete.name];
-		}
-		
-		deleteCompInCopies(compToDelete);
-	}
-
 	const handleDeleteClick = (event: any): void => {
 		// prevent the click from propagating to the parent div
 		event.cancelBubble = true;
@@ -150,15 +64,7 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 	// type for event React.MouseEvent<HTMLElement> but hasn't been working, so using any for now
 	const handleDeleteConfirmClick = (event: any): void => {
 
-		// create deep copies
-		const deepCopy = (collection: (Originals | Copies)): (Originals | Copies) => {
-			if (typeof collection !== "object" || collection === null) return collection;
-			const output: {[key: string]: any} = Array.isArray(collection) ? [] : {};
-			for (const [key, value] of Object.entries(collection)) {
-				output[key] = deepCopy(value);
-			}
-			return output;
-		}
+		
 
 		let newCopies = deepCopy(copies) as Copies;
 		let newOriginals = deepCopy(originals) as Originals;
@@ -169,11 +75,11 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		// run trashcan on all children of the original element (children are typeof CopyNativeEl | CopyCustomComp)
 		if (originalElement.copies.length === 0) {
 			originalElement.children.forEach((childName: string) => {
-				trashCan(newCopies[childName], newCopies, newOriginals);
+				trashCan(newCopies[childName], newOriginals, newCopies);
 			});
 		} else {
 			originalElement.copies.forEach((copyName: string) => {
-				trashCan(newCopies[copyName], newCopies, newOriginals)
+				trashCan(newCopies[copyName], newOriginals, newCopies)
 			});
 		}
 
@@ -269,8 +175,11 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 						<div id='deleteModal'>
 							<h3>Are you sure you want to delete {OriginalCustomComponent.name}?</h3>
 							<p>This will delete all occurrences of {OriginalCustomComponent.name} everywhere!</p>
-							<button onClick={handleDeleteConfirmClick}>Confirm</button>
-							<button onClick={() => handleClose()}>Cancel</button>	
+							<div id='delete-modal-buttons'>
+								<button onClick={handleDeleteConfirmClick}>Confirm</button>
+								<button onClick={() => handleClose()}>Cancel</button>	
+							</div>
+						
 						</div>
 					) : null
 					}

@@ -47,7 +47,7 @@
   align-items: center;
   min-height: 50px;
   border-radius: 10px;
-  font-size: 20px;
+  font-size: 17px;
   span {
     text-align: left;
     display: flex;
@@ -59,16 +59,24 @@
   button {
     font-size: 16px;
     margin-right: 14px;
-    width: 150px;
+    width: 125px;
     height: 60%;
     border-radius: 8px;
+    border: 0;
     padding: 5px 10px;
+    background-color: $button-primary;
   }
   button:hover{
     cursor: pointer;
   }
 }
 
+
+.componentListItem:hover{
+  transition: .3s;
+  background-color: $highlight-color;
+  cursor: pointer;
+}
 .highlightedComponentListItem {
   background-color: $highlight-color;
   color: white;
@@ -77,7 +85,7 @@
   align-items: center;
   min-height: 50px;
   border-radius: 10px;
-  font-size: 20px;
+  font-size:  17px;
   span {
     text-align: left;
     display: flex;
@@ -89,10 +97,12 @@
   button {
     font-size: 16px;
     margin-right: 14px;
-    width: 150px;
+    width: 125px;
     height: 60%;
     border-radius: 8px;
+    border: 0;
     padding: 5px 10px;
+    background-color: $button-primary;
   }
   button:hover{
     cursor: pointer;
@@ -121,15 +131,33 @@
     background-color: whitesmoke;
 
   }
-#state-item {
-  text-align: center;
-  border: 1px solid black;
-  border-radius: 10px;
-  height: 100%;
-  background-color: whitesmoke;
+  #state-item {
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 10px;
+    height: 100%;
+    background-color: whitesmoke;
 
-h2 {
-  margin-bottom: 20px;
+    h2 {
+      margin-bottom: 20px;
+    }
+  }
 }
+
+#deleteModal{
+  background-color: darkgray;
+  height: 200px;
+  width: 100%;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
 }
+
+#delete-modal-buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 30%;
 }
