@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import AppContext from '../../context/AppContext';
 import Modal from './Modal';
-import { Originals } from '../../parser/interfaces';
+import { Originals } from '../../utils/interfaces';
 
 
 // user clicks Add CC button, modal opens
@@ -19,6 +19,8 @@ const AddComponent = () => {
      // this regex tests that name is PascalCase:
     // it looks for CAP Letter followed by lower case & if more words follow same pattern: CAP then lower 
     if (componentName in originals) return alert('Component name already exists!');
+    // regex to check if componentName is not a symbol
+    if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(componentName)) return alert('Component name must not include symbols!');
     setOriginals((previous: Originals): Originals => {
       return {
         ...previous,

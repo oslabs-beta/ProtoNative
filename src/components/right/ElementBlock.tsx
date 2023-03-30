@@ -6,9 +6,9 @@ import {
   CopyCustomComp,
   Originals,
   OrigCustomComp,
-} from '../../parser/interfaces';
+} from '../../utils/interfaces';
 import DropLayer from './DropLayer';
-import { isDoubleTagElement } from '../../parser/parser';
+import { isDoubleTagElement } from '../../utils/parser';
 // import { isCopyCustomComp } from '../../parser/parser';
 type ElementBlockProps = {
   componentName: string;
