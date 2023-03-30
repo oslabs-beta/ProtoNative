@@ -40,6 +40,7 @@
   border-radius: 10px;
   cursor: pointer;
   &:hover {
-    background-color: #e6e6e6;
+    transition: .3s;
+    background-color: $highlight-color;
   }
 }

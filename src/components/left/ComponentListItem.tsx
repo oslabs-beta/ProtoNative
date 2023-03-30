@@ -111,6 +111,7 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		console.log(`new state for ${OriginalCustomComponent.name ?? comp.type}: ${newState}`);
 		// create a copy of the originals object
 		// update the componant with the added state in the copies
+		event.preventDefault();
 		setOriginals((prevOriginals) => {
 			const updatedOriginals = { ...prevOriginals };
 			const originalElement = updatedOriginals[OriginalCustomComponent.name ?? comp.type] as OrigCustomComp | AppInterface;
@@ -125,8 +126,8 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		})
 		setNewState('');
 	}
+
 	const handleClose = (): void => {
-		
 		setIsOpen(false);
 	};
 
@@ -151,24 +152,23 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 						<div id='stateModal'>
 							<h3>Add State to {OriginalCustomComponent.name ?? comp.type}</h3>
 							<p>
-								Initialize or edit a state variable for {OriginalCustomComponent.name ?? comp.type}
-								<div className="state-box">
+								Add or delete a state variable for {OriginalCustomComponent.name ?? comp.type}
+							</p>
+							<form id='state-modal-form' onSubmit={handleStateSaveClick}>
+								<input 
+									id='state-modal-input' 
+									value={newState} 
+									onChange={(e) => setNewState(e.target.value)}
+										/>
+								<label htmlFor="stateInput" id='state-modal-label'>New State</label>
+							</form>
+							<div className="states-container">
 									{OriginalCustomComponent.state.map((stateValue, index) => (
-									<div key={index} className="state-item">
-										{stateValue}
-										<button onClick={() => handleDeleteState(stateValue)}>X</button>
-									</div>
+										<div key={index} className="state-item" onClick={() => handleDeleteState(stateValue)}>
+											<span className='strike'>{stateValue}</span>
+										</div>
 									))}
-								  </div>
-								</p>
-							<label htmlFor="stateInput">New State</label>
-							<input 
-								id='stateInput' 
-								value={newState} 
-								onChange={(e) => setNewState(e.target.value)}
-									/>
-							<button onClick={() => handleClose()}>Cancel</button>
-							<button onClick={handleStateSaveClick}>Save</button>
+							</div>
 						</div>
 						)
 					: currentModal === 'delete' ? (

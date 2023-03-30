@@ -33,13 +33,16 @@
   position: relative;
   width: 60%;
   transition: border-color 0.2s;
-
 }
 
 #add-component-input{
   border: 0;
   border-bottom: 2px solid rgb(181, 181, 181);
-
+  background-color: transparent;
+  position: relative;
+  z-index: 999;
+  font-size: 1.5rem;
+  padding-bottom: 5px;
 }
 
 #add-component-label{
@@ -57,7 +60,7 @@
     position: absolute;
     display: block;
     color: $button-primary;
-    transition: .4s;
+    transition: .3s;
     margin-bottom: 10px;
     font-size: 1rem;
     top: -30px;
@@ -65,7 +68,7 @@
   outline: none;
   transition: .3s;
   border-width: 3px;
-  border-image: linear-gradient(to right, $button-primary, $scroll-container);
+  border-image: linear-gradient(to right, $button-primary, rgb(73, 73, 73));
   border-image-slice: 1;
-  color: rgb(181, 181, 181);
+  color: rgb(145, 145, 145);
 }
