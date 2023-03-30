@@ -11,8 +11,6 @@ import {
 } from '../../parser/interfaces';
 
 type DropLayerProps = {
-  component: string;
-  position: string;
   index: number;
   setCounter: (value: number) => number;
   parent: string;
@@ -23,8 +21,6 @@ type DropLayerProps = {
 };
 
 const DropLayer = ({
-  component,
-  position,
   index,
   setCounter,
   parent,
@@ -37,11 +33,11 @@ const DropLayer = ({
     dragIndex: number,
     hoverIndex: number,
     name: string,
-    parentComp: string, //dragged item's parent
-    position: string
+    parentComp: string //dragged item's parent
   ): void => {
     console.log('parentComp', parentComp);
     console.log('name', name);
+
     let dragArr: string[];
     let dropArr: string[];
     let item: string;
@@ -53,7 +49,9 @@ const DropLayer = ({
     //parentComp = dragged item's parent vs
     //parent = dragLayer's parent to know which array to be splicing
     //item is in the top level custom component
+
     if (originals[parentComp]) {
+      console.log('in originals');
       item = originals[parentComp].children[dragIndex];
       //item being moved is in the same level
       if (parentComp === parent) {
@@ -91,9 +89,17 @@ const DropLayer = ({
         }
       }
     }
-
-    dragArr.splice(dragIndex, 1);
-    dropArr.splice(hoverIndex, 0, item);
+    if (parent === parentComp) {
+      dragArr.splice(dragIndex, 1);
+      if (hoverIndex < dragIndex) {
+        dropArr.splice(hoverIndex, 0, item);
+      } else {
+        dropArr.splice(hoverIndex - 1, 0, item);
+      }
+    } else {
+      dragArr.splice(dragIndex, 1);
+      dropArr.splice(hoverIndex, 0, item);
+    }
 
     //item is from top layer element
     if (originals[parentComp]) {
@@ -114,19 +120,31 @@ const DropLayer = ({
             [name]: newChildObj,
           };
         });
+        setOriginals((prevState: any) => {
+          const oldParentObj = prevState[parentComp];
+          const newParentObj = {
+            ...oldParentObj,
+            children: dragArr,
+          };
+          return {
+            ...prevState,
+            [parentComp]: newParentObj,
+          };
+        });
+      } else {
+        //item is moving top level to top level
+        setOriginals((prevState: any) => {
+          const oldParentObj = prevState[parentComp];
+          const newParentObj = {
+            ...oldParentObj,
+            children: dropArr,
+          };
+          return {
+            ...prevState,
+            [parentComp]: newParentObj,
+          };
+        });
       }
-      //item is moving top level to top level, but also have to change originals if top to child
-      setOriginals((prevState: any) => {
-        const oldParentObj = prevState[parentComp];
-        const newParentObj = {
-          ...oldParentObj,
-          children: dragArr,
-        };
-        return {
-          ...prevState,
-          [parentComp]: newParentObj,
-        };
-      });
     }
     //nested item moved somewhere
     else {
@@ -202,7 +220,6 @@ const DropLayer = ({
         //drop array is correct and splices correctly
         const dropArr = [...originals[parent].children];
         dropArr.splice(hoverIndex, 0, newElement.name);
-        console.log('dropArr', dropArr);
 
         setOriginals((previous: Originals): Originals => {
           const prevDroppedElement = previous[name] as OrigCustomComp;
@@ -370,16 +387,9 @@ const DropLayer = ({
     ) => {
       const dragIndex: number = item.index;
       const hoverIndex: number = index;
-      const positionRelative: string = position;
       // if (dragIndex === hoverIndex) return;
       if (item.type === 'elements') {
-        moveItem(
-          dragIndex,
-          hoverIndex,
-          item.name,
-          item.parentComp,
-          positionRelative
-        );
+        moveItem(dragIndex, hoverIndex, item.name, item.parentComp);
       } else {
         addItem(item.name, hoverIndex, parent);
       }
@@ -388,7 +398,7 @@ const DropLayer = ({
 
   return (
     <div ref={drop} id='drop-layer-area'>
-      <p>{parent}</p>
+      {/* <p>{parent}</p> */}
       {/* {index} */}
     </div>
   );

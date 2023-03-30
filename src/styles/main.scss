@@ -11,28 +11,37 @@ body {
   display: flex;
   flex-direction: column;
   font-family: $main-font;
+  background-color: rgb(85, 85, 85);
   overflow-y: hidden;
 }
 
 
 #main-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  height: 92vh;
+  display: flex;
+  justify-content: space-evenly;
   padding: .5rem;
   gap: 10px;
   background-color: rgb(85, 85, 85);
-  overflow-y: hidden;
+  height: 1000px
 }
 
 #right-container {
-  display: grid;
-  grid-template-rows: .5fr .08fr .5fr;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 33%;
+  max-width: 800px;
+  height: 1000px
 }
 
 #left-container {
-  display: grid;
-  gap: 10px
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  width: 33%;
+  max-width: 800px;
+  height: 1000px
 }
 
 @import 'addChild.scss';
