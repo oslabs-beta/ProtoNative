@@ -4,13 +4,13 @@
   "description": "A React Native prototyping tool",
   "main": "./src/electron.ts",
   "scripts": {
-    "start": "concurrently \"npm run vite\" \"node -e \\\"setTimeout(() => process.exit(0), 500)\\\" && npm run electron\"",
+    "start": "concurrently \"npm run vite\" \"node -e \\\"setTimeout(() => process.exit(0), 1000)\\\" && npm run electron\"",
     "vite": "vite",
     "electron": "cross-env NODE_ENV=development electron .",
+    "build:windows": "npm run build && electron-builder --windows",
+    "build:mac": "npm run build && electron-builder --mac",
+    "build:linux": "npm run build && electron-builder --linux",
     "build": "vite build",
-    "build:windows": "electron-builder --windows",
-    "build:mac": "electron-builder --mac",
-    "build:linux": "electron-builder --linux",
     "preview": "vite preview"
   },
   "author": "Team ProtoNative",
@@ -65,15 +65,14 @@
     "asar": true,
     "win": {
       "target": "nsis",
-      "icon": "./build/icons/icon.png"
+      "icon": "./build/icons/windowsIcon.png"
     },
     "mac": {
       "target": "dmg",
-      "icon": "./build/icons/icon.png"
+      "icon": "./build/icons/macIcon.icns"
     },
     "linux": {
-      "target": "AppImage",
-      "icon": "./build/icons/icon.png"
+      "target": "AppImage"
     },
     "files": [
       "build/**/*",

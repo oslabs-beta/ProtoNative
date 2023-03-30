@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import AppContext from '../../context/AppContext';
 import ElementBlock from './ElementBlock';
 import DropLayer from './DropLayer';
@@ -11,11 +11,13 @@ import {
 const ComponentDetails = (): JSX.Element => {
   const { currentComponent, originals, setOriginals, copies, setCopies } =
     useContext(AppContext);
+
   const displayedComponent = originals[currentComponent] as
     | OrigCustomComp
     | AppInterface;
-  const [counter, setCounter] = useState(0);
-  const [childElements, setChildElements] = useState([]);
+
+  const [counter, setCounter] = useState<number>(0);
+  const [childElements, setChildElements] = useState<JSX.Element[]>([]);
 
   useEffect(() => {
     const originalComponent = originals[currentComponent] as
@@ -41,7 +43,11 @@ const ComponentDetails = (): JSX.Element => {
         }
       })
     );
-  }, [currentComponent, counter, originals, copies]);
+  }, [currentComponent, counter, copies]);
+
+  const dropLayerIndex: number = displayedComponent.children.length
+    ? displayedComponent.children.length
+    : 0;
 
   return (
     <div id='component-details-container'>
@@ -50,21 +56,19 @@ const ComponentDetails = (): JSX.Element => {
         {currentComponent === 'App' ? '' : <span> {currentComponent}</span>}
       </h2>
 
-      {currentComponent !== 'App' && currentComponent && (
+      {currentComponent !== 'App' && (
         <div style={{ border: '1px solid black' }} id='component-box'>
-          {childElements.length === 0 && (
-            <DropLayer
-              hasChildren={childElements.length}
-              index={0}
-              setCounter={setCounter}
-              parent={currentComponent}
-              copies={copies}
-              setCopies={setCopies}
-              originals={originals}
-              setOriginals={setOriginals}
-            />
-          )}
           {childElements}
+          <DropLayer
+            hasChildren={childElements.length}
+            index={dropLayerIndex}
+            setCounter={setCounter}
+            parent={currentComponent}
+            copies={copies}
+            setCopies={setCopies}
+            originals={originals}
+            setOriginals={setOriginals}
+          />
         </div>
       )}
     </div>
