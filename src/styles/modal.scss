@@ -51,7 +51,8 @@
 }
 
 .error-message{
-  color: red;
-  text-align: center;
-  margin-top: 6px;
+  color: rgb(221, 27, 27);
+  margin-top: 5px;
+  white-space: nowrap;
+  position: absolute;
 }
