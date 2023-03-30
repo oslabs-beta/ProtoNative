@@ -12,6 +12,8 @@
 }
 
 #component-box{
+  display: flex;
+  flex-direction: column;
   overflow-y: scroll;
   height: 375px;
   background-color: white;
@@ -37,16 +39,9 @@
   width: 100%;
 }
 
-#drop-layer-area:hover{
-  background-color: rgba(0, 0, 0, 0.8);
-}
-
 #drop-layer-large{
+  align-items: stretch;
   height: 100%;
   width: 100%;
   border-radius: 20px;
-}
-
-#drop-layer-large:hover{
-  background-color: rgba(0, 0, 0, 0.8);
 }

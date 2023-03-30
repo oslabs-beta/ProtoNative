@@ -112,6 +112,11 @@ const ElementBlock = ({
     showLayers = true;
   else showLayers = false;
 
+  const inNative =
+    copies[parent] && copies[parent].children.length - 1 === index
+      ? true
+      : false;
+
   return (
     <div>
       {showLayers && (
@@ -126,7 +131,10 @@ const ElementBlock = ({
         />
       )}
       <div
-        style={{ border: '1px solid black', backgroundColor: 'rgba(50, 2, 59, 0.8)' }}
+        style={{
+          border: '1px solid black',
+          backgroundColor: 'rgba(50, 2, 59, 0.8)',
+        }}
         className='element'
         ref={drag}
       >
@@ -136,20 +144,21 @@ const ElementBlock = ({
             : copies[componentName].type}
         </p>
 
-        {isDoubleTagElement(copies[componentName].type) && (
-          <DropLayer
-            index={0}
-            setCounter={setCounter}
-            parent={componentDef.name}
-            copies={copies}
-            setCopies={setCopies}
-            originals={originals}
-            setOriginals={setOriginals}
-          />
-        )}
+        {isDoubleTagElement(copies[componentName].type) &&
+          copies[componentName].children.length === 0 && (
+            <DropLayer
+              index={0}
+              setCounter={setCounter}
+              parent={componentDef.name}
+              copies={copies}
+              setCopies={setCopies}
+              originals={originals}
+              setOriginals={setOriginals}
+            />
+          )}
         {childElements}
       </div>
-      {showLayers && (
+      {inNative && (
         <DropLayer
           index={index + 1}
           setCounter={setCounter}
