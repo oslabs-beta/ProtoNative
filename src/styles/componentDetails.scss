@@ -4,11 +4,19 @@
   height: 450px;
   padding: 10px;
   background-color: $container-background;
+  color: white;
+  h2{
+    margin: 10px 0;
+    color: $title-color;
+  }
 }
 
 #component-box{
+  display: flex;
+  flex-direction: column;
   overflow-y: scroll;
   height: 375px;
+  background-color: white;
 }
 
 #component-box::-webkit-scrollbar{
@@ -23,14 +31,17 @@
 
 .element p {
   margin: 0 0 10px 0;
+  color: white;
 }
 
 #drop-layer-area{
   height:20px;
   width: 100%;
-  color: white;
 }
 
-#drop-layer-area:hover{
-  background-color: rgba(0, 0, 0, 0.8);
+#drop-layer-large{
+  align-items: stretch;
+  height: 100%;
+  width: 100%;
+  border-radius: 20px;
 }

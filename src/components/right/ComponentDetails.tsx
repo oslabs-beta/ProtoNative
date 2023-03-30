@@ -6,7 +6,7 @@ import {
   AppInterface,
   OrigCustomComp,
   Originals,
-} from '../../parser/interfaces';
+} from '../../utils/interfaces';
 
 const ComponentDetails = (): JSX.Element => {
   const { currentComponent, originals, setOriginals, copies, setCopies } =
@@ -41,7 +41,11 @@ const ComponentDetails = (): JSX.Element => {
         }
       })
     );
-  }, [currentComponent, counter]);
+  }, [currentComponent, counter, copies]);
+
+  const dropLayerIndex = displayedComponent.children.length
+    ? displayedComponent.children.length
+    : 0;
 
   return (
     <div id='component-details-container'>
@@ -52,18 +56,27 @@ const ComponentDetails = (): JSX.Element => {
 
       {currentComponent !== 'App' && currentComponent && (
         <div style={{ border: '1px solid black' }} id='component-box'>
-          {childElements.length === 0 && (
-            <DropLayer
-              index={0}
-              setCounter={setCounter}
-              parent={currentComponent}
-              copies={copies}
-              setCopies={setCopies}
-              originals={originals}
-              setOriginals={setOriginals}
-            />
-          )}
+          {/* <DropLayer
+            hasChildren={childElements.length}
+            index={0}
+            setCounter={setCounter}
+            parent={currentComponent}
+            copies={copies}
+            setCopies={setCopies}
+            originals={originals}
+            setOriginals={setOriginals}
+          /> */}
           {childElements}
+          <DropLayer
+            hasChildren={childElements.length}
+            index={dropLayerIndex}
+            setCounter={setCounter}
+            parent={currentComponent}
+            copies={copies}
+            setCopies={setCopies}
+            originals={originals}
+            setOriginals={setOriginals}
+          />
         </div>
       )}
     </div>

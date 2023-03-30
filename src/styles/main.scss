@@ -11,19 +11,20 @@ body {
   display: flex;
   flex-direction: column;
   font-family: $main-font;
-  background-color: rgb(85, 85, 85);
-  overflow-y: hidden;
+  background-color: $main-background
+
 }
 
 
 #main-container {
   display: flex;
   justify-content: space-evenly;
-  padding: .5rem;
+  padding: 1rem;
   gap: 10px;
-  background-color: rgb(85, 85, 85);
-  height: 1000px
+  background-color: $main-background;
+  height: 92vh;
 }
+
 
 #right-container {
   display: flex;
@@ -31,7 +32,6 @@ body {
   justify-content: space-between;
   width: 33%;
   max-width: 800px;
-  height: 1000px
 }
 
 #left-container {
@@ -41,7 +41,6 @@ body {
   gap: 10px;
   width: 33%;
   max-width: 800px;
-  height: 1000px
 }
 
 @import 'addChild.scss';

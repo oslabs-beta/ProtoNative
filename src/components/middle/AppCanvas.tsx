@@ -11,7 +11,7 @@ import {
   CopyCustomComp,
   CopyNativeEl,
   Copies,
-} from '../../parser/interfaces';
+} from '../../utils/interfaces';
 
 const AppCanvas = (): JSX.Element => {
   const { setCopies, setOriginals, originals, copies } = useContext(AppContext);
@@ -54,24 +54,25 @@ const AppCanvas = (): JSX.Element => {
       }
     });
     setAppComponents(appChildren);
-  }, [counter]);
+  }, [counter, originals]);
+
+  const dropLayerIndex = App.children.length ? App.children.length : 0;
 
   return (
     <div id='app-canvas'>
       <h1 id='app-canvas-title'>My App</h1>
       <div id='phone-screen-container'>
         {appComponents}
-        {App.children.length === 0 && (
-          <DropLayer
-            index={0}
-            setCounter={setCounter}
-            parent={'App'}
-            copies={copies}
-            setCopies={setCopies}
-            originals={originals}
-            setOriginals={setOriginals}
-          />
-        )}
+        <DropLayer
+          hasChildren={App.children.length}
+          index={dropLayerIndex}
+          setCounter={setCounter}
+          parent={'App'}
+          copies={copies}
+          setCopies={setCopies}
+          originals={originals}
+          setOriginals={setOriginals}
+        />
       </div>
     </div>
   );

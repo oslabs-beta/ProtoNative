@@ -8,11 +8,12 @@ import {
   CopyCustomComp,
   CopyNativeEl,
   OrigNativeEl,
-} from '../../parser/interfaces';
-import { moveItem } from './moveItem';
-import { addItem } from './addItem';
+} from '../../utils/interfaces';
+import { moveItem } from '../../utils/moveItem';
+import { addItem } from '../../utils/addItem';
 
 type DropLayerProps = {
+  hasChildren: number;
   index: number;
   setCounter: (value: number) => number;
   parent: string;
@@ -23,6 +24,7 @@ type DropLayerProps = {
 };
 
 const DropLayer = ({
+  hasChildren,
   index,
   setCounter,
   parent,
@@ -31,7 +33,7 @@ const DropLayer = ({
   originals,
   setOriginals,
 }: DropLayerProps) => {
-  const [, drop] = useDrop({
+  const [{ isOver }, drop] = useDrop({
     accept: ['elements', 'newElement'],
     drop: (
       item: { name: string; index: number; type: string; parentComp: string },
@@ -65,12 +67,33 @@ const DropLayer = ({
       }
       setCounter((prev) => ++prev);
     },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
   });
+  let backgroundColor;
+  if (isOver) backgroundColor = 'yellow';
+
+  let lastChild = false;
+
+  if (hasChildren === 0) lastChild = true;
+
+  if (originals[parent]) {
+    if (index === originals[parent].children.length) {
+      lastChild = true;
+    }
+  }
+  console.log('parent', parent);
+  console.log('lastchild', lastChild);
 
   return (
-    <div ref={drop} id='drop-layer-area'>
+    <div
+      ref={drop}
+      id={lastChild ? 'drop-layer-large' : 'drop-layer-area'}
+      style={{ backgroundColor: backgroundColor }}
+    >
       {/* <p>{parent}</p> */}
-      {index}
+      {/* {index} */}
     </div>
   );
 };

@@ -7,8 +7,7 @@ import {
   CopyCustomComp,
   CopyNativeEl,
   OrigNativeEl,
-} from '../../parser/interfaces';
-
+} from './interfaces';
 
 
 export const addItem = 

@@ -11,7 +11,7 @@ import {
   OrigCustomComp,
   CopyNativeEl,
   CopyCustomComp,
-} from './parser/interfaces';
+} from './utils/interfaces';
 import './styles/main.scss';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -45,8 +45,8 @@ const App = () => {
       type: 'custom',
       children: ['Button0', 'CoolComponent0'],
       state: [],
-      index: 3,
-      copies: ['TestComponent0', 'TestComponent1', 'TestComponent2'],
+      index: 0,
+      copies: [''],
     } as OrigCustomComp,
     CoolComponent: {
       name: 'CoolComponent',

@@ -7,16 +7,14 @@ import 'prismjs/plugins/line-numbers/prism-line-numbers.min.js';
 import 'prism-themes/themes/prism-shades-of-purple.css';
 import 'prismjs/plugins/match-braces/prism-match-braces.min';
 import 'prismjs/plugins/match-braces/prism-match-braces.css';
-import { formattedCompCode } from '../../parser/parser';
-import { OrigCustomComp } from '../../parser/interfaces';
+import { formattedCompCode } from '../../utils/parser';
+import { OrigCustomComp } from '../../utils/interfaces';
 
 const CodeBlock = (): JSX.Element => {
   const { currentComponent, originals, copies } = useContext(AppContext);
   const [code, setCode] = useState(null);
 
   useEffect(() => {
-    console.log(originals);
-    console.log(copies);
     const code = formattedCompCode(
       originals[currentComponent] as OrigCustomComp,
       originals,

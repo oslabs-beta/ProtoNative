@@ -5,6 +5,9 @@
   padding: 20px;
   height: 45%;
   overflow-y: hidden;
+  h2{
+    color: $title-color;
+  }
 }
 
 #code-block-container::-webkit-scrollbar{
