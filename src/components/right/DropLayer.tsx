@@ -23,6 +23,8 @@ type DropLayerProps = {
   setCopies: any;
   originals: any;
   setOriginals: any;
+  elementLocation: string;
+  area: string;
 };
 
 const DropLayer = (props: DropLayerProps) => {
@@ -35,13 +37,15 @@ const DropLayer = (props: DropLayerProps) => {
     setCopies,
     originals,
     setOriginals,
+    elementLocation,
+    area,
   } = props;
-
   const [isOpen, setIsOpen] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const acceptLocation = elementLocation === 'app' ? 'app' : 'details';
 
   const [{ isOver }, drop] = useDrop({
-    accept: ['elements', 'newElement'],
+    accept: [acceptLocation, 'newElement'],
     drop: (
       item: { name: string; index: number; type: string; parentComp: string },
       monitor
@@ -123,13 +127,13 @@ const DropLayer = (props: DropLayerProps) => {
   const backgroundColor = isOver ? '#f0c142' : null;
 
   //make the last drop layer take up the rest of the screen
-  let lastChild: boolean = false;
-  if (hasChildren === 0) lastChild = true;
-  if (originals[parent]) {
-    if (index === originals[parent].children.length) {
-      lastChild = true;
-    }
-  }
+  // let lastChild: boolean = false;
+  // if (hasChildren === 0) lastChild = true;
+  // if (originals[parent]) {
+  //   if (index === originals[parent].children.length) {
+  //     lastChild = true;
+  //   }
+  // }
 
   const handleClose = () => {
     setIsOpen(false);
@@ -139,7 +143,7 @@ const DropLayer = (props: DropLayerProps) => {
     <>
       <div
         ref={drop}
-        id={lastChild ? 'drop-layer-large' : 'drop-layer-area'}
+        id={area}
         style={{ backgroundColor: backgroundColor }}
       ></div>
       {isOpen && (
