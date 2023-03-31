@@ -309,36 +309,36 @@ const addState = (stateNames: string[]): string => {
   return stateVariables;
 };
 
-/**
- * @method getAllImports
- * @description recursively gathers all possible imports starting at the component (in copies context) and recursively visiting it's descendants 
- * @input component of interface CopyNativeEl or CopyCustomComp (in case custom components are wrapped inside native elements)
- * @output array of strings containing all possible imports for the component 
- */
-const getAllImports = (comp: CopyNativeEl | CopyCustomComp, originals: Originals, copies: Copies): string[] => {
-  const toImport: string[] = [];
-  const allImports = (currComp: CopyNativeEl | CopyCustomComp): void => {
-    console.log('currComp:', currComp.name);
-    const originalComp = originals[currComp.pointer] as OrigCustomComp;
-    const compChildren: string[] = isCopyCustomComp(currComp) ? originalComp.children : currComp.children;
-    if (compChildren.length === 0 || comp.type === 'custom') {
-      // TODO: FIX THIS
-      isCopyCustomComp(currComp) ? toImport.push(currComp.pointer) : toImport.push(currComp.type);
-      // if (!isCopyCustomComp) {
-      //   toImport.push(currComp.type);
-      // }
-      return;
-    }
-    isCopyCustomComp(currComp) ? toImport.push(currComp.pointer) : toImport.push(currComp.type);
-    for (const child of compChildren) {
-      allImports(copies[child]);
-    }
-    console.log('toImport:', toImport);
-    console.log('--------------------');
-  }
-  allImports(comp);
-  return toImport;
-}
+// /**
+//  * @method getAllImports
+//  * @description recursively gathers all possible imports starting at the component (in copies context) and recursively visiting it's descendants 
+//  * @input component of interface CopyNativeEl or CopyCustomComp (in case custom components are wrapped inside native elements)
+//  * @output array of strings containing all possible imports for the component 
+//  */
+// const getAllImports = (comp: CopyNativeEl | CopyCustomComp, originals: Originals, copies: Copies): string[] => {
+//   const toImport: string[] = [];
+//   const allImports = (currComp: CopyNativeEl | CopyCustomComp): void => {
+//     console.log('currComp:', currComp.name);
+//     const originalComp = originals[currComp.pointer] as OrigCustomComp;
+//     const compChildren: string[] = isCopyCustomComp(currComp) ? originalComp.children : currComp.children;
+//     if (compChildren.length === 0 || comp.type === 'custom') {
+//       // TODO: FIX THIS
+//       isCopyCustomComp(currComp) ? toImport.push(currComp.pointer) : toImport.push(currComp.type);
+//       // if (!isCopyCustomComp) {
+//       //   toImport.push(currComp.type);
+//       // }
+//       return;
+//     }
+//     isCopyCustomComp(currComp) ? toImport.push(currComp.pointer) : toImport.push(currComp.type);
+//     for (const child of compChildren) {
+//       allImports(copies[child]);
+//     }
+//     console.log('toImport:', toImport);
+//     console.log('--------------------');
+//   }
+//   allImports(comp);
+//   return toImport;
+// }
 
 /**
  * @method addNativeImports
@@ -431,6 +431,10 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp, originals: O
         : `<${currElement}/>`;
     }
 
+    if (!isCopyCustomComp(comp)) {
+      toImport.push(comp.type);
+    }
+
     let childrenNodes: string = '';
     for (const child of componentChildren) {
       const childInCopies = copies[child];
@@ -484,7 +488,7 @@ const generateCustomComponentCode = (component: OrigCustomComp | AppInterface, o
   // loop through all imports and determine which imports are react native and which imports and custom components and save them separately
   const allNativeImports: string[] = [];
   let allCustomImports: string = '';
-  console.log('ALL IMPORTS', allImports.values());
+  // console.log('ALL IMPORTS', allImports.values());
   for (const toImport of allImports.values()) {
     if (isOrigCustomComp(originals[toImport])) {
       allCustomImports += component.type === 'App' ? addCustomCompImport(toImport, true) : addCustomCompImport(toImport, false)
