@@ -20,8 +20,8 @@ export const moveItem = (
 
   //parentComp = dragged item's parent vs
   //parent = dragLayer's parent to know which array to be splicing
-  //item is in the top level custom component
 
+  //item is in the top level custom component
   if (originals[parentComp]) {
     item = originals[parentComp].children[dragIndex];
     //item being moved is in the same level
@@ -35,16 +35,21 @@ export const moveItem = (
       newSpot = copies[parent];
       itemParent = { origin: 'copies', key: newSpot.name };
     }
-  } else {
-    //item is in a child element
+  } 
+  //item is in a child element
+  else {
     item = copies[parentComp].children[dragIndex];
     dragArr = [...copies[parentComp].children];
-
     //moving to the top level component
     if (originals[parent]) {
       dropArr = [...originals[parent].children];
       newSpot = originals[parent];
-      itemParent = { origin: 'originals', key: newSpot.name };
+      //if moving around to app
+      if (parent === 'App') {
+        itemParent = {origin: 'originals', key: 'App'}
+      } else {
+        itemParent = { origin: 'originals', key: newSpot.name };
+      }
     }
     //moving to a native element
     else {
@@ -68,7 +73,6 @@ export const moveItem = (
     //moving up
     if (hoverIndex < dragIndex) {
       dropArr.splice(hoverIndex, 0, item);
-    
     } 
     //moving down
     else {
@@ -155,8 +159,9 @@ export const moveItem = (
         };
       });
 
-      //nested item to another nested element
-    } else {
+    } 
+    //nested item to another nested element
+    else {
       setCopies((prevState: any) => {
         const oldDropObj = prevState[parent];
         const newDropObj = {
