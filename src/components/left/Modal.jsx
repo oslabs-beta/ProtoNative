@@ -1,17 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 const Modal = ({ handleClick, children }) => {
-  // useEffect(() => {
-  //   handleClick.on('open', ({ component, props }) => {
-  //     setModal({
-  //       component,
-  //       props,
-  //       close: value => {
-  //         setModal({});
-  //       },
-  //     });
-  //   });
-  // }, []);
 
   return (
     <div id='modal-container'>

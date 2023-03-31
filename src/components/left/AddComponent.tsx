@@ -43,7 +43,8 @@ const AddComponent = () => {
   return (
     <div id='addComponentContainer'>
       <button id='addComponent' onClick={() => {
-        console.log('are we in OnClick?');
+        setTimeout(()=>document.getElementById('add-component-input').focus(), 50)
+        
         setIsOpen(true)
       }}>
         Add Custom Component 
@@ -56,7 +57,7 @@ const AddComponent = () => {
           <div id="modal-content">
             <h2>Add Custom Component</h2>
             <form onSubmit={handleSubmit} id='add-component-form'>
-              <input id='add-component-input' name="name" type="text" value={componentName} onChange={handleInputChange}/>
+              <input id='add-component-input' name="name" type="text" value={componentName} onChange={handleInputChange} onBlur={()=>setComponentName('')}/>
               <label id='add-component-label'>Component Name</label>
               <div className='error-message'></div>
             </form>

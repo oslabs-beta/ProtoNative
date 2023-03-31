@@ -44,7 +44,12 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 			: setComponentItem(
 				<div className={currentComponent === comp.name ? 'highlightedComponentListItem' : 'componentListItem'}  onClick={() => setCurrentComponent(comp.name)}>
 					<span> {comp.name} </span>
-					<button className='list-state-button' onClick={(e) => handleStateClick(e)}>State</button>
+					<button className='list-state-button' 
+									onClick={(e) => {
+										handleStateClick(e)
+										setTimeout(()=>document.getElementById('state-modal-input').focus(), 50)
+									}
+						}>State</button>
 					<button className='list-delete-button'onClick={(e) => handleDeleteClick(e)}>Delete</button>
 				</div>
 			)
@@ -161,6 +166,7 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 											id='state-modal-input' 
 											value={newState} 
 											onChange={(e) => setNewState(e.target.value)}
+											onBlur={()=>setNewState('')}
 										/>
 										<label htmlFor="stateInput" id='state-modal-label'>New State</label>
 									</form>
