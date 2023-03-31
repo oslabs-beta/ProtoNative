@@ -123,6 +123,7 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 				return prevOriginals;
 			} else  {
 			  originalElement.state.push(newState);
+				document.querySelector('.error-message').innerHTML = '';
 			  return updatedOriginals;
 			}
 		})
