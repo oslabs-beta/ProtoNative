@@ -47,3 +47,37 @@
   border-radius: 10px;
   color: white;
 }
+
+#confirm-modal-buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 50%;
+  button{
+    border: 0;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  button:hover{
+    cursor: pointer;
+    transition: .2s;
+  }
+  #confirm{
+    background-color: rgb(46, 129, 46);
+  }
+  #confirm:hover{
+    color: rgb(46, 129, 46);
+    border: 1px solid rgb(46, 129, 46);
+    background-color: $modal-background;
+  }
+  #cancel {
+    border: 1px solid $button-delete;
+    background-color: $button-delete;
+  }
+  #cancel:hover {
+    background-color: $modal-background;
+    color: $button-delete
+    
+  }
+}
+

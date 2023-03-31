@@ -50,3 +50,38 @@
   width: 50px;
 }
 
+.error-message{
+  color: rgb(221, 27, 27);
+  margin-top: 5px;
+  white-space: nowrap;
+}
+
+#error-modal{
+  background-color: $modal-background;
+  color: white;
+  height: 200px;
+  width: 100%;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#error-close-button{
+  font-family: $main-font;
+  background-color: $button-delete;
+  border: 1px solid $button-delete;
+  font-size: 1.2rem;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px transparent solid;
+  cursor: pointer;
+}
+
+#error-close-button:hover{
+  color: $button-delete;
+  transition: .2s;
+  background-color: transparent;
+  border: 1px solid $button-delete;
+}

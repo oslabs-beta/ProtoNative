@@ -59,10 +59,11 @@
   button {
     font-size: 16px;
     margin-right: 14px;
-    width: 125px;
+    width: 24%;
+    max-width: 90px;
     height: 60%;
+    border: 1px transparent solid;
     border-radius: 8px;
-    border: 0;
     padding: 5px 10px;
   }
   button:hover{
@@ -73,6 +74,7 @@
 .list-state-button{
   font-family: $main-font;
   background-color: $button-primary;
+  border: 1px solid $button-primary;
 }
 
 .list-state-button:hover{
@@ -120,10 +122,11 @@
   button {
     font-size: 16px;
     margin-right: 14px;
-    width: 125px;
+    width: 24%;
+    max-width: 90px;
     height: 60%;
     border-radius: 8px;
-    border: 0;
+    border: 1px transparent solid;
     padding: 5px 10px;
   }
   button:hover{
@@ -156,7 +159,11 @@
   margin-top: 10px;
   height: fit-content;
   color: black;
+  overflow-y: auto;
+}
 
+.states-container::-webkit-scrollbar{
+  display: none;
 }
 
 .state-item{
@@ -243,9 +250,10 @@
   }
   .delete-confirm-button{
     background-color: rgb(46, 129, 46);
+    border: 1px solid rgb(46, 129, 46);
   }
   .delete-confirm-button:hover{
     color: rgb(46, 129, 46);
-    border: 1px solid rgb(46, 129, 46);;
+    border: 1px solid rgb(46, 129, 46);
   }
 }

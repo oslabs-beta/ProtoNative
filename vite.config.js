@@ -12,5 +12,6 @@ module.exports = defineConfig({
   },
   server: {
     port: 3000,
+    strictPort: true,
   }
 });
