@@ -116,13 +116,14 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 			const updatedOriginals = { ...prevOriginals };
 			const originalElement = updatedOriginals[OriginalCustomComponent.name ?? comp.type] as OrigCustomComp | AppInterface;
 			if (originalElement.state.includes(newState)) {
-				document.querySelector('.error-message').innerHTML = 'Component name already exists!';
+				document.querySelector('.error-message').innerHTML = 'State already exists!';
 				return prevOriginals;
 			} else if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(newState)) {
-				document.querySelector('.error-message').innerHTML = 'Component name must not include symbols!';
+				document.querySelector('.error-message').innerHTML = 'State must not include symbols!';
 				return prevOriginals;
 			} else  {
 			  originalElement.state.push(newState);
+				document.querySelector('.error-message').innerHTML = '';
 			  return updatedOriginals;
 			}
 		})
