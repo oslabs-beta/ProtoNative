@@ -13,13 +13,13 @@ import { isDoubleTagElement } from '../../utils/parser';
 type ElementBlockProps = {
   componentName: string;
   copies: Copies;
-  setCopies: any;
+  setCopies: React.Dispatch<React.SetStateAction<Copies>>;
   originals: Originals;
-  setOriginals: any;
+  setOriginals: React.Dispatch<React.SetStateAction<Originals>>;
   index: number;
   location: string;
   parent: string;
-  setCounter: (prev: number) => void;
+  setCounter: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const isCopyCustomComp = (

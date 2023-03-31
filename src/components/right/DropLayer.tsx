@@ -17,7 +17,7 @@ import { compileFunction } from 'vm';
 type DropLayerProps = {
   hasChildren: number;
   index: number;
-  setCounter: (value: number) => number;
+  setCounter: React.Dispatch<React.SetStateAction<number>>;
   parent: string;
   copies: any;
   setCopies: any;
@@ -26,7 +26,16 @@ type DropLayerProps = {
 };
 
 const DropLayer = (props: DropLayerProps) => {
-  const { hasChildren, index, setCounter, parent, copies, setCopies, originals, setOriginals } = props;
+  const {
+    hasChildren,
+    index,
+    setCounter,
+    parent,
+    copies,
+    setCopies,
+    originals,
+    setOriginals,
+  } = props;
 
   const [isOpen, setIsOpen] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -38,14 +47,19 @@ const DropLayer = (props: DropLayerProps) => {
       monitor
     ) => {
       // function to check if a component is its own ancestor
-      const isItsOwnAncestor = (ancestor: (CopyCustomComp | CopyNativeEl), name: string): boolean => {
+      const isItsOwnAncestor = (
+        ancestor: CopyCustomComp | CopyNativeEl,
+        name: string
+      ): boolean => {
         if (name === ancestor.parent.key) return true;
-        console.log(1)
+        console.log(1);
         return ancestor.parent.key === 'App'
           ? false
           : ancestor.parent.origin === 'original'
-            ? originals[ancestor.parent.key].copies.some((copyName: string) => isItsOwnAncestor(copies[copyName], name))
-            : isItsOwnAncestor(copies[ancestor.parent.key], name);
+          ? originals[ancestor.parent.key].copies.some((copyName: string) =>
+              isItsOwnAncestor(copies[copyName], name)
+            )
+          : isItsOwnAncestor(copies[ancestor.parent.key], name);
       };
 
       // prevent circular references by checking full component lineage
@@ -53,11 +67,21 @@ const DropLayer = (props: DropLayerProps) => {
         setErrorMsg('Cannot add a component to itself!');
         setIsOpen(true);
         return;
-      } else if (copies[parent] && parent !== 'App' && isItsOwnAncestor(copies[parent], item.name)) {
+      } else if (
+        copies[parent] &&
+        parent !== 'App' &&
+        isItsOwnAncestor(copies[parent], item.name)
+      ) {
         setErrorMsg(`"${item.name}" cannot be its own ancestor!`);
         setIsOpen(true);
         return;
-      } else if (originals[parent] && parent !== 'App' && originals[parent].copies.some((copyName: string) => isItsOwnAncestor(copies[copyName], item.name))) {
+      } else if (
+        originals[parent] &&
+        parent !== 'App' &&
+        originals[parent].copies.some((copyName: string) =>
+          isItsOwnAncestor(copies[copyName], item.name)
+        )
+      ) {
         setErrorMsg(`"${item.name}" cannot be its own ancestor!`);
         setIsOpen(true);
         return;
@@ -120,9 +144,11 @@ const DropLayer = (props: DropLayerProps) => {
       ></div>
       {isOpen && (
         <Modal handleClick={handleClose}>
-          <div id="error-modal">
+          <div id='error-modal'>
             <h2>{errorMsg}</h2>
-            <button id='error-close-button' onClick={() => handleClose()}>Close</button>	
+            <button id='error-close-button' onClick={() => handleClose()}>
+              Close
+            </button>
           </div>
         </Modal>
       )}
