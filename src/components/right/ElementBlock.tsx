@@ -57,9 +57,13 @@ const ElementBlock = ({
     [componentName, index]
   );
 
+  const pushCustoms = (array) => {};
+
   if (isCopyCustomComp(componentDef)) {
     const originalElement = originals[componentDef.pointer] as OrigCustomComp;
     children = originalElement.children;
+    if (location === 'app') {
+    }
   } else {
     children = componentDef.children;
   }
@@ -140,7 +144,8 @@ const ElementBlock = ({
 
   console.log(originals[componentDef.parent.key]);
   const nestedComponentInApp =
-    (componentDef.parent.origin === 'original' &&
+    (location === 'app' &&
+      componentDef.parent.origin === 'original' &&
       componentDef.parent.key !== 'App') ||
     undefined
       ? true
