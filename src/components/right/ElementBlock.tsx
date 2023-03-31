@@ -64,6 +64,9 @@ const ElementBlock = ({
     children = componentDef.children;
   }
 
+  //copies[childName] -> looks at children of the currenent component
+  //componentDef -> current component object
+
   if (children.length) {
     childElements = children.map((childName, idx) => {
       //showing custom components within custom components in app
@@ -134,11 +137,19 @@ const ElementBlock = ({
     copies[parent] && copies[parent].children.length - 1 === index
       ? true
       : false;
+
+  console.log(originals[componentDef.parent.key]);
+  const nestedComponentInApp =
+    (componentDef.parent.origin === 'original' &&
+      componentDef.parent.key !== 'App') ||
+    undefined
+      ? true
+      : false;
+
   return (
     <div>
       {showLayers && (
         <DropLayer
-          id={'drop-layer-area'}
           index={index}
           setCounter={setCounter}
           parent={copies[componentName].parent.key}
@@ -156,7 +167,7 @@ const ElementBlock = ({
           backgroundColor: 'rgba(50, 2, 59, 0.6)',
         }}
         className='element'
-        ref={drag}
+        ref={nestedComponentInApp ? null : drag}
       >
         <p>
           {copies[componentName].type === 'custom'
