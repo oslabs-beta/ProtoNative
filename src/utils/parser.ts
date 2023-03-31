@@ -234,27 +234,53 @@ const addState = (stateNames: string[]): string => {
   return stateVariables;
 };
 
+// /**
+//  * @method getNativeImports
+//  * @description - recursively gathers all native core components to be imported starting at native element and going through its children
+//  * @input - element of interface CopyNativeEl or CopyCustomComp (in case custom components are wrapped inside native elements)
+//  * @output - array of strings containing which native core components need to be imported
+//  */
+// const getNativeImports = (comp: CopyNativeEl | CopyCustomComp, copies: Copies, originals: Originals): string[] => {
+//   const toImport: string[] = [];
+//   const allNativeImports = (comp: CopyNativeEl | CopyCustomComp): void => {
+//     const originalComp = originals[comp.pointer] as OrigCustomComp;
+//     const compChildren: string[] = isCopyCustomComp(comp) ? originalComp.children : comp.children;
+//     if (compChildren.length === 0) {
+//       if (!isCopyCustomComp(comp)) toImport.push(comp.type);
+//       return;
+//     }
+//     if (!isCopyCustomComp(comp)) toImport.push(comp.type);
+//     for (const child of compChildren) {
+//       allNativeImports(copies[child]);
+//     }
+//   }
+//   allNativeImports(comp);
+//   return toImport;
+// }
+
 /**
  * @method getNativeImports
  * @description - recursively gathers all native core components to be imported starting at native element and going through its children
  * @input - element of interface CopyNativeEl or CopyCustomComp (in case custom components are wrapped inside native elements)
  * @output - array of strings containing which native core components need to be imported
  */
-const getNativeImports = (comp: CopyNativeEl | CopyCustomComp, copies: Copies, originals: Originals): string[] => {
+const getAllImports = (comp: CopyNativeEl | CopyCustomComp, originals: Originals, copies: Copies): string[] => {
   const toImport: string[] = [];
-  const allNativeImports = (comp: CopyNativeEl | CopyCustomComp): void => {
-    const originalComp = originals[comp.pointer] as OrigCustomComp;
-    const compChildren: string[] = isCopyCustomComp(comp) ? originalComp.children : comp.children;
-    if (compChildren.length === 0) {
-      if (!isCopyCustomComp(comp)) toImport.push(comp.type);
+  // const ORIGINAL_COMP = originals[comp.pointer] as OrigCustomComp;
+  // const COMP_CHILDREN: string[] = isCopyCustomComp(comp) ? ORIGINAL_COMP.children : comp.children;
+  const allImports = (currComp: CopyNativeEl | CopyCustomComp): void => {
+    const originalComp = originals[currComp.pointer] as OrigCustomComp;
+    const compChildren: string[] = isCopyCustomComp(currComp) ? originalComp.children : currComp.children;
+    if (compChildren.length === 0 || comp.type === 'custom') {
+      isCopyCustomComp(currComp) ? toImport.push(currComp.pointer) : toImport.push(currComp.type);
       return;
     }
-    if (!isCopyCustomComp(comp)) toImport.push(comp.type);
     for (const child of compChildren) {
-      allNativeImports(copies[child]);
+      allImports(copies[child]);
     }
+    isCopyCustomComp(currComp) ? toImport.push(currComp.pointer) : toImport.push(currComp.type);
   }
-  allNativeImports(comp);
+  allImports(comp);
   return toImport;
 }
 
@@ -264,9 +290,9 @@ const getNativeImports = (comp: CopyNativeEl | CopyCustomComp, copies: Copies, o
  * @input - object containing the native core components to be imported
  * @output - import statement for importing the native core components passed in 
  */
-const addNativeImports = (toImport: {}): string => {
+const addNativeImports = (toImport: string[]): string => {
   let componentsToImport: string = '';
-  for (const nativeElement in toImport) {
+  for (const nativeElement of toImport) {
     componentsToImport += `${nativeElement},`;
   }
   // take off last comma
@@ -329,9 +355,10 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp, originals: O
 const generateCustomComponentCode = (component: OrigCustomComp | AppInterface, originals: Originals, copies: Copies): string => {
   // store to save all native core components to be imported
   // always import View 
-  const importNative: {[key: string]: boolean} = { View: true };
-  // store to save all the custom components to be imported
-  const importCustom: {[key: string]: boolean} = {};
+  // const importNative: {[key: string]: boolean} = { View: true };
+  // // store to save all the custom components to be imported
+  // const importCustom: {[key: string]: boolean} = {};
+  const allImports: Set<string> = new Set(['View']);
   // returnedComponentCode will contain everything that goes into the return statement of component
   let returnedComponentCode: string = '';
   // generate stuff in return statement
@@ -339,28 +366,44 @@ const generateCustomComponentCode = (component: OrigCustomComp | AppInterface, o
   for (const child of component.children) {
     // find the child in copies context
     const foundChild: CopyNativeEl | CopyCustomComp = copies[child];
-    // if type of found child is custom
-    if (isCopyCustomComp(foundChild)) {
-      // add the name of original component
-      importCustom[foundChild.pointer] = true;
-    } else { // if type of found child is native
-      // add the type of native element
-      const nativeImports: string[] = getNativeImports(foundChild, copies, originals);
-      for (const nativeImport of nativeImports) {
-        importNative[nativeImport] = true;
-      }
+    // // if type of found child is custom
+    // if (isCopyCustomComp(foundChild)) {
+    //   // add the name of original component
+    //   importCustom[foundChild.pointer] = true;
+    // } else { // if type of found child is native
+    //   // add the type of native element
+    //   const nativeImports: string[] = getNativeImports(foundChild, copies, originals);
+    //   for (const nativeImport of nativeImports) {
+    //     importNative[nativeImport] = true;
+    //   }
+    // }
+    const allCompToImport: string[] = getAllImports(foundChild, originals, copies);
+    for (const compToImport of allCompToImport) {
+      allImports.add(compToImport);
     }
     returnedComponentCode += generateComponentCode(foundChild, originals, copies);
   }
   // generate all import statements
   let importStatements: string = '';
   importStatements += importReact(component);
-  // get import statements for native components
-  importStatements += addNativeImports(importNative);
-  // get import statements for custom components
-  for (const customComponent in importCustom) {
-    importStatements += component.type === 'App' ? addCustomCompImport(customComponent, true) : addCustomCompImport(customComponent, false);
+  // // get import statements for native components
+  // importStatements += addNativeImports(importNative);
+  // // get import statements for custom components
+  // for (const customComponent in importCustom) {
+  //   importStatements += component.type === 'App' ? addCustomCompImport(customComponent, true) : addCustomCompImport(customComponent, false);
+  // }
+  const allNativeImports: string[] = [];
+  let allCustomImports: string = '';
+  for (const toImport of allImports.values()) {
+    if (isOrigCustomComp(originals[toImport])) {
+      allCustomImports += component.type === 'App' ? addCustomCompImport(toImport, true) : addCustomCompImport(toImport, false)
+    } else {
+      allNativeImports.push(toImport);
+    }
   }
+  importStatements += addNativeImports(allNativeImports);
+  importStatements += allCustomImports;
+  // console.log('VALUES', allImports.values());
   // generate all state code
   const stateVariables: string = addState(component.state);
 
