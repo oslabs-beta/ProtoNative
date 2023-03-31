@@ -29,8 +29,8 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 	
 
 	const handleClick = () => {
+		setNewState('');
 		setIsOpen(false);
-		console.log('close button clicked');
 	}
 	
 	useEffect(() => {
@@ -115,14 +115,16 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		setOriginals((prevOriginals) => {
 			const updatedOriginals = { ...prevOriginals };
 			const originalElement = updatedOriginals[OriginalCustomComponent.name ?? comp.type] as OrigCustomComp | AppInterface;
-			if (originalElement.state.includes(newState)){
-				alert('that state already exists on this component!');
-				return prevOriginals
-			}  
-			else  {
+			if (originalElement.state.includes(newState)) {
+				document.querySelector('.error-message').innerHTML = 'Component name already exists!';
+				return prevOriginals;
+			} else if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(newState)) {
+				document.querySelector('.error-message').innerHTML = 'Component name must not include symbols!';
+				return prevOriginals;
+			} else  {
 			  originalElement.state.push(newState);
 			  return updatedOriginals;
-		}
+			}
 		})
 		setNewState('');
 	}
@@ -159,6 +161,7 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 										/>
 								<label htmlFor="stateInput" id='state-modal-label'>New State</label>
 							</form>
+							<p className='error-message'></p>
 							<div className="states-container">
 									{OriginalCustomComponent.state.map((stateValue, index) => (
 										<div key={index} className="state-item" onClick={() => handleDeleteState(stateValue)}>
