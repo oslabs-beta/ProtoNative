@@ -11,8 +11,8 @@ body {
   display: flex;
   flex-direction: column;
   font-family: $main-font;
-  background-color: $main-background
-
+  background-color: $main-background;
+  overflow-y: hidden;
 }
 
 
