@@ -44,7 +44,12 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 			: setComponentItem(
 				<div className={currentComponent === comp.name ? 'highlightedComponentListItem' : 'componentListItem'}  onClick={() => setCurrentComponent(comp.name)}>
 					<span> {comp.name} </span>
-					<button className='list-state-button' onClick={(e) => handleStateClick(e)}>State</button>
+					<button className='list-state-button' 
+									onClick={(e) => {
+										handleStateClick(e)
+										setTimeout(()=>document.getElementById('state-modal-input').focus(), 50)
+									}
+						}>State</button>
 					<button className='list-delete-button'onClick={(e) => handleDeleteClick(e)}>Delete</button>
 				</div>
 			)
@@ -116,7 +121,7 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 			const updatedOriginals = { ...prevOriginals };
 			const originalElement = updatedOriginals[OriginalCustomComponent.name ?? comp.type] as OrigCustomComp | AppInterface;
 			if (originalElement.state.includes(newState)) {
-				document.querySelector('.error-message').innerHTML = 'State already exists!';
+				document.querySelector('.error-message').innerHTML = `"${newState}" already exists!`;
 				return prevOriginals;
 			} else if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(newState)) {
 				document.querySelector('.error-message').innerHTML = 'State must not include symbols!';
@@ -149,44 +154,46 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 	return (
 		<>
 			{ComponentItem}
-			{isOpen ? (
-				 <Modal handleClick={handleClick}>
-					{currentModal === 'state' ? (
-						<div id='stateModal'>
-							<h3>Add/delete State from {OriginalCustomComponent.name ?? comp.type}</h3>
-							<form id='state-modal-form' onSubmit={handleStateSaveClick}>
-								<input 
-									id='state-modal-input' 
-									value={newState} 
-									onChange={(e) => setNewState(e.target.value)}
+			{isOpen
+				? (
+					<Modal handleClick={handleClick}>
+						{currentModal === 'state'
+							? (
+								<div id='stateModal'>
+									<h3>Add/delete State from {OriginalCustomComponent.name ?? comp.type}</h3>
+									<form id='state-modal-form' onSubmit={handleStateSaveClick}>
+										<input 
+											id='state-modal-input' 
+											value={newState} 
+											onChange={(e) => setNewState(e.target.value)}
+											onBlur={()=>setNewState('')}
 										/>
-								<label htmlFor="stateInput" id='state-modal-label'>New State</label>
-							</form>
-							<p className='error-message'></p>
-							<div className="states-container">
-									{OriginalCustomComponent.state.map((stateValue, index) => (
-										<div key={index} className="state-item" onClick={() => handleDeleteState(stateValue)}>
-											<span className='strike'>{stateValue}</span>
-										</div>
-									))}
-							</div>
-						</div>
-						)
-					: currentModal === 'delete' ? (
-						<div id='deleteModal'>
-							<h3>Are you sure you want to delete {OriginalCustomComponent.name}?</h3>
-							<p>This will delete all occurrences of {OriginalCustomComponent.name} everywhere!</p>
-							<div id='delete-modal-buttons'>
-								<button className='list-state-button delete-confirm-button' onClick={handleDeleteConfirmClick}>Confirm</button>
-								<button className='list-delete-button' onClick={() => handleClose()}>Cancel</button>	
-							</div>
-						
-						</div>
-					) : null
-					}
-				</Modal>
-				
-				) : null}
+										<label htmlFor="stateInput" id='state-modal-label'>New State</label>
+									</form>
+									<p className='error-message'></p>
+									<div className="states-container">
+										{OriginalCustomComponent.state.map((stateValue, index) => (
+											<div key={index} className="state-item" onClick={() => handleDeleteState(stateValue)}>
+												<span className='strike'>{stateValue}</span>
+											</div>
+										))}
+									</div>
+								</div> )
+							: currentModal === 'delete'
+							? (
+								<div id='deleteModal'>
+									<h3>Are you sure you want to delete {OriginalCustomComponent.name}?</h3>
+									<p>This will delete all occurrences of {OriginalCustomComponent.name} everywhere!</p>
+									<div id='delete-modal-buttons'>
+										<button className='list-state-button delete-confirm-button' onClick={handleDeleteConfirmClick}>Confirm</button>
+										<button className='list-delete-button' onClick={() => handleClose()}>Cancel</button>	
+									</div>
+								</div> )
+							: null
+						}
+					</Modal> )
+				: null
+			}
 		</>
 	);
 };

@@ -17,7 +17,7 @@ const AddComponent = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (componentName in originals) return document.querySelector('.error-message').innerHTML = 'Component name already exists!';
-    if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(componentName)) return document.querySelector('.error-message').innerHTML = 'Component name must not include symbols!';
+    if (!/^[A-Z][a-zA-Z]*$/.test(componentName)) return document.querySelector('.error-message').innerHTML = 'Component name must be in PascalCase!';
     setOriginals((previous: Originals): Originals => {
       return {
         ...previous,
@@ -43,7 +43,8 @@ const AddComponent = () => {
   return (
     <div id='addComponentContainer'>
       <button id='addComponent' onClick={() => {
-        console.log('are we in OnClick?');
+        setTimeout(()=>document.getElementById('add-component-input').focus(), 50)
+        
         setIsOpen(true)
       }}>
         Add Custom Component 
@@ -56,13 +57,9 @@ const AddComponent = () => {
           <div id="modal-content">
             <h2>Add Custom Component</h2>
             <form onSubmit={handleSubmit} id='add-component-form'>
-              <input id='add-component-input' name="name" type="text" value={componentName} onChange={handleInputChange}/>
-              <label id='add-component-label'>
-                Component Name
-              </label>
+              <input id='add-component-input' name="name" type="text" value={componentName} onChange={handleInputChange} onBlur={()=>setComponentName('')}/>
+              <label id='add-component-label'>Component Name</label>
               <div className='error-message'></div>
-              {/* <button type="submit">Add</button>
-              <button onClick={handleClose}>Cancel</button> */}
             </form>
           </div>
         </Modal>
