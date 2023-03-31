@@ -151,7 +151,6 @@ const ElementBlock = ({
       ? true
       : false;
 
-  console.log(nestedComponentInApp);
   return (
     <div>
       {showLayers && (
