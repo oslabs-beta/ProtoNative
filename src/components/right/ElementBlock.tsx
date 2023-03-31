@@ -1,14 +1,15 @@
-import React, { useRef, useState, useContext } from 'react';
-import { useDrag, useDrop } from 'react-dnd';
+import React from 'react';
+import { useDrag } from 'react-dnd';
 import {
   Copies,
   CopyNativeEl,
   CopyCustomComp,
   Originals,
   OrigCustomComp,
-} from '../../parser/interfaces';
+} from '../../utils/interfaces';
 import DropLayer from './DropLayer';
-import { isCopyCustomComp } from '../../parser/parser';
+import { isDoubleTagElement } from '../../utils/parser';
+// import { isCopyCustomComp } from '../../parser/parser';
 type ElementBlockProps = {
   componentName: string;
   copies: Copies;
@@ -18,14 +19,14 @@ type ElementBlockProps = {
   index: number;
   location: string;
   parent: string;
-  setCounter: (value: number) => number;
+  setCounter: (prev: number) => void;
 };
 
-// const isCopyCustomComp = (
-//   comp: CopyNativeEl | CopyCustomComp
-// ): comp is CopyCustomComp => {
-//   return comp.type === 'custom';
-// };
+const isCopyCustomComp = (
+  comp: CopyNativeEl | CopyCustomComp
+): comp is CopyCustomComp => {
+  return comp.type === 'custom';
+};
 
 const ElementBlock = ({
   componentName,
@@ -39,32 +40,10 @@ const ElementBlock = ({
   setCounter,
 }: ElementBlockProps) => {
   const componentDef = copies[componentName];
-  let childElements = null;
-  let children: string[] = null;
-  const ref = useRef(null);
+  let childElements: JSX.Element[];
+  let children: string[];
 
-  const [, drop] = useDrop({
-    accept: ['elements', 'addableElement'],
-    drop: (
-      item: { name: number; index: number; type: string; parentComp: string },
-      monitor
-    ) => {
-      console.log(item.name, 'dropped in', componentName);
-      // if (!ref.current) return;
-
-      const dragIndex = item.index;
-      const hoverIndex = index;
-
-      if (item.type === 'elements') {
-      } else if (item.type === 'addableElement') console.log('hi');
-    },
-    // collect: (monitor) => ({
-    //   isOver: monitor.isOver(),
-    //   isOverCurrent: monitor.isOver({ shallow: true }),
-    // }),
-  });
-
-  const [{ isDragging }, drag] = useDrag(
+  const [, drag] = useDrag(
     () => ({
       type: 'elements',
       item: {
@@ -73,15 +52,9 @@ const ElementBlock = ({
         type: 'elements',
         parentComp: parent,
       },
-      collect: (monitor) => ({
-        //boolean to see if component is being dragged (isDragging)
-        isDragging: monitor.isDragging(),
-      }),
     }),
     [componentName, index]
   );
-
-  drag(drop(ref));
 
   if (isCopyCustomComp(componentDef)) {
     const originalElement = originals[componentDef.pointer] as OrigCustomComp;
@@ -91,10 +64,10 @@ const ElementBlock = ({
   }
 
   if (children.length) {
-    const arr: JSX.Element[] = [];
-    children.forEach((childName: string, idx) => {
+    childElements = children.map((childName, idx) => {
+      //showing custom components within custom components in app
       if (location === 'app' && copies[childName].type === 'custom') {
-        arr.push(
+        return (
           <ElementBlock
             key={idx + childName}
             componentName={childName}
@@ -108,8 +81,27 @@ const ElementBlock = ({
             setCounter={setCounter}
           />
         );
-      } else if (location === 'details' && componentDef.type !== 'custom') {
-        arr.push(
+      }
+      //showing native elements within native elements in app
+      else if (location === 'app' && componentDef.type !== 'custom') {
+        return (
+          <ElementBlock
+            key={idx + childName}
+            componentName={childName}
+            copies={copies}
+            setCopies={setCopies}
+            originals={originals}
+            setOriginals={setOriginals}
+            index={idx}
+            location={'details'}
+            parent={copies[childName].parent.key}
+            setCounter={setCounter}
+          />
+        );
+      }
+      //showing only first level of custom components in component details
+      else if (location === 'details' && componentDef.type !== 'custom') {
+        return (
           <ElementBlock
             key={idx + childName}
             componentName={childName}
@@ -125,47 +117,76 @@ const ElementBlock = ({
         );
       }
     });
-    childElements = arr;
   }
-  // console.log(copies);
+
+  //creating a top drop layer at the top level (app or in component details)
+  let showLayers: boolean;
+  if (location === 'details') showLayers = true;
+  else if (location === 'app') {
+    if (componentDef.parent.key === 'App') showLayers = true;
+    else if (copies[parent]) {
+      if (isDoubleTagElement(copies[parent].type)) showLayers = true;
+    }
+  }
+
+  //creating a drop layer at the bottom of nested native elements
+  const inNative: boolean =
+    copies[parent] && copies[parent].children.length - 1 === index
+      ? true
+      : false;
 
   return (
     <div>
-      <DropLayer
-        component={componentName}
-        position={'above'}
-        index={index}
-        setCounter={setCounter}
-        parent={copies[componentName].parent.key}
-        copies={copies}
-        setCopies={setCopies}
-        originals={originals}
-        setOriginals={setOriginals}
-      />
+      {showLayers && (
+        <DropLayer
+          index={index}
+          setCounter={setCounter}
+          parent={copies[componentName].parent.key}
+          copies={copies}
+          setCopies={setCopies}
+          originals={originals}
+          setOriginals={setOriginals}
+        />
+      )}
       <div
-        style={{ border: '1px solid black', backgroundColor: 'rgba(0,0,0,.4)' }}
+        style={{
+          border: '2px solid black',
+          backgroundColor: 'rgba(50, 2, 59, 0.6)',
+        }}
         className='element'
-        ref={ref}
+        ref={drag}
       >
         <p>
           {copies[componentName].type === 'custom'
             ? copies[componentName].pointer
             : copies[componentName].type}
         </p>
-
+        {/* creating a starter drop layer for empty native elements */}
+        {isDoubleTagElement(copies[componentName].type) &&
+          copies[componentName].children.length === 0 && (
+            <DropLayer
+              index={0}
+              setCounter={setCounter}
+              parent={componentDef.name}
+              copies={copies}
+              setCopies={setCopies}
+              originals={originals}
+              setOriginals={setOriginals}
+            />
+          )}
         {childElements}
       </div>
-      <DropLayer
-        component={componentName}
-        position={'below'}
-        index={index + 1}
-        setCounter={setCounter}
-        parent={copies[componentName].parent.key}
-        copies={copies}
-        setCopies={setCopies}
-        originals={originals}
-        setOriginals={setOriginals}
-      />
+      {inNative && (
+        <DropLayer
+          index={index + 1}
+          setCounter={setCounter}
+          parent={copies[componentName].parent.key}
+          copies={copies}
+          setCopies={setCopies}
+          originals={originals}
+          setOriginals={setOriginals}
+        />
+      )}
     </div>
   );
 };

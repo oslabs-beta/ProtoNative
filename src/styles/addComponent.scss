@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 60px
+  height: 50px;
 }
 
 #addComponent {
@@ -12,33 +12,72 @@
   width: 100%;
   height: 100%;
   border-radius: 10px;
+  border: 1px solid $button-primary;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 1.5rem;
   padding: .3rem;
-  background-color: rgb(103, 172, 103);
-  border: 2px solid rgb(56, 126, 56);;
+  background-color: $button-primary;
+  color: black;
+  font-family: $main-font;
 }
 
-#modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: aqua;
-  z-index: 9999;
+#addComponent:hover{
+  transition: .2s;
+  background-color: transparent;
+  color: $button-primary;
+}
+
+#modal-content{
+  color: rgb(181, 181, 181);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
+  height: 100%;
+  border-radius: 10px;
+  background-color: $modal-background;
 }
 
-#modal-content {
-  background-color: coral;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  max-width: 600px;
-  width: 100%;
-  max-height: 80vh;
-  overflow-y: auto;
+#add-component-form{
+  position: relative;
+  width: 60%;
+  transition: border-color 0.2s;
+}
+
+#add-component-input{
+  border: 0;
+  border-bottom: 2px solid rgb(181, 181, 181);
+  background-color: transparent;
+  position: relative;
+  z-index: 999;
+  font-size: 1.5rem;
+  padding-bottom: 5px;
+}
+
+#add-component-label{
+  position: absolute;
+  top: 0px;
+  display: block;
+  font-size: 1.2rem;
+  cursor: text;
+  z-index: 1;
+}
+
+
+#add-component-input:focus {
+  ~#add-component-label {
+    position: absolute;
+    display: block;
+    color: $button-primary;
+    transition: .3s;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    top: -30px;
+  }
+  outline: none;
+  transition: .3s;
+  border-width: 3px;
+  border-image: linear-gradient(to right, $button-primary, rgb(73, 73, 73));
+  border-image-slice: 1;
+  color: white;
 }

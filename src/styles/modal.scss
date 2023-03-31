@@ -12,12 +12,10 @@
 }
 
 #actual-modal{
-  background-color: white;
+  background-color: transparent;
   position: relative;
   width: 500px;
-  height: 200px;
-  border-radius: 10px;
-
+  height: 300px;
 }
 
 #close-button{
@@ -52,3 +50,8 @@
   width: 50px;
 }
 
+.error-message{
+  color: rgb(221, 27, 27);
+  margin-top: 5px;
+  white-space: nowrap;
+}

@@ -3,6 +3,11 @@
   border-radius: 10px;
   background-color: $container-background;
   padding: 20px;
+  height: 45%;
+  overflow-y: hidden;
+  h2{
+    color: $title-color;
+  }
 }
 
 #code-block-container::-webkit-scrollbar{
@@ -14,8 +19,12 @@
 }
 
 #code-preview-container{
-  max-height: 305px;
   overflow-y: scroll;
+  height: 90%;
+}
+
+pre{
+  max-width: 90%px;
 }
 
 #code-preview-container::-webkit-scrollbar{

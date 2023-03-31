@@ -1,14 +1,22 @@
 #component-details-container{
   border: 1px solid black;
   border-radius: 10px;
+  height: 450px;
   padding: 10px;
-  height: 460px;
   background-color: $container-background;
+  color: white;
+  h2{
+    margin: 10px 0;
+    color: $title-color;
+  }
 }
 
 #component-box{
+  display: flex;
+  flex-direction: column;
   overflow-y: scroll;
   height: 375px;
+  background-color: $scroll-container;
 }
 
 #component-box::-webkit-scrollbar{
@@ -16,19 +24,28 @@
 }
 
 #component-box, .element{
-  margin: 10px;
+  margin: 0 10px;
   text-align: center;
   border-radius: 5px;
+  transform: translate(0, 0);
 }
+
 
 .element p {
-  margin: 0 0 40px 0;
-}
-
-#drop-layer-area{
-  height:10px;
-  width: 100%;
-  background-color: black;
+  margin: 0 0 10px 0;
   color: white;
 }
 
+#drop-layer-area{
+  height:25px;
+  width: 100%;
+  border-radius: 5px;
+}
+
+#drop-layer-large{
+  align-items: stretch;
+  min-height: 25px;
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+}

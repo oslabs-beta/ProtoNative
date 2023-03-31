@@ -3,11 +3,13 @@
   border: 1px solid black;
   padding: 20px 20px 0px 20px;
   border-radius: 10px;
-  height: 100%;
+  height: 50%;
   background-color: $container-background;
   h2 {
     margin-bottom: 20px;
-  }
+    color: $title-color;
+}
+
 #componentListContainer {
     display: flex;
     flex-direction: column;
@@ -16,28 +18,22 @@
     padding: 10px;
     border-radius: 10px;
     height: 80%;
-
 }
 
 #customComps {
-    border: 1px solid black;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    width: 100%;
-    background-color: white;
-    h2 {
-        margin-bottom: 20px;
-    }
-}
-
-#customComps {
+  border: 1px solid black;
+  padding: 20px;
+  margin-bottom: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  width: 100%;
+  background-color: $scroll-container;
   display: flex;
   flex-direction: column;
   border-radius: 10px;
-  height: 30vh;
-  overflow-y: auto;
   gap: 16px;
+  height: 80%;
+  overflow-y: scroll;
 }
 
 #customComps::-webkit-scrollbar{
@@ -45,12 +41,13 @@
 }
 
 .componentListItem {
+  background-color: white;
   border: 1px solid black;
   display: flex;
   align-items: center;
   min-height: 50px;
   border-radius: 10px;
-  font-size: 20px;
+  font-size: 17px;
   span {
     text-align: left;
     display: flex;
@@ -62,23 +59,56 @@
   button {
     font-size: 16px;
     margin-right: 14px;
-    width: 150px;
+    width: 125px;
     height: 60%;
     border-radius: 8px;
+    border: 0;
+    padding: 5px 10px;
   }
   button:hover{
     cursor: pointer;
   }
 }
 
+.list-state-button{
+  font-family: $main-font;
+  background-color: $button-primary;
+}
+
+.list-state-button:hover{
+  transition: .2s;
+  background-color: transparent;
+  color: $button-primary;
+  border: 1px solid $button-primary;
+}
+
+.list-delete-button{
+  font-family: $main-font;
+  background-color: $button-delete;
+  border: 1px solid $button-delete;
+}
+
+.list-delete-button:hover{
+  color: $button-delete;
+  transition: .2s;
+  background-color: transparent;
+  border: 1px solid $button-delete;
+}
+
+
+.componentListItem:hover{
+  transition: .3s;
+  cursor: pointer;
+}
 .highlightedComponentListItem {
-  background-color: rgba(255, 0, 0, 0.2);
+  background-color: $highlight-color;
+  color: white;
   border: 1px solid black;
   display: flex;
   align-items: center;
   min-height: 50px;
   border-radius: 10px;
-  font-size: 20px;
+  font-size:  17px;
   span {
     text-align: left;
     display: flex;
@@ -90,11 +120,132 @@
   button {
     font-size: 16px;
     margin-right: 14px;
-    width: 150px;
+    width: 125px;
     height: 60%;
     border-radius: 8px;
+    border: 0;
+    padding: 5px 10px;
   }
   button:hover{
     cursor: pointer;
   }
 }}
+
+#stateModal {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  padding: 20px 20px 0px 20px;
+  border-radius: 10px;
+  height: 400px;
+  background-color: $modal-background;
+  color: white;
+  h3 {
+    margin: 20px 0 ;
+  }
+
+}
+
+.states-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  margin-top: 10px;
+  height: fit-content;
+  color: black;
+
+}
+
+.state-item{
+  font-size: 1.3rem;
+  color: white;
+}
+
+.state-item:hover{
+  cursor: pointer;
+  text-decoration: line-through;
+}
+
+
+#state-modal-form{
+  display: flex;
+  position: relative;
+  width: 60%;
+  transition: border-color 0.2s;
+  margin-top: 3rem;
+}
+
+#state-modal-input{
+  border: 0;
+  border-bottom: 2px solid rgb(181, 181, 181);
+  background-color: transparent;
+  position: relative;
+  z-index: 999;
+  font-size: 1.5rem;
+  padding-bottom: 5px;
+}
+
+#state-modal-label{
+  position: absolute;
+  top: 0px;
+  display: block;
+  font-size: 1.2rem;
+  cursor: text;
+  z-index: 1;
+}
+
+
+#state-modal-input:focus {
+  ~#state-modal-label {
+    position: absolute;
+    display: block;
+    color: $button-primary;
+    transition: .3s;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    top: -30px;
+  }
+  outline: none;
+  transition: .3s;
+  border-width: 3px;
+  border-image: linear-gradient(to right, $button-primary, rgb(73, 73, 73));
+  border-image-slice: 1;
+  color: white
+}
+
+#deleteModal{
+  background-color: $modal-background;
+  color: white;
+  height: 200px;
+  width: 100%;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#delete-modal-buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 40%;
+  button{
+    border: 0;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  button:hover{
+    cursor: pointer;
+  }
+  .delete-confirm-button{
+    background-color: rgb(46, 129, 46);
+  }
+  .delete-confirm-button:hover{
+    color: rgb(46, 129, 46);
+    border: 1px solid rgb(46, 129, 46);;
+  }
+}

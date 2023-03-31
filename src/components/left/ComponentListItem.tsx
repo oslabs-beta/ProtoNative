@@ -1,12 +1,11 @@
 import React, { useContext, useState, useEffect, useCallback } from 'react';
 import AppContext from '../../context/AppContext';
-import { CopyCustomComp, CopyNativeEl, OrigCustomComp, AppInterface, Parent } from '../../parser/interfaces';
-import { Originals, Copies } from '../../parser/interfaces';
+import { CopyCustomComp, CopyNativeEl, OrigCustomComp, AppInterface, Parent } from '../../utils/interfaces';
+import { Originals, Copies } from '../../utils/interfaces';
 import Modal from './Modal';
-import { isCopyCustomComp } from '../../parser/parser';
-// const isCopyCustomComp = (comp: CopyNativeEl | CopyCustomComp): comp is CopyCustomComp => {
-//   return comp.type === 'custom';
-// }
+import { isCopyCustomComp } from '../../utils/parser';
+import { trashCan } from '../../utils/trashCan';
+import { deepCopy } from '../../utils/deepCopy';
 
 type ComponentListItemProps = {
 	comp: AppInterface | OrigCustomComp;
@@ -30,8 +29,8 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 	
 
 	const handleClick = () => {
+		setNewState('');
 		setIsOpen(false);
-		console.log('close button clicked');
 	}
 	
 	useEffect(() => {
@@ -39,143 +38,48 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 			? setComponentItem(
 					<div className={currentComponent === comp.type ? 'highlightedComponentListItem' : 'componentListItem'}  onClick={() => setCurrentComponent(comp.type)}>
 						<span> {comp.type} </span>
-						<button onClick={(e) => handleStateClick(e)}>State</button>
+						<button className='list-state-button'onClick={(e) => handleStateClick(e)}>State</button>
 					</div>
 				)
 			: setComponentItem(
 				<div className={currentComponent === comp.name ? 'highlightedComponentListItem' : 'componentListItem'}  onClick={() => setCurrentComponent(comp.name)}>
 					<span> {comp.name} </span>
-					<button onClick={(e) => handleStateClick(e)}>State</button>
-					<button onClick={(e) => handleDeleteClick(e)}>Delete</button>
+					<button className='list-state-button' onClick={(e) => handleStateClick(e)}>State</button>
+					<button className='list-delete-button'onClick={(e) => handleDeleteClick(e)}>Delete</button>
 				</div>
 			)
 	}, [currentComponent, originals, copies]);
 
-	const trashCan = (compToDelete: CopyNativeEl | CopyCustomComp, copyCopies: Copies, copyOriginals: Originals) => {
-		
-		const deleteCompInCopies = (compToDelete: CopyNativeEl | CopyCustomComp) => {
+	const handleDeleteClick = (event: any): void => {
+		// prevent the click from propagating to the parent div
+		event.cancelBubble = true;
+		if (event.stopPropagation) event.stopPropagation();
 
-			console.log('NAME', compToDelete.name);
-			console.log('COMP TO DELETE', compToDelete);
-			
-			const compToDeleteParent: Parent = compToDelete.parent;
-			// delete child from parent's children array
-			if (compToDeleteParent.origin === 'original') {
-
-				// TestComponent
-				const origParent = copyOriginals[compToDeleteParent.key] as OrigCustomComp;
-				console.log('ORIG PARENT', origParent);
-				
-				const parentChildren: string[] = origParent.children;
-				const parentChildIdx = parentChildren.indexOf(compToDelete.name);
-				parentChildren.splice(parentChildIdx, 1);
-			} else if (compToDeleteParent.origin === 'copies') {
-				const parentChildToDelete = copyCopies[compToDeleteParent.key];
-				const originalParentElement = copyOriginals[parentChildToDelete.pointer] as OrigCustomComp;
-				const parentChildren: string[] = isCopyCustomComp(parentChildToDelete) ? originalParentElement.children : parentChildToDelete.children;
-				const parentChildIdx = parentChildren.indexOf(compToDelete.name);
-				parentChildren.splice(parentChildIdx, 1);
-			}
-
-			// find the children of the component to delete
-			// ['Button2', 'View1', 'View2', 'BruhComponent0']
-			const originalElement = copyOriginals[compToDelete.pointer] as OrigCustomComp;
-			const compToDeleteChildren = isCopyCustomComp(compToDelete) ? originalElement.children : compToDelete.children;
-			
-			if (compToDeleteChildren.length === 0) {
-				delete copyCopies[compToDelete.name];
-				return;
-			}
-			// [CoolComponent0]
-			// View0 child is CoolComponent0
-			// originals => coolcomponent copies is emptied
-			console.log('COMP TO DELETE CHILDREN', compToDeleteChildren);
-			const copyOfCompToDeleteChildren = [...compToDeleteChildren];
-			for (const child of copyOfCompToDeleteChildren) {
-				console.log('CHILD------------', child);
-				
-				// child = CoolComponent0
-				// Delete the copy in copies array in originals
-				if (isCopyCustomComp(copyCopies[child])) {
-					// TestComponent => children array is in originals, the children array still has CoolComponent0
-					// testcomponent1 => children array is in originals
-					// delete the copy reference in the parent's children array (from originals)
-					// TestComponent in Originals .children [Button0, CoolComponent0]
-					if (copyCopies[child].parent.origin === 'original') {
-						const parentOfCopy = copyOriginals[copyCopies[child].parent.key] as OrigCustomComp;
-						const parentChildren = parentOfCopy.children;
-						const parentChildIdx = parentChildren.indexOf(child);
-						parentChildren.splice(parentChildIdx, 1);
-					} else if (copyCopies[child].parent.origin === 'copies') {
-						const parentOfCopy = copyCopies[copyCopies[child].parent.key] as CopyNativeEl;
-						const parentChildren = parentOfCopy.children;
-						const parentChildIdx = parentChildren.indexOf(child);
-						parentChildren.splice(parentChildIdx, 1);
-					}
-
-
-					// delete the copy reference in the original's copies array (from copies)
-					const originalElement = copyOriginals[copyCopies[child].pointer] as OrigCustomComp;
-					const allCopiesInOriginals = originalElement.copies;
-					allCopiesInOriginals.splice(allCopiesInOriginals.indexOf(copyCopies[child].name), 1);
-
-
-					console.log('DELETED CHILD!!!!!!!!!!!!!', child);
-					// delete the copy object from the copies context
-					delete copyCopies[child];
-				} else if (copyCopies[child]) { // Button0
-					console.log('this is the child that will be deleted: ', child);
-					deleteCompInCopies(copyCopies[child]);
-				}
-			}
-
-			// delete the copy from the original's copies array if it is a copy of a custom component
-			if (isCopyCustomComp(compToDelete)) {
-				const copyInOriginals = copyOriginals[compToDelete.pointer] as OrigCustomComp;
-				const copyCompToDelete: string[] = copyInOriginals.copies;
-				const copyCompToDeleteIdx = copyCompToDelete.indexOf(compToDelete.name);
-				copyCompToDelete.splice(copyCompToDeleteIdx, 1);
-			}
-
-			delete copyCopies[compToDelete.name];
-		}
-		deleteCompInCopies(compToDelete);
-		console.log('ORIGINALS', copyOriginals);
-		console.log('COPIES', copyCopies);
+		setIsOpen(true);
+		setCurrentModal('delete');
 	}
 
 	// TODO: Add a modal that asks the user if they are sure they want to delete the component
 	// TODO: import type of event object
 	// type for event React.MouseEvent<HTMLElement> but hasn't been working, so using any for now
-	const handleDeleteClick = (event: any): void => {
-		// prevent the click from propagating to the parent div
-		event.cancelBubble = true;
-		if (event.stopPropagation) event.stopPropagation();
+	const handleDeleteConfirmClick = (event: any): void => {
+
 		
-		// create deep copies
-		const deepCopy = (collection: (Originals | Copies)): (Originals | Copies) => {
-			if (typeof collection !== "object" || collection === null) return collection;
-			const output: {[key: string]: any} = Array.isArray(collection) ? [] : {};
-			for (const [key, value] of Object.entries(collection)) {
-				output[key] = deepCopy(value);
-			}
-			return output;
-		}
 
 		let newCopies = deepCopy(copies) as Copies;
 		let newOriginals = deepCopy(originals) as Originals;
 		const OriginalCustomComponent = comp as OrigCustomComp;
 		const originalElement = originals[OriginalCustomComponent.name] as OrigCustomComp;
 
-		// if the originalelement has no copies, delete the children of the original element
+		// if the original element has no copies, delete the children of the original element
 		// run trashcan on all children of the original element (children are typeof CopyNativeEl | CopyCustomComp)
 		if (originalElement.copies.length === 0) {
 			originalElement.children.forEach((childName: string) => {
-				trashCan(newCopies[childName], newCopies, newOriginals);
+				trashCan(newCopies[childName], newOriginals, newCopies);
 			});
 		} else {
 			originalElement.copies.forEach((copyName: string) => {
-				trashCan(newCopies[copyName], newCopies, newOriginals)
+				trashCan(newCopies[copyName], newOriginals, newCopies)
 			});
 		}
 
@@ -207,19 +111,40 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		console.log(`new state for ${OriginalCustomComponent.name ?? comp.type}: ${newState}`);
 		// create a copy of the originals object
 		// update the componant with the added state in the copies
+		event.preventDefault();
 		setOriginals((prevOriginals) => {
 			const updatedOriginals = { ...prevOriginals };
 			const originalElement = updatedOriginals[OriginalCustomComponent.name ?? comp.type] as OrigCustomComp | AppInterface;
-			originalElement.state.push(newState);
-			return updatedOriginals;
+			if (originalElement.state.includes(newState)) {
+				document.querySelector('.error-message').innerHTML = 'State already exists!';
+				return prevOriginals;
+			} else if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(newState)) {
+				document.querySelector('.error-message').innerHTML = 'State must not include symbols!';
+				return prevOriginals;
+			} else  {
+			  originalElement.state.push(newState);
+				document.querySelector('.error-message').innerHTML = '';
+			  return updatedOriginals;
+			}
 		})
-		setIsOpen(false);
 		setNewState('');
 	}
+
 	const handleClose = (): void => {
-		
 		setIsOpen(false);
 	};
+
+	const handleDeleteState = (value: string): void => {
+		setOriginals((prevOriginals) => {
+			const updatedOriginals = { ...prevOriginals };
+			const originalElement = updatedOriginals[OriginalCustomComponent.name ?? comp.type] as OrigCustomComp | AppInterface;
+			originalElement.state = originalElement.state.filter((el) => el !== value);
+				
+			return updatedOriginals;
+			
+		})
+		setNewState('');
+	}
 
 	return (
 		<>
@@ -227,33 +152,42 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 			{isOpen ? (
 				 <Modal handleClick={handleClick}>
 					{currentModal === 'state' ? (
-						
-						<div>
-							<div id='stateModal'>
-								<h3>Add State to {comp.type ?? OriginalCustomComponent.name}</h3>
-								<label htmlFor="stateInput">New State</label>
+						<div id='stateModal'>
+							<h3>Add/delete State from {OriginalCustomComponent.name ?? comp.type}</h3>
+							<form id='state-modal-form' onSubmit={handleStateSaveClick}>
 								<input 
-								  id='stateInput' 
-								  value={newState} 
-								  onChange={(e) => setNewState(e.target.value)}
-								   />
-								<button onClick={() => handleClose()}>Cancel</button>
-								<button onClick={handleStateSaveClick}>Save</button>
+									id='state-modal-input' 
+									value={newState} 
+									onChange={(e) => setNewState(e.target.value)}
+										/>
+								<label htmlFor="stateInput" id='state-modal-label'>New State</label>
+							</form>
+							<p className='error-message'></p>
+							<div className="states-container">
+									{OriginalCustomComponent.state.map((stateValue, index) => (
+										<div key={index} className="state-item" onClick={() => handleDeleteState(stateValue)}>
+											<span className='strike'>{stateValue}</span>
+										</div>
+									))}
 							</div>
-						</div> 
-						)
-						:
-						<div>
-							Delete
 						</div>
+						)
+					: currentModal === 'delete' ? (
+						<div id='deleteModal'>
+							<h3>Are you sure you want to delete {OriginalCustomComponent.name}?</h3>
+							<p>This will delete all occurrences of {OriginalCustomComponent.name} everywhere!</p>
+							<div id='delete-modal-buttons'>
+								<button className='list-state-button delete-confirm-button' onClick={handleDeleteConfirmClick}>Confirm</button>
+								<button className='list-delete-button' onClick={() => handleClose()}>Cancel</button>	
+							</div>
+						
+						</div>
+					) : null
 					}
 				</Modal>
 				
-				) : (
-				<></>
-            )}
+				) : null}
 		</>
-
 	);
 };
 

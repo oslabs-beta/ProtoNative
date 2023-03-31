@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import AppContext from '../../context/AppContext';
 import ElementBlock from '../right/ElementBlock';
-import { useDrop } from 'react-dnd';
-import { ItemTypes } from '../left/AddableChild';
+import DropLayer from '../right/DropLayer';
+
 import {
   AppInterface,
   Originals,
@@ -11,12 +11,13 @@ import {
   CopyCustomComp,
   CopyNativeEl,
   Copies,
-} from '../../parser/interfaces';
+} from '../../utils/interfaces';
 
 const AppCanvas = (): JSX.Element => {
   const { setCopies, setOriginals, originals, copies } = useContext(AppContext);
   const App = originals.App as AppInterface;
   const [appComponents, setAppComponents] = useState([]);
+  const [counter, setCounter] = useState(0);
 
   useEffect(() => {
     let appChildren: JSX.Element[] = App.children.map((child, index) => {
@@ -32,7 +33,7 @@ const AppCanvas = (): JSX.Element => {
             index={index}
             location={'app'}
             parent={'App'}
-            setChildrenOfCurrent={setAppComponents}
+            setCounter={setCounter}
           />
         );
       } else {
@@ -45,113 +46,33 @@ const AppCanvas = (): JSX.Element => {
             originals={originals}
             setOriginals={setOriginals}
             index={index}
-            location={'details'}
+            location={'app'} //changed from details
             parent={'App'}
-            setChildrenOfCurrent={setAppComponents}
+            setCounter={setCounter}
           />
         );
       }
     });
     setAppComponents(appChildren);
-  }, [copies]);
+  }, [counter, originals]);
 
-  // make the phone screen container droppable accepting addableElement
-  const [, drop] = useDrop({
-    accept: 'newElement, elements',
-    drop: (item: { name: string }, monitor) => {
-      const didDrop = monitor.didDrop();
-      if (didDrop) {
-        return;
-      }
-      const originalElement = originals[item.name] as
-        | OrigNativeEl
-        | OrigCustomComp;
-      let newElement = {} as CopyCustomComp | CopyNativeEl;
-
-      // if originalElement is a custom element use custom element template
-      if (originalElement.type === 'custom') {
-        newElement = {
-          name: originalElement.name + originalElement.index,
-          type: originalElement.type,
-          parent: { origin: 'original', key: 'App' },
-          pointer: item.name,
-        };
-
-        // increment index of originalElement, add newElement to copies, add newElement to App's children
-        setOriginals((previous: Originals): Originals => {
-          const prevApp = previous['App'] as AppInterface;
-          const newApp = {
-            ...prevApp,
-            children: [...prevApp.children, newElement.name], // TODO: Put child element in correct location
-          };
-          const prevOriginalElement = previous[item.name] as OrigCustomComp;
-          const newOriginalElement = {
-            ...prevOriginalElement,
-            index: prevOriginalElement.index + 1,
-            copies: [...prevOriginalElement.copies, newElement.name],
-          };
-          return {
-            ...previous,
-            [item.name]: newOriginalElement,
-            App: newApp,
-          };
-        });
-
-        // TODO: check component's ancestry if it were to be added into a component instead of app
-        // TODO: dont do this here in the AppCanvas component yet though, do it when adding adding a custom component into another component
-
-        // if originalElement is a native element use native element template
-      } else {
-        newElement = {
-          name: originalElement.type + originalElement.index,
-          type: originalElement.type,
-          parent: { origin: 'original', key: 'App' },
-          children: [],
-        };
-        // increment index of originalElement, add newElement to copies, add newElement to App's children
-        setOriginals((previous: Originals): Originals => {
-          const prevApp = previous['App'] as AppInterface;
-
-          //splicing
-          const newApp = {
-            ...prevApp,
-            children: [...prevApp.children, newElement.name], // TODO: Put child element in correct location
-          };
-
-          const prevOriginalElement = previous[item.name] as
-            | OrigNativeEl
-            | OrigCustomComp;
-          const newOriginalElement = {
-            ...prevOriginalElement,
-            index: prevOriginalElement.index + 1,
-          };
-
-          return {
-            ...previous,
-            [item.name]: newOriginalElement,
-            App: newApp,
-          };
-        });
-      }
-
-      // add to copies
-      setCopies((previous: Copies): Copies => {
-        return {
-          ...previous,
-          [newElement.name]: newElement,
-        };
-      });
-    },
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-    }),
-  });
+  const dropLayerIndex = App.children.length ? App.children.length : 0;
 
   return (
     <div id='app-canvas'>
       <h1 id='app-canvas-title'>My App</h1>
-      <div id='phone-screen-container' ref={drop}>
+      <div id='phone-screen-container'>
         {appComponents}
+        <DropLayer
+          hasChildren={App.children.length}
+          index={dropLayerIndex}
+          setCounter={setCounter}
+          parent={'App'}
+          copies={copies}
+          setCopies={setCopies}
+          originals={originals}
+          setOriginals={setOriginals}
+        />
       </div>
     </div>
   );

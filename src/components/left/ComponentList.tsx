@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import AppContext from '../../context/AppContext';
 import ComponentListItem from './ComponentListItem';
-import { OrigCustomComp, AppInterface, OrigNativeEl } from '../../parser/interfaces';
+import { OrigCustomComp, AppInterface, OrigNativeEl } from '../../utils/interfaces';
 
 // these components should be from originals
 // display  with a scroll bar

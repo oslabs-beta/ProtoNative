@@ -7,11 +7,13 @@ import {
   Copies,
   CopyCustomComp,
   CopyNativeEl,
-} from '../../parser/interfaces';
+  OrigNativeEl,
+} from '../../utils/interfaces';
+import { moveItem } from '../../utils/moveItem';
+import { addItem } from '../../utils/addItem';
 
 type DropLayerProps = {
-  component: string;
-  position: string;
+  hasChildren: number;
   index: number;
   setCounter: (value: number) => number;
   parent: string;
@@ -22,8 +24,7 @@ type DropLayerProps = {
 };
 
 const DropLayer = ({
-  component,
-  position,
+  hasChildren,
   index,
   setCounter,
   parent,
@@ -32,235 +33,7 @@ const DropLayer = ({
   originals,
   setOriginals,
 }: DropLayerProps) => {
-  const moveItem = (
-    dragIndex: number,
-    hoverIndex: number,
-    name: string,
-    parentComp: string, //dragged item's parent
-    position: string
-  ): void => {
-    console.log('parentComp', parentComp);
-    console.log('name', name);
-    let dragArr: string[];
-    let dropArr: string[];
-    let item: string;
-    let itemParent: { origin: string; key: string };
-    let newSpot: any; //copy comp or originals comp type
-    // const originalPosition = originals[parentComp] ? originals[parentComp] as AppInterface | OrigCustomComp: copies;
-
-    //parentComp = dragged item's parent vs
-    //parent = dragLayer's parent to know which array to be splicing
-    //item is in the top level custom component
-    if (originals[parentComp]) {
-      item = originals[parentComp].children[dragIndex];
-      //item being moved is in the same level
-      if (parentComp === parent) {
-        //if moving between top level aka switching siblings
-        dragArr = dropArr = [...originals[parentComp].children];
-      } else {
-        //if moving between top level to a nested element (like a view)
-        dragArr = [...originals[parentComp].children];
-        dropArr = [...copies[parent].children];
-        newSpot = copies[parent];
-        itemParent = { origin: 'copies', key: newSpot.name };
-      }
-    } else {
-      //item is in a child element
-      item = copies[parentComp].children[dragIndex];
-      dragArr = [...copies[parentComp].children];
-
-      //moving to the top level component
-      if (originals[parent]) {
-        dropArr = [...originals[parent].children];
-        newSpot = originals[parent];
-        itemParent = { origin: 'originals', key: newSpot.name };
-      }
-      //moving to another nested element
-      else {
-        //moving in the same nested element
-        if (parent === parentComp) {
-          dropArr = dragArr = [...copies[parent].children];
-          console.log('hello buddy');
-          // newSpot = copies[parent];
-        } else {
-          dropArr = [...copies[parent].children];
-          newSpot = copies[parent];
-          itemParent = { origin: 'copies', key: newSpot.name };
-        }
-      }
-    }
-
-    dragArr.splice(dragIndex, 1);
-    dropArr.splice(hoverIndex, 0, item);
-
-    //item is from top layer element
-    if (originals[parentComp]) {
-      //if item is moving top level to nested level
-      if (parentComp !== parent) {
-        setCopies((prevState: any) => {
-          const newParentObj = {
-            ...prevState[parent],
-            children: dropArr,
-          };
-          const newChildObj = {
-            ...prevState[name],
-            parent: itemParent,
-          };
-          return {
-            ...prevState,
-            [parent]: newParentObj,
-            [name]: newChildObj,
-          };
-        });
-      }
-      //item is moving top level to top level, but also have to change originals if top to child
-      setOriginals((prevState: any) => {
-        const oldParentObj = prevState[parentComp];
-        const newParentObj = {
-          ...oldParentObj,
-          children: dragArr,
-        };
-        return {
-          ...prevState,
-          [parentComp]: newParentObj,
-        };
-      });
-    }
-    //nested item moved somewhere
-    else {
-      setCopies((prevState: any) => {
-        const oldParentObj = prevState[parentComp];
-        const newParentObj = {
-          ...oldParentObj,
-          children: dragArr,
-        };
-        return {
-          ...prevState,
-          [parentComp]: newParentObj,
-        };
-      });
-      //nested item to top level
-      if (originals[parent]) {
-        setOriginals((prevState: any) => {
-          const oldDropObj = prevState[parent];
-          const newDropObj = {
-            ...oldDropObj,
-            children: dropArr,
-          };
-          return {
-            ...prevState,
-            [parent]: newDropObj,
-          };
-        });
-
-        //nested item to another nested element
-      } else {
-        setCopies((prevState: any) => {
-          const oldDropObj = prevState[parent];
-          // console.log(oldDropObj);
-          const newDropObj = {
-            ...oldDropObj,
-            children: dropArr,
-          };
-          return {
-            ...prevState,
-            [parent]: newDropObj,
-          };
-        });
-      }
-
-      if (parentComp !== parent) {
-        setCopies((prevState: any) => {
-          console.log('in updating parent');
-          const itemUpdate = { ...prevState[name] };
-          itemUpdate.parent = itemParent;
-          return {
-            ...prevState,
-            [name]: itemUpdate,
-          };
-        });
-      }
-    }
-    setCounter((prev) => ++prev);
-  };
-
-  const addItem = (name: string, hoverIndex: number, parent: string) => {
-    console.log('hi');
-    let newElement = {} as CopyCustomComp | CopyNativeEl;
-    let newEleObj = originals[name];
-    if (originals[name].type === 'custom') {
-      newElement = {
-        name: newEleObj.name + newEleObj.index,
-        type: newEleObj.type,
-        parent: { origin: 'original', key: parent },
-        pointer: name,
-      };
-
-      if (originals[parent]) {
-        //drop array is correct and splices correctly
-        const dropArr = [...originals[parent].children];
-        // console.log('dropArr', dropArr);
-        dropArr.splice(hoverIndex, 0, newElement.name);
-
-        setOriginals((previous: Originals): Originals => {
-          const prevDroppedElement = previous[name] as OrigCustomComp;
-          const newDroppedElement = {
-            ...prevDroppedElement,
-            index: prevDroppedElement.index + 1,
-            copies: [...prevDroppedElement.copies, newElement.name],
-          };
-
-          const prevUpdatedComponent = previous[parent] as OrigCustomComp;
-          const newUpdatedComponent = {
-            ...prevUpdatedComponent,
-            children: dropArr,
-          };
-
-          return {
-            ...previous,
-            [name]: newDroppedElement,
-            [parent]: newUpdatedComponent,
-          };
-        });
-      } else {
-        const dropArr = copies[parent].children;
-        dropArr.splice(hoverIndex, 0, newElement.name);
-
-        setOriginals((previous: Originals): Originals => {
-          const prevDroppedElement = previous[name] as OrigCustomComp;
-          const newDroppedElement = {
-            ...prevDroppedElement,
-            index: prevDroppedElement.index + 1,
-            copies: [...prevDroppedElement.copies, newElement.name],
-          };
-
-          return {
-            ...previous,
-            [name]: newDroppedElement,
-          };
-        });
-
-        setCopies((previous: Copies): Copies => {
-          const prevUpdatedComponent = previous[parent] as
-            | CopyNativeEl
-            | CopyCustomComp;
-          const newUpdatedComponent = {
-            ...prevUpdatedComponent,
-            children: dropArr,
-          };
-
-          return {
-            ...previous,
-            [newElement.name]: newUpdatedComponent,
-          };
-        });
-      }
-    } else {
-    }
-    setCounter((prev) => ++prev);
-  };
-
-  const [, drop] = useDrop({
+  const [{ isOver }, drop] = useDrop({
     accept: ['elements', 'newElement'],
     drop: (
       item: { name: string; index: number; type: string; parentComp: string },
@@ -268,27 +41,54 @@ const DropLayer = ({
     ) => {
       const dragIndex: number = item.index;
       const hoverIndex: number = index;
-      const positionRelative: string = position;
-      // if (dragIndex === hoverIndex) return;
       if (item.type === 'elements') {
         moveItem(
+          originals,
+          setOriginals,
+          copies,
+          setCopies,
           dragIndex,
           hoverIndex,
           item.name,
           item.parentComp,
-          positionRelative
+          parent
         );
       } else {
-        addItem(item.name, hoverIndex, parent);
+        addItem(
+          originals,
+          setOriginals,
+          copies,
+          setCopies,
+          item.name,
+          hoverIndex,
+          parent
+        );
       }
+      setCounter((prev) => ++prev);
     },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
   });
 
+  //hover color
+  const backgroundColor = isOver ? '#f0c142' : null;
+
+  //make the last drop layer take up the rest of the screen
+  let lastChild: boolean = false;
+  if (hasChildren === 0) lastChild = true;
+  if (originals[parent]) {
+    if (index === originals[parent].children.length) {
+      lastChild = true;
+    }
+  }
+
   return (
-    <div ref={drop} id='drop-layer-area'>
-      <p>{parent}</p>
-      {/* {index} */}
-    </div>
+    <div
+      ref={drop}
+      id={lastChild ? 'drop-layer-large' : 'drop-layer-area'}
+      style={{ backgroundColor: backgroundColor }}
+    ></div>
   );
 };
 

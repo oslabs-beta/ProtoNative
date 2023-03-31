@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import AppContext from '../../context/AppContext';
 import Modal from './Modal';
-import { Originals } from '../../parser/interfaces';
+import { Originals } from '../../utils/interfaces';
 
 
 // user clicks Add CC button, modal opens
@@ -16,9 +16,8 @@ const AddComponent = () => {
   const { originals, setOriginals, setCurrentComponent } = useContext(AppContext);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-     // this regex tests that name is PascalCase:
-    // it looks for CAP Letter followed by lower case & if more words follow same pattern: CAP then lower 
-    if (componentName in originals) return alert('Component name already exists!');
+    if (componentName in originals) return document.querySelector('.error-message').innerHTML = 'Component name already exists!';
+    if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(componentName)) return document.querySelector('.error-message').innerHTML = 'Component name must not include symbols!';
     setOriginals((previous: Originals): Originals => {
       return {
         ...previous,
@@ -41,11 +40,6 @@ const AddComponent = () => {
     setComponentName(event.target.value);
   };
 
-  const handleClose = () => {
-    setComponentName('');
-    setIsOpen(false);
-  };
-
   return (
     <div id='addComponentContainer'>
       <button id='addComponent' onClick={() => {
@@ -55,21 +49,23 @@ const AddComponent = () => {
         Add Custom Component 
       </button>
       {isOpen && (
-        <div id="modal">
-          <Modal handleClick={()=> setIsOpen(false)}>
-            <div id="modal-content">
-              <h2>Add Custom Component</h2>
-              <form onSubmit={handleSubmit}>
-                <label>
-                  Component Name:
-                  <input type="text" value={componentName} onChange={handleInputChange} />
-                </label>
-                <button type="submit">Add</button>
-                <button onClick={handleClose}>Cancel</button>
-              </form>
-            </div>
-          </Modal>
-        </div>
+        <Modal handleClick={()=> {
+          setComponentName('');
+          setIsOpen(false);
+        }}>
+          <div id="modal-content">
+            <h2>Add Custom Component</h2>
+            <form onSubmit={handleSubmit} id='add-component-form'>
+              <input id='add-component-input' name="name" type="text" value={componentName} onChange={handleInputChange}/>
+              <label id='add-component-label'>
+                Component Name
+              </label>
+              <div className='error-message'></div>
+              {/* <button type="submit">Add</button>
+              <button onClick={handleClose}>Cancel</button> */}
+            </form>
+          </div>
+        </Modal>
       )}
     </div>
   );

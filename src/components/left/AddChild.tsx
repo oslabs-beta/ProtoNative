@@ -1,6 +1,7 @@
 import React, {useState, useContext, useEffect} from 'react';
 import context from '../../context/AppContext';
 import AddableChild from './AddableChild';
+import { AppInterface, OrigCustomComp, OrigNativeEl } from '../../utils/interfaces';
 
 const AddChild = (): JSX.Element => {
 
@@ -13,7 +14,7 @@ const AddChild = (): JSX.Element => {
   useEffect(() => {
     const children: JSX.Element[] = [];
     for (const name in originals) {
-      const element: any = originals[name];
+      const element: (OrigCustomComp | OrigNativeEl | AppInterface) = originals[name];
       if (element.type !== 'App') {
         children.push(
           <AddableChild name={name} key={name} />
