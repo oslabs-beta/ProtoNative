@@ -59,6 +59,7 @@ const ComponentDetails = (): JSX.Element => {
       {currentComponent !== 'App' && (
         <div style={{ border: '1px solid black' }} id='component-box'>
           {childElements}
+          {/* initial drop layer for bottom of component */}
           <DropLayer
             hasChildren={childElements.length}
             index={dropLayerIndex}
@@ -68,6 +69,8 @@ const ComponentDetails = (): JSX.Element => {
             setCopies={setCopies}
             originals={originals}
             setOriginals={setOriginals}
+            elementLocation={'details'}
+            area={'drop-layer-large'}
           />
         </div>
       )}

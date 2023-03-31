@@ -10,6 +10,7 @@ import {
 import DropLayer from './DropLayer';
 import { isDoubleTagElement } from '../../utils/parser';
 // import { isCopyCustomComp } from '../../parser/parser';
+
 type ElementBlockProps = {
   componentName: string;
   copies: Copies;
@@ -45,7 +46,7 @@ const ElementBlock = ({
 
   const [, drag] = useDrag(
     () => ({
-      type: 'elements',
+      type: location,
       item: {
         name: componentName,
         index: index,
@@ -62,6 +63,9 @@ const ElementBlock = ({
   } else {
     children = componentDef.children;
   }
+
+  //copies[childName] -> looks at children of the currenent component
+  //componentDef -> current component object
 
   if (children.length) {
     childElements = children.map((childName, idx) => {
@@ -93,7 +97,7 @@ const ElementBlock = ({
             originals={originals}
             setOriginals={setOriginals}
             index={idx}
-            location={'details'}
+            location={'app'}
             parent={copies[childName].parent.key}
             setCounter={setCounter}
           />
@@ -118,7 +122,6 @@ const ElementBlock = ({
       }
     });
   }
-
   //creating a top drop layer at the top level (app or in component details)
   let showLayers: boolean;
   if (location === 'details') showLayers = true;
@@ -135,6 +138,14 @@ const ElementBlock = ({
       ? true
       : false;
 
+  console.log(originals[componentDef.parent.key]);
+  const nestedComponentInApp =
+    (componentDef.parent.origin === 'original' &&
+      componentDef.parent.key !== 'App') ||
+    undefined
+      ? true
+      : false;
+
   return (
     <div>
       {showLayers && (
@@ -146,6 +157,8 @@ const ElementBlock = ({
           setCopies={setCopies}
           originals={originals}
           setOriginals={setOriginals}
+          elementLocation={location}
+          area={'drop-layer-area'}
         />
       )}
       <div
@@ -154,7 +167,7 @@ const ElementBlock = ({
           backgroundColor: 'rgba(50, 2, 59, 0.6)',
         }}
         className='element'
-        ref={drag}
+        ref={nestedComponentInApp ? null : drag}
       >
         <p>
           {copies[componentName].type === 'custom'
@@ -172,6 +185,8 @@ const ElementBlock = ({
               setCopies={setCopies}
               originals={originals}
               setOriginals={setOriginals}
+              elementLocation={location}
+              area={'drop-layer-area'}
             />
           )}
         {childElements}
@@ -185,6 +200,8 @@ const ElementBlock = ({
           setCopies={setCopies}
           originals={originals}
           setOriginals={setOriginals}
+          elementLocation={location}
+          area={'drop-layer-area'}
         />
       )}
     </div>
