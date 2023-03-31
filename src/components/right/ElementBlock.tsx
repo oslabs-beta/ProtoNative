@@ -10,6 +10,7 @@ import {
 import DropLayer from './DropLayer';
 import { isDoubleTagElement } from '../../utils/parser';
 // import { isCopyCustomComp } from '../../parser/parser';
+
 type ElementBlockProps = {
   componentName: string;
   copies: Copies;
@@ -45,7 +46,7 @@ const ElementBlock = ({
 
   const [, drag] = useDrag(
     () => ({
-      type: 'elements',
+      type: location,
       item: {
         name: componentName,
         index: index,
@@ -93,7 +94,7 @@ const ElementBlock = ({
             originals={originals}
             setOriginals={setOriginals}
             index={idx}
-            location={'details'}
+            location={'app'}
             parent={copies[childName].parent.key}
             setCounter={setCounter}
           />
@@ -118,7 +119,6 @@ const ElementBlock = ({
       }
     });
   }
-
   //creating a top drop layer at the top level (app or in component details)
   let showLayers: boolean;
   if (location === 'details') showLayers = true;
@@ -134,11 +134,11 @@ const ElementBlock = ({
     copies[parent] && copies[parent].children.length - 1 === index
       ? true
       : false;
-
   return (
     <div>
       {showLayers && (
         <DropLayer
+          id={'drop-layer-area'}
           index={index}
           setCounter={setCounter}
           parent={copies[componentName].parent.key}
@@ -146,6 +146,8 @@ const ElementBlock = ({
           setCopies={setCopies}
           originals={originals}
           setOriginals={setOriginals}
+          elementLocation={location}
+          area={'drop-layer-area'}
         />
       )}
       <div
@@ -172,6 +174,8 @@ const ElementBlock = ({
               setCopies={setCopies}
               originals={originals}
               setOriginals={setOriginals}
+              elementLocation={location}
+              area={'drop-layer-area'}
             />
           )}
         {childElements}
@@ -185,6 +189,8 @@ const ElementBlock = ({
           setCopies={setCopies}
           originals={originals}
           setOriginals={setOriginals}
+          elementLocation={location}
+          area={'drop-layer-area'}
         />
       )}
     </div>
