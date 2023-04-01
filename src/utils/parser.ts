@@ -309,37 +309,6 @@ const addState = (stateNames: string[]): string => {
   return stateVariables;
 };
 
-// /**
-//  * @method getAllImports
-//  * @description recursively gathers all possible imports starting at the component (in copies context) and recursively visiting it's descendants 
-//  * @input component of interface CopyNativeEl or CopyCustomComp (in case custom components are wrapped inside native elements)
-//  * @output array of strings containing all possible imports for the component 
-//  */
-// const getAllImports = (comp: CopyNativeEl | CopyCustomComp, originals: Originals, copies: Copies): string[] => {
-//   const toImport: string[] = [];
-//   const allImports = (currComp: CopyNativeEl | CopyCustomComp): void => {
-//     console.log('currComp:', currComp.name);
-//     const originalComp = originals[currComp.pointer] as OrigCustomComp;
-//     const compChildren: string[] = isCopyCustomComp(currComp) ? originalComp.children : currComp.children;
-//     if (compChildren.length === 0 || comp.type === 'custom') {
-//       // TODO: FIX THIS
-//       isCopyCustomComp(currComp) ? toImport.push(currComp.pointer) : toImport.push(currComp.type);
-//       // if (!isCopyCustomComp) {
-//       //   toImport.push(currComp.type);
-//       // }
-//       return;
-//     }
-//     isCopyCustomComp(currComp) ? toImport.push(currComp.pointer) : toImport.push(currComp.type);
-//     for (const child of compChildren) {
-//       allImports(copies[child]);
-//     }
-//     console.log('toImport:', toImport);
-//     console.log('--------------------');
-//   }
-//   allImports(comp);
-//   return toImport;
-// }
-
 /**
  * @method addNativeImports
  * @description generates the import statement for importing react native core components
@@ -375,33 +344,6 @@ const addCustomCompExport = (toExport: string): string => {
   return `export default ${toExport};\n`;
 };
 
-// /**
-//  * @method generateComponentCode
-//  * @description generates the necessary code for a custom component or native core component in copies context, recursively goes through its children
-//  * @input component of interface CopyNativeEl or CopyCustomComp (any component in copies context)
-//  * @output string of the code necessary for the component passed in
-//  */
-// const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp, originals: Originals, copies: Copies): string => {
-//   const currElement: string = isCopyCustomComp(comp) ? comp.pointer : comp.type;
-//   const originalsComp = originals[comp.pointer] as OrigCustomComp;
-//   const componentChildren: string[] = isCopyCustomComp(comp) ? originalsComp.children : comp.children;
-
-//   if (componentChildren.length === 0 || comp.type === 'custom') {
-//     return isDoubleTagElement(currElement)
-//       ? `<${currElement}>
-//          </${currElement}>`
-//       : `<${currElement}/>`;
-//   }
-
-//   let childrenNodes: string = '';
-//   for (const child of componentChildren) {
-//     childrenNodes += `${generateComponentCode(copies[child], originals, copies)}\n`;
-//   }
-//   return  `<${currElement}> 
-//               ${childrenNodes} 
-//           </${currElement}>`;
-// };
-
 type CompCode = {
   JSXcode: string,
   allToImport: string[]
@@ -409,17 +351,16 @@ type CompCode = {
 
 /**
  * @method generateComponentCode
- * @description generates the necessary code for a custom component or native core component in copies context, recursively goes through its children
+ * @description generates the necessary code for a custom component or native core component in copies context (and gathers all necessary imports for that component), recursively goes through its children
  * @input component of interface CopyNativeEl or CopyCustomComp (any component in copies context)
  * @output string of the code necessary for the component passed in
  */
 const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp, originals: Originals, copies: Copies): CompCode => {
-  // const allCompCode: CompCode = {JSXcode: '', allImports: []}
-  // const JSXcode: string = '';
+
   const toImport: string[] = [];
 
   const getCompCode = (comp: CopyNativeEl | CopyCustomComp) => {
-    console.log('COMP', comp);
+
     const currElement: string = isCopyCustomComp(comp) ? comp.pointer : comp.type;
 
     let necessaryProps: string = '';
@@ -453,7 +394,7 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp, originals: O
           </${currElement} ${necessaryProps}>`;
   }
 
-  return {JSXcode: getCompCode(comp), allToImport: toImport};
+  return { JSXcode: getCompCode(comp), allToImport: toImport };
 };
 
 /**
@@ -470,26 +411,15 @@ const generateCustomComponentCode = (component: OrigCustomComp | AppInterface, o
   let returnedComponentCode: string = '';
   // generate code for JSX element in return statement
   // get all native/ custom components we need
-  console.log('COMPONENT', component);
-  console.log('COMP CHILDREN', component.children);
   for (const child of component.children) {
-    // find the child in copies context
-    console.log('CHILD', child);
     const foundChild: CopyNativeEl | CopyCustomComp = copies[child];
-    console.log('FOUND CHILD:', foundChild);
-    // // get all possible react native core components and custom components to import
-    // const allCompToImport: string[] = getAllImports(foundChild, originals, copies);
-    // for (const compToImport of allCompToImport) {
-    //   // since allImports is a set, duplicates will be ignored
-    //   allImports.add(compToImport);
-    // }
-    // // generate all code for the JSX element that will be returned
-    // returnedComponentCode += generateComponentCode(foundChild, originals, copies);
+
+    // generate all code for the JSX element that will be returned, and get all imports necessary for the child
     const { JSXcode, allToImport } = generateComponentCode(foundChild, originals, copies);
+
     returnedComponentCode += JSXcode;
-    for (const compToImport of allToImport) {
-      allImports.add(compToImport);
-    }
+
+    allToImport.forEach(compToImport => allImports.add(compToImport));
   }
   // generate all import statements
   let importStatements: string = '';
@@ -499,7 +429,7 @@ const generateCustomComponentCode = (component: OrigCustomComp | AppInterface, o
   // loop through all imports and determine which imports are react native and which imports and custom components and save them separately
   const allNativeImports: string[] = [];
   let allCustomImports: string = '';
-  // console.log('ALL IMPORTS', allImports.values());
+
   for (const toImport of allImports.values()) {
     if (isOrigCustomComp(originals[toImport])) {
       allCustomImports += component.type === 'App' ? addCustomCompImport(toImport, true) : addCustomCompImport(toImport, false)
@@ -545,11 +475,6 @@ const formatCode = (code: string) => {
 }
 
 export const formattedCompCode = (component: OrigCustomComp | AppInterface, originals: Originals, copies: Copies): string => {
-  console.log('-------------');
-  console.log('COMPONENT:', component);
-  console.log('ORIGINALS', originals);
-  console.log('COPIES', copies);
-  console.log('-------------');
   return formatCode(generateCustomComponentCode(component, originals, copies));
 }
 
