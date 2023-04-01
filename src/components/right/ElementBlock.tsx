@@ -71,19 +71,13 @@ const ElementBlock = ({
   };
 
   //show bottom drop layer for native elements
-  let inNative;
-  // copies[parent] && copies[parent].children.length - 1 === index
-  //   ? true
-  //   : false;
+  let inNative =
+    copies[parent] && copies[parent].children.length - 1 === index
+      ? true
+      : false;
 
   //unable to drag nested custom components in app canvas
-  let nestedComponentInApp;
-  // (location === 'app' &&
-  //   componentDef.parent.origin === 'original' &&
-  //   componentDef.parent.key !== 'App') ||
-  // undefined
-  //   ? true
-  //   : false;
+  let nestedComponentInApp: boolean;
 
   let showLayers: boolean;
 
@@ -139,19 +133,13 @@ const ElementBlock = ({
     else {
       showLayers = true;
       nestedComponentInApp = false;
-      if (copies[parent] && copies[parent].children.length - 1 === index)
-        inNative = true;
     }
-  } else {
+  }
+  //native element
+  else {
     children = componentDef.children;
     showLayers = true;
     nestedComponentInApp = false;
-    if (
-      location === 'app' &&
-      copies[parent] &&
-      copies[parent].children.length - 1 === index
-    )
-      inNative = true;
   }
 
   //copies[childName] -> looks at children of the currenent component
