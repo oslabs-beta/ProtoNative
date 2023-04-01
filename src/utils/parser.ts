@@ -419,6 +419,7 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp, originals: O
   const toImport: string[] = [];
 
   const getCompCode = (comp: CopyNativeEl | CopyCustomComp) => {
+    console.log('COMP', comp);
     const currElement: string = isCopyCustomComp(comp) ? comp.pointer : comp.type;
     const originalsComp = originals[comp.pointer] as OrigCustomComp;
     const componentChildren: string[] = isCopyCustomComp(comp) ? originalsComp.children : comp.children;
@@ -463,9 +464,13 @@ const generateCustomComponentCode = (component: OrigCustomComp | AppInterface, o
   let returnedComponentCode: string = '';
   // generate code for JSX element in return statement
   // get all native/ custom components we need
+  console.log('COMPONENT', component);
+  console.log('COMP CHILDREN', component.children);
   for (const child of component.children) {
     // find the child in copies context
+    console.log('CHILD', child);
     const foundChild: CopyNativeEl | CopyCustomComp = copies[child];
+    console.log('FOUND CHILD:', foundChild);
     // // get all possible react native core components and custom components to import
     // const allCompToImport: string[] = getAllImports(foundChild, originals, copies);
     // for (const compToImport of allCompToImport) {
@@ -534,6 +539,11 @@ const formatCode = (code: string) => {
 }
 
 export const formattedCompCode = (component: OrigCustomComp | AppInterface, originals: Originals, copies: Copies): string => {
+  console.log('-------------');
+  console.log('COMPONENT:', component);
+  console.log('ORIGINALS', originals);
+  console.log('COPIES', copies);
+  console.log('-------------');
   return formatCode(generateCustomComponentCode(component, originals, copies));
 }
 
