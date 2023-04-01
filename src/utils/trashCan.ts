@@ -2,7 +2,7 @@ import { CopyCustomComp, CopyNativeEl, OrigCustomComp, AppInterface, Parent } fr
 import { Originals, Copies } from './interfaces';
 import { isCopyCustomComp } from './parser';
 
-export const trashCan = (compToDelete: CopyNativeEl | CopyCustomComp, copyOriginals: Originals, copyCopies: Copies, deleteFromCanvas=false) => {
+export const trashCan = (compToDelete: CopyNativeEl | CopyCustomComp, copyOriginals: Originals, copyCopies: Copies) => {
   // For any CopyNativeEl, we need to delete:
   // (1) the reference in parent's children array
   // (2) itself in the copies context
@@ -15,7 +15,6 @@ export const trashCan = (compToDelete: CopyNativeEl | CopyCustomComp, copyOrigin
   // all its children and the children's (1), (2), (3)
 
   const deleteCompInCopies = (compToDelete: CopyNativeEl | CopyCustomComp) => {
-    console.log('---COMP TO DELETE---', compToDelete);
 
     const compToDeleteParent: Parent = compToDelete.parent;
     // delete child from compToDelete's parent's children array
@@ -48,7 +47,6 @@ export const trashCan = (compToDelete: CopyNativeEl | CopyCustomComp, copyOrigin
       return;
     }
     
-    // if (!deleteFromCanvas) {
       // make copy of children array since splicing elements from it while looping over it causes errors 
       const copyOfCompToDeleteChildren = [...compToDeleteChildren];
       for (const child of copyOfCompToDeleteChildren) {
@@ -82,7 +80,6 @@ export const trashCan = (compToDelete: CopyNativeEl | CopyCustomComp, copyOrigin
           deleteCompInCopies(copyCopies[child]);
         }
       }
-    // }
 
     // delete the copy from the original's copies array (in originals context) if it is a copy of a custom component
     if (isCopyCustomComp(compToDelete)) {
