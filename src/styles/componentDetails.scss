@@ -27,7 +27,6 @@
   margin: 0 10px;
   text-align: center;
   border-radius: 5px;
-  transform: translate(0, 0);
 }
 
 
@@ -48,4 +47,8 @@
   height: 100%;
   width: 100%;
   border-radius: 5px;
+}
+
+#wrong {
+  background-color: blue;
 }

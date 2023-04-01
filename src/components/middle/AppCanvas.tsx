@@ -63,6 +63,7 @@ const AppCanvas = (): JSX.Element => {
       <h1 id='app-canvas-title'>My App</h1>
       <div id='phone-screen-container'>
         {appComponents}
+        {/* initial drop layer for bottom of app */}
         <DropLayer
           hasChildren={App.children.length}
           index={dropLayerIndex}
@@ -72,6 +73,8 @@ const AppCanvas = (): JSX.Element => {
           setCopies={setCopies}
           originals={originals}
           setOriginals={setOriginals}
+          elementLocation={'app'}
+          area={'drop-layer-large'}
         />
       </div>
     </div>

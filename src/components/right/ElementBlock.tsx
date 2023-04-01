@@ -9,17 +9,17 @@ import {
 } from '../../utils/interfaces';
 import DropLayer from './DropLayer';
 import { isDoubleTagElement } from '../../utils/parser';
-// import { isCopyCustomComp } from '../../parser/parser';
+
 type ElementBlockProps = {
   componentName: string;
   copies: Copies;
-  setCopies: any;
+  setCopies: React.Dispatch<React.SetStateAction<Copies>>;
   originals: Originals;
-  setOriginals: any;
+  setOriginals: React.Dispatch<React.SetStateAction<Originals>>;
   index: number;
   location: string;
   parent: string;
-  setCounter: (prev: number) => void;
+  setCounter: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const isCopyCustomComp = (
@@ -39,13 +39,13 @@ const ElementBlock = ({
   parent,
   setCounter,
 }: ElementBlockProps) => {
-  const componentDef = copies[componentName];
+  const componentDef = copies[componentName] as CopyCustomComp | CopyNativeEl;
   let childElements: JSX.Element[];
   let children: string[];
 
   const [, drag] = useDrag(
     () => ({
-      type: 'elements',
+      type: location,
       item: {
         name: componentName,
         index: index,
@@ -56,12 +56,94 @@ const ElementBlock = ({
     [componentName, index]
   );
 
+  //function to create uncle-nephew relations
+  const pushCustoms = (array: string[], allNested: string[] = []) => {
+    array.forEach((child) => {
+      if (isDoubleTagElement(copies[child].type)) {
+        // console.log('pushcustoms', copies[child].children);
+        pushCustoms(copies[child].children, allNested);
+      } else if (copies[child].type === 'custom') {
+        // console.log('child', child);
+        allNested.push(child);
+      }
+    });
+    return allNested;
+  };
+
+  //show bottom drop layer for native elements
+  let inNative =
+    copies[parent] && copies[parent].children.length - 1 === index
+      ? true
+      : false;
+
+  //unable to drag nested custom components in app canvas
+  let nestedComponentInApp: boolean;
+
+  let showLayers: boolean;
+
+  const hasCustomAncestor = (
+    ancestor: CopyCustomComp | CopyNativeEl,
+    name: string
+  ): boolean => {
+    if (ancestor.type === 'custom') return true;
+    return ancestor.parent.key === 'App'
+      ? false
+      : ancestor.parent.origin === 'original'
+      ? originals[ancestor.parent.key].copies.some((copyName: string) =>
+          hasCustomAncestor(copies[copyName], name)
+        )
+      : hasCustomAncestor(copies[ancestor.parent.key], name);
+  };
+
+  // showLayers: top dropLayer between elements
+  //inNative: bottom dropLayer for native elements (nesting);
+  //nestedComponentInApp: make components draggable if in app canvas but not inside custom component.
+
+  //component is custom component copy
   if (isCopyCustomComp(componentDef)) {
     const originalElement = originals[componentDef.pointer] as OrigCustomComp;
     children = originalElement.children;
-  } else {
-    children = componentDef.children;
+    //component is in app canvas
+    if (location === 'app') {
+      //create children array of uncle/nephew relations
+      children = pushCustoms(originalElement.children);
+      //don't want to show drop layers within the custom components
+      if (originals.App.children.includes(componentDef.name)) {
+        nestedComponentInApp = false;
+        showLayers = true;
+      } else if (
+        componentDef.parent.origin === 'copies' &&
+        componentDef.type === 'custom'
+      ) {
+        if (hasCustomAncestor(copies[componentDef.parent.key], componentName)) {
+          showLayers = false;
+          nestedComponentInApp = true;
+        } else {
+          showLayers = true;
+        }
+      } else if (
+        componentDef.parent.origin === 'original' &&
+        componentDef.parent.key !== 'App'
+      ) {
+        nestedComponentInApp = true;
+      }
+    }
+    //location is component details, show layers between all elements
+    //don't need other logic because only showing 1 level deep for custom components
+    else {
+      showLayers = true;
+      nestedComponentInApp = false;
+    }
   }
+  //native element
+  else {
+    children = componentDef.children;
+    showLayers = true;
+    nestedComponentInApp = false;
+  }
+
+  //copies[childName] -> looks at children of the currenent component
+  //componentDef -> current component object
 
   if (children.length) {
     childElements = children.map((childName, idx) => {
@@ -93,7 +175,7 @@ const ElementBlock = ({
             originals={originals}
             setOriginals={setOriginals}
             index={idx}
-            location={'details'}
+            location={'app'}
             parent={copies[childName].parent.key}
             setCounter={setCounter}
           />
@@ -119,22 +201,6 @@ const ElementBlock = ({
     });
   }
 
-  //creating a top drop layer at the top level (app or in component details)
-  let showLayers: boolean;
-  if (location === 'details') showLayers = true;
-  else if (location === 'app') {
-    if (componentDef.parent.key === 'App') showLayers = true;
-    else if (copies[parent]) {
-      if (isDoubleTagElement(copies[parent].type)) showLayers = true;
-    }
-  }
-
-  //creating a drop layer at the bottom of nested native elements
-  const inNative: boolean =
-    copies[parent] && copies[parent].children.length - 1 === index
-      ? true
-      : false;
-
   return (
     <div>
       {showLayers && (
@@ -146,6 +212,8 @@ const ElementBlock = ({
           setCopies={setCopies}
           originals={originals}
           setOriginals={setOriginals}
+          elementLocation={location}
+          area={'drop-layer-area'}
         />
       )}
       <div
@@ -154,7 +222,7 @@ const ElementBlock = ({
           backgroundColor: 'rgba(50, 2, 59, 0.6)',
         }}
         className='element'
-        ref={drag}
+        ref={nestedComponentInApp ? null : drag}
       >
         <p>
           {copies[componentName].type === 'custom'
@@ -172,6 +240,8 @@ const ElementBlock = ({
               setCopies={setCopies}
               originals={originals}
               setOriginals={setOriginals}
+              elementLocation={location}
+              area={'drop-layer-area'}
             />
           )}
         {childElements}
@@ -185,6 +255,8 @@ const ElementBlock = ({
           setCopies={setCopies}
           originals={originals}
           setOriginals={setOriginals}
+          elementLocation={location}
+          area={'drop-layer-area'}
         />
       )}
     </div>

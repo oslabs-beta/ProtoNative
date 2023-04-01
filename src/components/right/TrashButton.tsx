@@ -9,13 +9,13 @@ const TrashButton = (): JSX.Element => {
   const { setCopies, setOriginals, originals, copies } = useContext(AppContext);
   // create drop area
   const [{ isOver }, drop] = useDrop({
-    accept: 'elements',
+    accept: ['app', 'details'],
     drop: (item: { name: string }) => {
       // create a deep copy of the two contexts
       const comp = copies[item.name];
       const copyOriginals = deepCopy(originals) as Originals;
       const copyCopies = deepCopy(copies) as Copies;
-      trashCan(comp, copyOriginals, copyCopies, true);
+      trashCan(comp, copyOriginals, copyCopies);
       setOriginals(copyOriginals);
       setCopies(copyCopies);
     },
