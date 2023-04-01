@@ -27,19 +27,18 @@ export const trashCan = (compToDelete: CopyNativeEl | CopyCustomComp, copyOrigin
     } else if (compToDeleteParent.origin === 'copies') {
       const parentChildToDelete = copyCopies[compToDeleteParent.key] as CopyNativeEl;
       const originalParentElement = copyOriginals[parentChildToDelete.pointer] as OrigCustomComp;
-			const parentChildren: string[] = isCopyCustomComp(parentChildToDelete, 1) ? originalParentElement.children : parentChildToDelete.children;
+			const parentChildren: string[] = isCopyCustomComp(parentChildToDelete) ? originalParentElement.children : parentChildToDelete.children;
       const parentChildIdx = parentChildren.indexOf(compToDelete.name);
       parentChildren.splice(parentChildIdx, 1);
     }
 
     // find the children of compToDelete
     const originalElement = copyOriginals[compToDelete.pointer] as OrigCustomComp;
-    const compToDeleteChildren = isCopyCustomComp(compToDelete, 2) ? originalElement.children : compToDelete.children;
+    const compToDeleteChildren = isCopyCustomComp(compToDelete) ? originalElement.children : compToDelete.children;
     
     // if compToDelete has no children, delete its instance from the copies context
     if (compToDeleteChildren.length === 0) {
-      if (isCopyCustomComp(compToDelete, 7)) {
-        console.log('HELLO WORLD!!!!!!!!!!!!!!!!!!');
+      if (isCopyCustomComp(compToDelete)) {
         const copyInOriginals = copyOriginals[compToDelete.pointer] as OrigCustomComp;
         const copyCompToDelete: string[] = copyInOriginals.copies;
         const copyCompToDeleteIdx = copyCompToDelete.indexOf(compToDelete.name);
@@ -54,7 +53,7 @@ export const trashCan = (compToDelete: CopyNativeEl | CopyCustomComp, copyOrigin
       const copyOfCompToDeleteChildren = [...compToDeleteChildren];
       for (const child of copyOfCompToDeleteChildren) {
         // if the child of compToDelete is a CopyCustomComp
-        if (isCopyCustomComp(copyCopies[child], 3)) {
+        if (isCopyCustomComp(copyCopies[child])) {
           // delete the copy reference of the child in the parent's children array (from originals context)
           if (copyCopies[child].parent.origin === 'original') {
             const parentOfCopy = copyOriginals[copyCopies[child].parent.key] as OrigCustomComp;
@@ -86,8 +85,7 @@ export const trashCan = (compToDelete: CopyNativeEl | CopyCustomComp, copyOrigin
     // }
 
     // delete the copy from the original's copies array (in originals context) if it is a copy of a custom component
-    if (isCopyCustomComp(compToDelete, 4)) {
-      console.log('HELLO WORLD!!!!!!!!!!!!!!!!!!');
+    if (isCopyCustomComp(compToDelete)) {
       const copyInOriginals = copyOriginals[compToDelete.pointer] as OrigCustomComp;
       const copyCompToDelete: string[] = copyInOriginals.copies;
       const copyCompToDeleteIdx = copyCompToDelete.indexOf(compToDelete.name);
