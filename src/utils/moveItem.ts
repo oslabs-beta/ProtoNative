@@ -46,9 +46,9 @@ export const moveItem = (
       newSpot = originals[parent];
       //if moving around to app
       if (parent === 'App') {
-        itemParent = {origin: 'originals', key: 'App'}
+        itemParent = {origin: 'original', key: 'App'}
       } else {
-        itemParent = { origin: 'originals', key: newSpot.name };
+        itemParent = { origin: 'original', key: newSpot.name };
       }
     }
     //moving to a native element
