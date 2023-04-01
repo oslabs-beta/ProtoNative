@@ -57,15 +57,64 @@ const ElementBlock = ({
     [componentName, index]
   );
 
-  const pushCustoms = (array) => {};
+  const pushCustoms = (array: string[], allNested: string[] = []) => {
+    array.forEach((child) => {
+      if (isDoubleTagElement(copies[child].type)) {
+        // console.log('pushcustoms', copies[child].children);
+        pushCustoms(copies[child].children, allNested);
+      } else if (copies[child].type === 'custom') {
+        // console.log('child', child);
+        allNested.push(child);
+      }
+    });
+    return allNested;
+  };
 
+  //show bottom drop layer for native elements
+  let inNative =
+    copies[parent] && copies[parent].children.length - 1 === index
+      ? true
+      : false;
+
+  //unable to drag nested custom components in app canvas
+  let nestedComponentInApp =
+    (location === 'app' &&
+      componentDef.parent.origin === 'original' &&
+      componentDef.parent.key !== 'App') ||
+    undefined
+      ? true
+      : false;
+
+  let showLayers: boolean;
+  if (location === 'details') showLayers = true;
+  else if (location === 'app') {
+    if (componentDef.parent.key === 'App') showLayers = true;
+    else if (copies[parent]) {
+      if (isDoubleTagElement(copies[parent].type)) showLayers = true;
+    }
+  }
+
+  // let showLayers;
   if (isCopyCustomComp(componentDef)) {
     const originalElement = originals[componentDef.pointer] as OrigCustomComp;
     children = originalElement.children;
     if (location === 'app') {
+      children = pushCustoms(originalElement.children);
+      showLayers = false;
+      if (originals.App.children.includes(componentDef.name)) {
+        showLayers = true;
+        nestedComponentInApp = false;
+      } else {
+        nestedComponentInApp = true;
+      }
+      inNative = false;
     }
+  } else if (location === 'details') {
+    children = componentDef.children;
+    showLayers = true;
   } else {
     children = componentDef.children;
+    showLayers = true;
   }
 
   //copies[childName] -> looks at children of the currenent component
@@ -126,30 +175,6 @@ const ElementBlock = ({
       }
     });
   }
-  //creating a top drop layer at the top level (app or in component details)
-  let showLayers: boolean;
-  if (location === 'details') showLayers = true;
-  else if (location === 'app') {
-    if (componentDef.parent.key === 'App') showLayers = true;
-    else if (copies[parent]) {
-      if (isDoubleTagElement(copies[parent].type)) showLayers = true;
-    }
-  }
-
-  //creating a drop layer at the bottom of nested native elements
-  const inNative: boolean =
-    copies[parent] && copies[parent].children.length - 1 === index
-      ? true
-      : false;
-
-  console.log(originals[componentDef.parent.key]);
-  const nestedComponentInApp =
-    (location === 'app' &&
-      componentDef.parent.origin === 'original' &&
-      componentDef.parent.key !== 'App') ||
-    undefined
-      ? true
-      : false;
 
   return (
     <div>
