@@ -421,15 +421,21 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp, originals: O
   const getCompCode = (comp: CopyNativeEl | CopyCustomComp) => {
     console.log('COMP', comp);
     const currElement: string = isCopyCustomComp(comp) ? comp.pointer : comp.type;
+
+    let necessaryProps: string = '';
+    if (currElement === 'Button') necessaryProps += `title=''`;
+    else if (currElement === 'SectionList') necessaryProps += `sections={[]}`;
+    else if (currElement === 'TextInput') necessaryProps += `value={''}`;
+
     const originalsComp = originals[comp.pointer] as OrigCustomComp;
     const componentChildren: string[] = isCopyCustomComp(comp) ? originalsComp.children : comp.children;
 
     if (componentChildren.length === 0 || comp.type === 'custom') {
       isCopyCustomComp(comp) ? toImport.push(comp.pointer) : toImport.push(comp.type);
       return isDoubleTagElement(currElement)
-        ? `<${currElement}>
-          </${currElement}>`
-        : `<${currElement}/>`;
+        ? `<${currElement} ${necessaryProps}>
+          </${currElement} ${necessaryProps}>`
+        : `<${currElement} ${necessaryProps}/>`;
     }
 
     if (!isCopyCustomComp(comp)) {
@@ -442,9 +448,9 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp, originals: O
       isCopyCustomComp(childInCopies) ? toImport.push(childInCopies.pointer) : toImport.push(childInCopies.type);
       childrenNodes += `${getCompCode(childInCopies)}\n`;
     }
-    return  `<${currElement}> 
+    return  `<${currElement} ${necessaryProps}> 
                 ${childrenNodes} 
-          </${currElement}>`;
+          </${currElement} ${necessaryProps}>`;
   }
 
   return {JSXcode: getCompCode(comp), allToImport: toImport};
