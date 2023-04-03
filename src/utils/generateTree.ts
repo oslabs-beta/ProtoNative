@@ -45,7 +45,7 @@ const originals: Originals = {
     children: ['Button2', 'View1', 'View2', 'BruhComponent0'],
     state: [],
     index: 1,
-    copies: ['CoolComponent0'],
+    copies: ['CoolComponent0', 'CoolComponent1'],
   } as OrigCustomComp,
   BruhComponent: {
     name: 'BruhComponent',
@@ -54,6 +54,22 @@ const originals: Originals = {
     state: [],
     index: 1,
     copies: ['BruhComponent0', 'BruhComponent1'],
+  } as OrigCustomComp,
+  HelloComponent: {
+    name: 'HelloComponent',
+    type: 'custom',
+    children: [],
+    state: [],
+    index: 1,
+    copies: ['HelloComponent0'],
+  } as OrigCustomComp,
+  WorldComponent: {
+    name: 'WorldComponent',
+    type: 'custom',
+    children: [],
+    state: [],
+    index: 1,
+    copies: ['WorldComponent0'],
   } as OrigCustomComp,
 };
 
@@ -98,7 +114,7 @@ const copies: Copies = {
     name: 'View0',
     type: 'View',
     parent: { origin: 'original', key: 'App' },
-    children: [],
+    children: ['HelloComponent0'],
   } as CopyNativeEl,
   Button1: {
     name: 'Button1',
@@ -141,6 +157,18 @@ const copies: Copies = {
     type: 'custom',
     parent: { origin: 'original', key: 'TestComponent' },
     pointer: 'CoolComponent',
+  } as CopyCustomComp,
+  HelloComponent0: {
+    name: 'HelloComponent0',
+    type: 'custom',
+    parent: { origin: 'copies', key: 'View0' },
+    pointer: 'HelloComponent',
+  } as CopyCustomComp,
+  WorldComponent0: {
+    name: 'WorldComponent0',
+    type: 'custom',
+    parent: { origin: 'copies', key: 'View3' },
+    pointer: 'WorldComponent',
   } as CopyCustomComp,
   BruhComponent0: {
     name: 'BruhComponent0',
@@ -224,17 +252,33 @@ class Tree {
 const generateTree = (root: AppInterface, originals: Originals, copies: Copies): Tree => {
   // create new tree node that be the root of our tree
   const ComponentTreeRoot = new TreeNode(root);
+  // we only want a single instance of the child in ComponentTreeRoot's children, so keep track if there are multiple copies as children
+  const prevPointers: {[key: string]: boolean} = {};
   // loop over the root's children (children array in AppInterface)
   // every child will be in copies
   for (const child of root.children) {
+    console.log('CHILD', child);
     const childInCopies: CopyNativeEl | CopyCustomComp = copies[child];
-    if (isCopyCustomComp(childInCopies)) {
-      if (ComponentTreeRoot.children.every(child => child.name !== childInCopies.pointer)) {
-        // const newChildNode = new TreeNode(originals[childInCopies.pointer] as OrigCustomComp);
+    if (isCopyCustomComp(childInCopies) && !(childInCopies.pointer in prevPointers)) {
+      // if (ComponentTreeRoot.children.every(child => child.name !== childInCopies.pointer)) {
+      //   // const newChildNode = new TreeNode(originals[childInCopies.pointer] as OrigCustomComp);
+      //   ComponentTreeRoot.addChild(generateNode(childInCopies, originals, copies));
+      // }
+   
         ComponentTreeRoot.addChild(generateNode(childInCopies, originals, copies));
+        prevPointers[childInCopies.pointer] = true;
+
+    } else if (isDoubleTagElement(childInCopies.type)) {
+      // const newNode = generateNode(childInCopies, originals, copies);
+      // // console.log('NEW NODE', newNode);
+      // if (newNode !== null && !(comp.pointer in prevPointers)) {
+      //   compNode.addChild(newNode);
+      // }
+      const newNode = generateNode(childInCopies, originals, copies);
+      console.log('NEW NODE', newNode);
+      if (newNode !== null) {
+        ComponentTreeRoot.addChild(newNode);
       }
-    } else if (isDoubleTagElement(childInCopies.name)) {
-      generateNode(childInCopies, originals, copies);
     }
   }
   return new Tree(ComponentTreeRoot);
@@ -252,26 +296,44 @@ const generateTree = (root: AppInterface, originals: Originals, copies: Copies):
       // recursively repeat above for current child's children
 
 const generateNode = (comp: CopyNativeEl | CopyCustomComp, originals: Originals, copies: Copies) => {
-  console.log('COMPONENT:', isCopyCustomComp(comp) ? comp.pointer : comp.type);
+  // console.log('COMPONENT:', isCopyCustomComp(comp) ? comp.pointer : comp.type);
+
   const originalsComp = originals[comp.pointer] as OrigCustomComp;
-  const compNode = isCopyCustomComp(comp) ? new TreeNode(originalsComp) : null;
+
+  const prevPointers: {[key: string]: boolean} = {};
+ 
+  const compNode = isCopyCustomComp(comp) && !(comp.pointer in prevPointers) ? new TreeNode(originalsComp) : null;
+  if (isCopyCustomComp(comp) && !(comp.pointer in prevPointers)) {
+    prevPointers[comp.pointer] = true;
+  }
   const componentChildren: string[] = isCopyCustomComp(comp) ? originalsComp.children : comp.children;
 
   if (componentChildren.length === 0) {
     // if (isCopyCustomComp(comp)) {
     //   compNode.addChild(new TreeNode(originals[comp.pointer] as OrigCustomComp));
     // }
-    // return compNode;
-    return ;
+    return compNode;
+    // return ;
   }
+
+  
 
   for (const child of componentChildren) {
     const childInCopies: CopyNativeEl | CopyCustomComp = copies[child];
+    // console.log('CHILD', child);
     if (isCopyCustomComp(childInCopies)) {
       // const newNode = new TreeNode(originals[childInCopies.pointer] as OrigCustomComp);
+      if (compNode === null) {
+        // generateNode(childInCopies, originals, copies);
+        return new TreeNode(originals[childInCopies.pointer] as OrigCustomComp);
+      }
       compNode.addChild(generateNode(childInCopies, originals, copies));
-    } else if (isDoubleTagElement(childInCopies.name)) {
-      generateNode(childInCopies, originals, copies);
+    } else if (isDoubleTagElement(childInCopies.type)) {
+      const newNode = generateNode(childInCopies, originals, copies);
+      // console.log('NEW NODE', newNode);
+      if (newNode !== null && !(comp.pointer in prevPointers)) {
+        compNode.addChild(newNode);
+      }
     }
   }
 
@@ -283,5 +345,5 @@ const generateNode = (comp: CopyNativeEl | CopyCustomComp, originals: Originals,
 };
 
 console.log(generateTree(originals['App'] as AppInterface, originals, copies).BFS());
-console.log(generateTree(originals['App'] as AppInterface, originals, copies).PreOrder());
-// console.log(generateNode(copies['TestComponent1'], originals, copies));
+// console.log(generateTree(originals['App'] as AppInterface, originals, copies).PreOrder());
+// console.log(generateNode(copies['TestComponent0'], originals, copies));
