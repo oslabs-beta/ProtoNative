@@ -1,4 +1,3 @@
-
 import {
   AppInterface,
   OrigCustomComp,
@@ -9,18 +8,27 @@ import {
   OrigNativeEl,
 } from './interfaces';
 
+/**
+ * @method addItem
+ * @description - add a new element block from addChild area to component details or app canvas
+ * @input - hoverIndex (index of where the item is dropped in the respective child array)
+ *          name (name of the item dragged/dropped)
+ *          parent (dragLayer's parent)
+ * @output - none, but will update the state of the respective array
+ */
 
 export const addItem = 
   (originals: Originals,
-  setOriginals: any,
+  setOriginals: React.Dispatch<React.SetStateAction<Originals>>,
   copies: Copies, 
-  setCopies: any,
+  setCopies: React.Dispatch<React.SetStateAction<Copies>>,
   name: string, 
   hoverIndex: number, 
   parent: string) => {
   let newElement = {} as CopyCustomComp | CopyNativeEl;
   let newEleObj = originals[name] as OrigNativeEl | OrigCustomComp;
-  //adding a  custom element
+
+  //adding a custom element
   if (originals[name].type === 'custom') {
     //custom component dropped to top level
     if (originals[parent]) {
@@ -62,9 +70,9 @@ export const addItem =
           [newElement.name]: newElement,
         };
       });
-
-      //custom component dropped to a nested element
-    } else {
+    } 
+    //custom component dropped to a nested element
+    else {
       //new element points to copies array instead
       newElement = {
         name: newEleObj.name + newEleObj.index,
@@ -118,10 +126,12 @@ export const addItem =
         parent: { origin: 'original', key: parent },
         children: [],
       };
-      //drop array is correct and splices correctly
+
       const dropArr = [...originals[parent].children];
       dropArr.splice(hoverIndex, 0, newElement.name);
-
+      
+      //incrementing index + adding copies to the originals
+      //update children array of the original component to include new item
       setOriginals((previous: any) => {
         const prevDroppedElement = previous[name];
         const newDroppedElement = {

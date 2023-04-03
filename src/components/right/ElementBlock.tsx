@@ -59,11 +59,10 @@ const ElementBlock = ({
   //function to create uncle-nephew relations
   const pushCustoms = (array: string[], allNested: string[] = []) => {
     array.forEach((child) => {
+      const children = copies[child] as CopyNativeEl;
       if (isDoubleTagElement(copies[child].type)) {
-        // console.log('pushcustoms', copies[child].children);
-        pushCustoms(copies[child].children, allNested);
+        pushCustoms(children.children, allNested);
       } else if (copies[child].type === 'custom') {
-        // console.log('child', child);
         allNested.push(child);
       }
     });
@@ -81,6 +80,7 @@ const ElementBlock = ({
 
   let showLayers: boolean;
 
+  //check to see if ancestor is a custom component
   const hasCustomAncestor = (
     ancestor: CopyCustomComp | CopyNativeEl,
     name: string
@@ -107,21 +107,29 @@ const ElementBlock = ({
     if (location === 'app') {
       //create children array of uncle/nephew relations
       children = pushCustoms(originalElement.children);
-      //don't want to show drop layers within the custom components
+      //drop layer at top of elements in top level of app canvas, allow them to drag
       if (originals.App.children.includes(componentDef.name)) {
         nestedComponentInApp = false;
         showLayers = true;
-      } else if (
+      }
+      //custom component is in native element
+      else if (
         componentDef.parent.origin === 'copies' &&
         componentDef.type === 'custom'
       ) {
+        //check to see if the ancestor is a custom component
+        //if ancestor is custom component, don't show the dropLayer, don't allow it to drag within the app canvas
         if (hasCustomAncestor(copies[componentDef.parent.key], componentName)) {
           showLayers = false;
           nestedComponentInApp = true;
-        } else {
+        }
+        //if it is a custom component within a native element, add top dropLayer
+        else {
           showLayers = true;
         }
-      } else if (
+      }
+      //if custom component is in the app canvas, nested custom components can't move
+      else if (
         componentDef.parent.origin === 'original' &&
         componentDef.parent.key !== 'App'
       ) {
@@ -135,15 +143,12 @@ const ElementBlock = ({
       nestedComponentInApp = false;
     }
   }
-  //native element
+  //native element displayed, need to show top dropLayer
   else {
     children = componentDef.children;
     showLayers = true;
     nestedComponentInApp = false;
   }
-
-  //copies[childName] -> looks at children of the currenent component
-  //componentDef -> current component object
 
   if (children.length) {
     childElements = children.map((childName, idx) => {
