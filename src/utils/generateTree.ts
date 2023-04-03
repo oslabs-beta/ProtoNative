@@ -102,7 +102,7 @@ const copies: Copies = {
     name: 'View3',
     type: 'View',
     parent: { origin: 'original', key: 'BruhComponent' },
-    children: ['Button4'],
+    children: ['Button4', 'WorldComponent0'],
   } as CopyNativeEl,
   Text0: {
     name: 'Text0',
@@ -232,7 +232,7 @@ class Tree {
     while (queue.length !== 0) {
       const currNode = queue.shift();
       queue.push(...currNode.children);
-      console.log('CURR NODE', currNode.name);
+      console.log('CURR NODE!!!', currNode.name);
       // console.log(currNode.children);
       console.log('-----------------');
     }
@@ -257,7 +257,7 @@ const generateTree = (root: AppInterface, originals: Originals, copies: Copies):
   // loop over the root's children (children array in AppInterface)
   // every child will be in copies
   for (const child of root.children) {
-    console.log('CHILD', child);
+    // console.log('CHILD', child);
     const childInCopies: CopyNativeEl | CopyCustomComp = copies[child];
     if (isCopyCustomComp(childInCopies) && !(childInCopies.pointer in prevPointers)) {
       // if (ComponentTreeRoot.children.every(child => child.name !== childInCopies.pointer)) {
@@ -275,7 +275,7 @@ const generateTree = (root: AppInterface, originals: Originals, copies: Copies):
       //   compNode.addChild(newNode);
       // }
       const newNode = generateNode(childInCopies, originals, copies);
-      console.log('NEW NODE', newNode);
+      // console.log('NEW NODE', newNode);
       if (newNode !== null) {
         ComponentTreeRoot.addChild(newNode);
       }
@@ -295,7 +295,7 @@ const generateTree = (root: AppInterface, originals: Originals, copies: Copies):
     // else if child is NOT a CopyCustomComp, but IS a double tagged element (it can have children)
       // recursively repeat above for current child's children
 
-const generateNode = (comp: CopyNativeEl | CopyCustomComp, originals: Originals, copies: Copies) => {
+const generateNode = (comp: CopyNativeEl | CopyCustomComp, originals: Originals, copies: Copies):TreeNode => {
   // console.log('COMPONENT:', isCopyCustomComp(comp) ? comp.pointer : comp.type);
 
   const originalsComp = originals[comp.pointer] as OrigCustomComp;
@@ -320,18 +320,20 @@ const generateNode = (comp: CopyNativeEl | CopyCustomComp, originals: Originals,
 
   for (const child of componentChildren) {
     const childInCopies: CopyNativeEl | CopyCustomComp = copies[child];
-    // console.log('CHILD', child);
+    console.log('CHILD', child);
     if (isCopyCustomComp(childInCopies)) {
       // const newNode = new TreeNode(originals[childInCopies.pointer] as OrigCustomComp);
       if (compNode === null) {
-        // generateNode(childInCopies, originals, copies);
-        return new TreeNode(originals[childInCopies.pointer] as OrigCustomComp);
+        return generateNode(childInCopies, originals, copies);
+        // return new TreeNode(originals[childInCopies.pointer] as OrigCustomComp);
       }
       compNode.addChild(generateNode(childInCopies, originals, copies));
     } else if (isDoubleTagElement(childInCopies.type)) {
       const newNode = generateNode(childInCopies, originals, copies);
-      // console.log('NEW NODE', newNode);
-      if (newNode !== null && !(comp.pointer in prevPointers)) {
+      console.log('PREV POINTERS', prevPointers);
+      console.log('CURR COMP NODE', compNode);
+      console.log('NEW NODE', newNode);
+      if (newNode !== null ) {
         compNode.addChild(newNode);
       }
     }
