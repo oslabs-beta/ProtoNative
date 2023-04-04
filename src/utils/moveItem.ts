@@ -22,7 +22,6 @@ export const moveItem = (
   parentComp: string, 
   parent: string,
 ): void => {
-
   let dragArr: string[];
   let dropArr: string[];
   let item: string;
@@ -31,27 +30,32 @@ export const moveItem = (
 
   //item is in the top level custom component
   if (originals[parentComp]) {
-    item = originals[parentComp].children[dragIndex];
+    const draggedItemsParent = originals[parentComp] as OrigCustomComp 
+    const dropzone = copies[parent] as CopyNativeEl
+    item = draggedItemsParent.children[dragIndex];
     //item being moved is in the same level
     if (parentComp === parent) {
       //if moving between top level aka switching siblings
-      dragArr = dropArr = [...originals[parentComp].children];
+      dragArr = dropArr = [...draggedItemsParent.children];
     } else {
       //if moving between top level to a nested element (like a view)
-      dragArr = [...originals[parentComp].children];
-      dropArr = [...copies[parent].children];
+      dragArr = [...draggedItemsParent.children];
+      dropArr = [...dropzone.children];
       newSpot = copies[parent];
       itemParent = { origin: 'copies', key: newSpot.name };
     }
   } 
   //item is in a child element
   else {
-    item = copies[parentComp].children[dragIndex];
-    dragArr = [...copies[parentComp].children];
+    const draggedItemsParent = copies[parentComp] as CopyNativeEl;
+    const dropzoneCustomComp = originals[parent] as OrigCustomComp;
+    const dropzoneNativeEl = copies[parent] as CopyNativeEl;
+    item = draggedItemsParent.children[dragIndex];
+    dragArr = [...draggedItemsParent.children];
     //moving to the top level component
     if (originals[parent]) {
-      dropArr = [...originals[parent].children];
-      newSpot = originals[parent];
+      dropArr = [...dropzoneCustomComp.children];
+      newSpot = dropzoneCustomComp;
       //if moving around to app
       if (parent === 'App') {
         itemParent = {origin: 'original', key: 'App'}
@@ -63,13 +67,13 @@ export const moveItem = (
     else {
       //moving in the same native  element
       if (parent === parentComp) {
-        dropArr = dragArr = [...copies[parent].children];
-        // newSpot = copies[parent];
+        dropArr = dragArr = [...dropzoneNativeEl.children];
+        // newSpot = dropzoneNativeEl;
       } 
       //moving to a different native element
       else {
-        dropArr = [...copies[parent].children];
-        newSpot = copies[parent];
+        dropArr = [...dropzoneNativeEl.children];
+        newSpot = dropzoneNativeEl;
         itemParent = { origin: 'copies', key: newSpot.name };
       }
     }
