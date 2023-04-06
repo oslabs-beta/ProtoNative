@@ -73,15 +73,15 @@ const originals: Originals = {
     children: [],
     state: [],
     index: 1,
-    copies: ['WorldComponent0', 'WorldComponent1'],
+    copies: ['WorldComponent0', 'WorldComponent1', 'WorldComponent2'],
   } as OrigCustomComp,
   DownBadComponent: {
     name: 'DownBadComponent',
     type: 'custom',
     children: [],
     state: [],
-    index: 1,
-    copies: ['DownBadComponent0'],
+    index: 2,
+    copies: ['DownBadComponent0', 'DownBadComponent1'],
   } as OrigCustomComp
 };
 
@@ -108,7 +108,13 @@ const copies: Copies = {
     name: 'View0',
     type: 'View',
     parent: { origin: 'original', key: 'App' },
-    children: ['HelloComponent0', 'DownBadComponent0', 'WorldComponent1'],
+    children: ['HelloComponent0', 'View5', 'WorldComponent1'],
+  } as CopyNativeEl,
+  View5: {
+    name: 'View5',
+    type: 'View',
+    parent: { origin: 'copies', key: 'View0' },
+    children: ['HelloComponent1'],
   } as CopyNativeEl,
   View1: {
     name: 'View1',
@@ -134,10 +140,22 @@ const copies: Copies = {
     parent: { origin: 'copies', key: 'View0' },
     pointer: 'HelloComponent',
   } as CopyCustomComp,
+  HelloComponent1: {
+    name: 'HelloComponent1',
+    type: 'custom',
+    parent: { origin: 'copies', key: 'View5' },
+    pointer: 'HelloComponent',
+  } as CopyCustomComp,
   WorldComponent0: {
     name: 'WorldComponent0',
     type: 'custom',
     parent: { origin: 'copies', key: 'View3' },
+    pointer: 'WorldComponent',
+  } as CopyCustomComp,
+  WorldComponent2: {
+    name: 'WorldComponent2',
+    type: 'custom',
+    parent: { origin: 'copies', key: 'View1' },
     pointer: 'WorldComponent',
   } as CopyCustomComp,
   BruhComponent0: {
@@ -363,24 +381,29 @@ const generateNode = (
       console.log('NEW NODES', newNodes);
       console.log('NEW NODES CHILDREN++++++++', newNodes[0].children);
 
-      if (compNode === null) return newNodes;
+      // if (compNode === null) return newNodes;
+      if (compNode === null) arrNodes.push(...newNodes);
+      else {
+        for (const node of newNodes) {
+          if (node !== null && !(node.name in prevPointers)) {
+            compNode.addChild(node);
+            prevPointers[node.name] = true;
+          }
+        }
+      }
       // console.log('NEW NODE', newNode);
       console.log(
         'PREV POINTERS',
         `Exec Context: ${isCopyCustomComp(comp) ? comp.pointer : comp.type}`,
         prevPointers
       );
-      // console.log('CURR COMP NODE', compNode);
-      // console.log(
-      //   'COMPONENT:',
-      //   isCopyCustomComp(comp) ? comp.pointer : comp.type
-      // );
-      for (const node of newNodes) {
-        if (node !== null && !(node.name in prevPointers)) {
-          compNode.addChild(node);
-          prevPointers[node.name] = true;
-        }
-      }
+      console.log('CURR COMP NODE', compNode);
+      console.log(
+        'COMPONENT:',
+        isCopyCustomComp(comp) ? comp.pointer : comp.type,
+        child
+      );
+
       // if (newNode !== null && !(comp.pointer in prevPointers)) {
       //   compNode.addChild(newNode);
       // }
