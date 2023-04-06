@@ -139,8 +139,8 @@ describe('trashCan tests', () => {
     expect(copyCopies['View1']).toBeUndefined();
   })
 
-  // Test delete component with no children in a native component
-  it('deletes component with no children nested in a native component', () => {
+  // Test delete component with child nested in a native component
+  it('deletes component with child nested in a native component', () => {
     const copyOriginals = deepCopy(originals) as Originals;
     copyOriginals['App'] = {
       type: 'App',
@@ -172,7 +172,7 @@ describe('trashCan tests', () => {
   })
 
   // Test delete component with one child
-  it('deletes component with one child', () => {
+  it('deletes native component from custom component', () => {
     const copyOriginals = deepCopy(originals) as Originals;
     copyOriginals['CoolBruh'] = {
       name: 'CoolBruh',
