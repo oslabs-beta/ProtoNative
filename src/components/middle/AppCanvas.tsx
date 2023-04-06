@@ -59,23 +59,31 @@ const AppCanvas = (): JSX.Element => {
   const dropLayerIndex = App.children.length ? App.children.length : 0;
 
   return (
-    <div id='app-canvas'>
-      <h1 id='app-canvas-title'>My App</h1>
-      <div id='phone-screen-container'>
-        {appComponents}
-        {/* initial drop layer for bottom of app */}
-        <DropLayer
-          hasChildren={App.children.length}
-          index={dropLayerIndex}
-          setCounter={setCounter}
-          parent={'App'}
-          copies={copies}
-          setCopies={setCopies}
-          originals={originals}
-          setOriginals={setOriginals}
-          elementLocation={'app'}
-          area={'drop-layer-large'}
-        />
+    <div id='middle-container'>
+      <div id='middle-button-container'>
+        <button>App</button>
+        <button className='active'>Tree</button>
+      </div>
+
+
+      <div id='app-canvas'>
+        <h1 id='app-canvas-title'>My App</h1>
+        <div id='phone-screen-container'>
+          {appComponents}
+          {/* initial drop layer for bottom of app */}
+          <DropLayer
+            hasChildren={App.children.length}
+            index={dropLayerIndex}
+            setCounter={setCounter}
+            parent={'App'}
+            copies={copies}
+            setCopies={setCopies}
+            originals={originals}
+            setOriginals={setOriginals}
+            elementLocation={'app'}
+            area={'drop-layer-large'}
+          />
+        </div>
       </div>
     </div>
   );
