@@ -2,6 +2,16 @@ import { CopyCustomComp, CopyNativeEl, OrigCustomComp, AppInterface, Parent } fr
 import { Originals, Copies } from './interfaces';
 import { isCopyCustomComp } from './parser';
 
+ /**
+ * @method trashCan
+ * @description - removes all traces of a component and its children from a deepCopy of the originals context and the copies context
+ * @input - the component from the copy context to be deleted, the deepCopy of the originals context, the deepCopy of the copies context
+ * @output - no output
+ *           updates the deepCopy of the originals context and the deepCopy of the copies context declared outside of this function
+ *           deep copies are passed to the setOriginals and setCopies hooks to update the context
+ */
+
+
 export const trashCan = (compToDelete: CopyNativeEl | CopyCustomComp, copyOriginals: Originals, copyCopies: Copies) => {
   // For any CopyNativeEl, we need to delete:
   // (1) the reference in parent's children array
