@@ -15,21 +15,19 @@ import { addItem } from '../../utils/addItem';
 import { compileFunction } from 'vm';
 
 type DropLayerProps = {
-  hasChildren: number;
   index: number;
   setCounter: React.Dispatch<React.SetStateAction<number>>;
   parent: string;
-  copies: any;
-  setCopies: any;
-  originals: any;
-  setOriginals: any;
+  copies: Copies;
+  setCopies: React.Dispatch<React.SetStateAction<Copies>>;
+  originals: Originals;
+  setOriginals: React.Dispatch<React.SetStateAction<Originals>>;
   elementLocation: string;
   area: string;
 };
 
 const DropLayer = (props: DropLayerProps) => {
   const {
-    hasChildren,
     index,
     setCounter,
     parent,
@@ -56,7 +54,6 @@ const DropLayer = (props: DropLayerProps) => {
         name: string
       ): boolean => {
         if (name === ancestor.parent.key) return true;
-        console.log(1);
         return ancestor.parent.key === 'App'
           ? false
           : ancestor.parent.origin === 'original'
@@ -125,15 +122,6 @@ const DropLayer = (props: DropLayerProps) => {
 
   //hover color
   const backgroundColor = isOver ? '#f0c142' : null;
-
-  //make the last drop layer take up the rest of the screen
-  // let lastChild: boolean = false;
-  // if (hasChildren === 0) lastChild = true;
-  // if (originals[parent]) {
-  //   if (index === originals[parent].children.length) {
-  //     lastChild = true;
-  //   }
-  // }
 
   const handleClose = () => {
     setIsOpen(false);

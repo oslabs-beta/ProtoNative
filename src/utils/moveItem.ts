@@ -1,49 +1,61 @@
+import { Originals, Copies, CopyCustomComp, OrigCustomComp, CopyNativeEl, AppInterface, } from "./interfaces";
+
+/**
+ * @method moveItem
+ * @description - moves an already existing elementBlock to a new position
+ * @input - dragIndex (index of the dragged item in its respective child array), 
+ *          hoverIndex (index of where the item is dropped in the respective child array)
+ *          name (name of the item dragged/dropped)
+ *          parentComp (dragged item's parent)
+ *          parent (dragLayer's parent)
+ * @output - none, but will update the state of the respective arrays
+ */
+
 export const moveItem = (
-  originals: any,
-  setOriginals: any,
-  copies: any,
-  setCopies: any,
+  originals: Originals,
+  setOriginals: React.Dispatch<React.SetStateAction<Originals>>,
+  copies: Copies,
+  setCopies: React.Dispatch<React.SetStateAction<Copies>>,
   dragIndex: number,
   hoverIndex: number,
   name: string,
-  parentComp: string, //dragged item's parent
+  parentComp: string, 
   parent: string,
 ): void => {
-
   let dragArr: string[];
   let dropArr: string[];
   let item: string;
   let itemParent: { origin: string; key: string };
   let newSpot: any; //copy comp or originals comp type
 
-  // const originalPosition = originals[parentComp] ? originals[parentComp] as AppInterface | OrigCustomComp: copies;
-
-  //parentComp = dragged item's parent vs
-  //parent = dragLayer's parent to know which array to be splicing
-
   //item is in the top level custom component
   if (originals[parentComp]) {
-    item = originals[parentComp].children[dragIndex];
+    const draggedItemsParent = originals[parentComp] as OrigCustomComp 
+    const dropzone = copies[parent] as CopyNativeEl
+    item = draggedItemsParent.children[dragIndex];
     //item being moved is in the same level
     if (parentComp === parent) {
       //if moving between top level aka switching siblings
-      dragArr = dropArr = [...originals[parentComp].children];
+      dragArr = dropArr = [...draggedItemsParent.children];
     } else {
       //if moving between top level to a nested element (like a view)
-      dragArr = [...originals[parentComp].children];
-      dropArr = [...copies[parent].children];
+      dragArr = [...draggedItemsParent.children];
+      dropArr = [...dropzone.children];
       newSpot = copies[parent];
       itemParent = { origin: 'copies', key: newSpot.name };
     }
   } 
   //item is in a child element
   else {
-    item = copies[parentComp].children[dragIndex];
-    dragArr = [...copies[parentComp].children];
+    const draggedItemsParent = copies[parentComp] as CopyNativeEl;
+    const dropzoneCustomComp = originals[parent] as OrigCustomComp;
+    const dropzoneNativeEl = copies[parent] as CopyNativeEl;
+    item = draggedItemsParent.children[dragIndex];
+    dragArr = [...draggedItemsParent.children];
     //moving to the top level component
     if (originals[parent]) {
-      dropArr = [...originals[parent].children];
-      newSpot = originals[parent];
+      dropArr = [...dropzoneCustomComp.children];
+      newSpot = dropzoneCustomComp;
       //if moving around to app
       if (parent === 'App') {
         itemParent = {origin: 'original', key: 'App'}
@@ -55,13 +67,13 @@ export const moveItem = (
     else {
       //moving in the same native  element
       if (parent === parentComp) {
-        dropArr = dragArr = [...copies[parent].children];
-        // newSpot = copies[parent];
+        dropArr = dragArr = [...dropzoneNativeEl.children];
+        // newSpot = dropzoneNativeEl;
       } 
       //moving to a different native element
       else {
-        dropArr = [...copies[parent].children];
-        newSpot = copies[parent];
+        dropArr = [...dropzoneNativeEl.children];
+        newSpot = dropzoneNativeEl;
         itemParent = { origin: 'copies', key: newSpot.name };
       }
     }
@@ -70,11 +82,11 @@ export const moveItem = (
   if (parent === parentComp) {
     dragArr.splice(dragIndex, 1);
     //splicing changes index of the hover index if you're moving component down
-    //moving up
+    //moving element block up
     if (hoverIndex < dragIndex) {
       dropArr.splice(hoverIndex, 0, item);
     } 
-    //moving down
+    //moving element block down
     else {
       dropArr.splice(hoverIndex - 1, 0, item);
     }
@@ -117,8 +129,9 @@ export const moveItem = (
           [parentComp]: newParentObj,
         };
       });
-    } else {
-      //item is moving top level to top level
+    } 
+    //item is moving top level to top level
+    else {
       setOriginals((prevState: any) => {
         const oldParentObj = prevState[parentComp];
         const newParentObj = {

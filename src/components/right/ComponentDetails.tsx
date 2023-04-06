@@ -61,7 +61,6 @@ const ComponentDetails = (): JSX.Element => {
           {childElements}
           {/* initial drop layer for bottom of component */}
           <DropLayer
-            hasChildren={childElements.length}
             index={dropLayerIndex}
             setCounter={setCounter}
             parent={currentComponent}

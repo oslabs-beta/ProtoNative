@@ -72,7 +72,6 @@ const AppCanvas = (): JSX.Element => {
           {appComponents}
           {/* initial drop layer for bottom of app */}
           <DropLayer
-            hasChildren={App.children.length}
             index={dropLayerIndex}
             setCounter={setCounter}
             parent={'App'}
