@@ -13,8 +13,6 @@ import {
   CopyCustomComp,
 } from './utils/interfaces';
 import './styles/main.scss';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const App = () => {
   const [originals, setOriginals] = React.useState<Originals>({
@@ -60,12 +58,10 @@ const App = () => {
           setCurrentComponent,
         }}
       >
-        <DndProvider backend={HTML5Backend}>
-          <div>
-            <NavBar />
-            <MainContainer />
-          </div>
-        </DndProvider>
+        <div>
+          <NavBar />
+          <MainContainer />
+        </div>
       </AppContext.Provider>
     </React.StrictMode>
   );

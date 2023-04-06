@@ -12,9 +12,7 @@ body {
   flex-direction: column;
   font-family: $main-font;
   background-color: $main-background;
-  overflow-y: hidden;
 }
-
 
 #main-container {
   display: flex;
@@ -24,6 +22,11 @@ body {
   background-color: $main-background;
   height: 92vh;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
+
 
 
 #right-container {
