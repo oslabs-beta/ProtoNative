@@ -397,3 +397,5 @@ console.log(
 );
 // console.log(generateTree(originals['App'] as AppInterface, originals, copies).PreOrder());
 // console.log(generateNode(copies['CoolComponent0'], originals, copies));
+
+// TODO: still need to cover edge case where one branch is a custom component, another branch is nested in a double tagged element
