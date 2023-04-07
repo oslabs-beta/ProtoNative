@@ -207,10 +207,11 @@ class TreeNode {
   private _name: string;
   private _data: OrigCustomComp | AppInterface;
   private _children: TreeNode[];
+  private _hashedName: string;
 
-  constructor(name: string, data: OrigCustomComp | AppInterface) {
-    // this._name = isOrigCustomComp(data) ? data.name : data.type;
-    this._name = name;
+  constructor(hashedName: string, data: OrigCustomComp | AppInterface) {
+    this._name = isOrigCustomComp(data) ? data.name : data.type;
+    this._hashedName = hashedName;
     this._data = data;
     this._children = [];
   }
@@ -225,6 +226,10 @@ class TreeNode {
 
   get children(): TreeNode[] {
     return this._children;
+  }
+
+  get hashedName(): string {
+    return this._hashedName;
   }
 
   addChild(child: TreeNode): void {
