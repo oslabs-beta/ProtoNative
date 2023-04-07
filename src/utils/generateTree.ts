@@ -208,8 +208,9 @@ class TreeNode {
   private _data: OrigCustomComp | AppInterface;
   private _children: TreeNode[];
 
-  constructor(data: OrigCustomComp | AppInterface) {
-    this._name = isOrigCustomComp(data) ? data.name : data.type;
+  constructor(name: string, data: OrigCustomComp | AppInterface) {
+    // this._name = isOrigCustomComp(data) ? data.name : data.type;
+    this._name = name;
     this._data = data;
     this._children = [];
   }
@@ -274,7 +275,7 @@ const generateTree = (
   copies: Copies
 ): Tree => {
   // create new tree node that be the root of our tree
-  const ComponentTreeRoot = new TreeNode(root);
+  const ComponentTreeRoot = new TreeNode(root.type, root);
   // we only want a single instance of the child in ComponentTreeRoot's children, so keep track if there are multiple copies as children
   const prevPointers: { [key: string]: boolean } = {};
   // loop over the root's children (children array in AppInterface)
@@ -337,7 +338,7 @@ const generateNode = (
 
   const prevPointers: { [key: string]: boolean } = {};
 
-  const compNode = isCopyCustomComp(comp) ? new TreeNode(originalsComp) : null;
+  const compNode = isCopyCustomComp(comp) ? new TreeNode(comp.name, originalsComp) : null;
   // const compNode = isCopyCustomComp(comp) ? new TreeNode(originalsComp) : comp.type;
 
   // if (isCopyCustomComp(comp) && !(comp.pointer in prevPointers)) {
