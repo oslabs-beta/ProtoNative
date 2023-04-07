@@ -8,32 +8,37 @@ import {
 import { trashCan } from '../trashCan';
 import { deepCopy } from '../deepCopy';
 
-const originals: Originals = {
-    App: {
-      type: 'App',
-      children: [],
-      state: [],
-    } as AppInterface,
-    View: { type: 'View', index: 0 } as OrigNativeEl,
-    Button: { type: 'Button', index: 0 } as OrigNativeEl,
-    Text: { type: 'Text', index: 0 } as OrigNativeEl,
-    Image: { type: 'Image', index: 0 } as OrigNativeEl,
-    TextInput: { type: 'TextInput', index: 0 } as OrigNativeEl,
-    ScrollView: { type: 'ScrollView', index: 0 } as OrigNativeEl,
-    FlatList: { type: 'FlatList', index: 0 } as OrigNativeEl,
-    SectionList: { type: 'SectionList', index: 0 } as OrigNativeEl,
-    Switch: { type: 'Switch', index: 0 } as OrigNativeEl,
-    TouchableHighlight: { type: 'TouchableHighlight', index: 0 } as OrigNativeEl,
-    TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
-    StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
-    ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
-  }
+/**
+ 
+ * @description - runs jest tests on the trashCan function
+ 
+ */
 
-const copies: Copies = {}
-
-
-  // Test delete component with no children in App
 describe('trashCan tests', () => {
+  const originals: Originals = {
+      App: {
+        type: 'App',
+        children: [],
+        state: [],
+      } as AppInterface,
+      View: { type: 'View', index: 0 } as OrigNativeEl,
+      Button: { type: 'Button', index: 0 } as OrigNativeEl,
+      Text: { type: 'Text', index: 0 } as OrigNativeEl,
+      Image: { type: 'Image', index: 0 } as OrigNativeEl,
+      TextInput: { type: 'TextInput', index: 0 } as OrigNativeEl,
+      ScrollView: { type: 'ScrollView', index: 0 } as OrigNativeEl,
+      FlatList: { type: 'FlatList', index: 0 } as OrigNativeEl,
+      SectionList: { type: 'SectionList', index: 0 } as OrigNativeEl,
+      Switch: { type: 'Switch', index: 0 } as OrigNativeEl,
+      TouchableHighlight: { type: 'TouchableHighlight', index: 0 } as OrigNativeEl,
+      TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
+      StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
+      ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
+    }
+    
+    const copies: Copies = {}
+
+    // Test delete component with no children in App
   it('deletes childless component from App', () => {
     const copyOriginals = deepCopy(originals) as Originals;
     copyOriginals['App'] = {
@@ -139,8 +144,8 @@ describe('trashCan tests', () => {
     expect(copyCopies['View1']).toBeUndefined();
   })
 
-  // Test delete component with no children in a native component
-  it('deletes component with no children nested in a native component', () => {
+  // Test delete component with child nested in a native component
+  it('deletes component with child nested in a native component', () => {
     const copyOriginals = deepCopy(originals) as Originals;
     copyOriginals['App'] = {
       type: 'App',
@@ -172,7 +177,7 @@ describe('trashCan tests', () => {
   })
 
   // Test delete component with one child
-  it('deletes component with one child', () => {
+  it('deletes native component from custom component', () => {
     const copyOriginals = deepCopy(originals) as Originals;
     copyOriginals['CoolBruh'] = {
       name: 'CoolBruh',
