@@ -67,7 +67,7 @@ const AppCanvas = (): JSX.Element => {
     <div id='middle-container'>
       <div id='middle-button-container'>
         <button onClick={()=>handleClick('app')}>App</button>
-        <button className='non-active' onClick={()=>handleClick('tree')}>Tree</button>
+        <button className='non-active' onClick={() => handleClick('tree')}>Tree</button>
       </div>
 
 
