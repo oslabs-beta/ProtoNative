@@ -1,6 +1,66 @@
-#app-canvas{
+#middle-container{
+  display: flex;
+  flex-direction: column;
   width: 33%;
-  max-width: 700px;
+  height: 100%;
+  button{
+    z-index: 999;
+    position: relative;
+    top: 7px;
+    background-color: $container-background;
+    color: white;
+    font-size: 1.5rem;
+    border: 0;
+    padding: 10px 15px;
+    border-radius: 10px 10px 0 0;
+    font-family: $main-font;
+    margin: 0 0px;
+    cursor: pointer;
+  }
+  button:before{
+    border-color : transparent $container-background transparent transparent;
+    transform : rotate(48deg);
+    left: -30px;
+    top: 7px;
+  }
+  button:after{
+    border-color : transparent transparent transparent $container-background;
+    transform : rotate(-48deg);
+    right: -30px;
+    top: 7px;
+  }
+  button:before, button:after{
+    content : '';
+    background : transparent;
+    height: 20px;
+    width: 20px;
+    border-radius: 100%;
+    border-width: 10px;
+    border-style : solid;
+    position : absolute;
+  }
+  .non-active{
+    background-color: #111111;
+    color: white;
+    z-index: 1;
+  }
+  .non-active::after{
+    border-color: transparent transparent transparent #111111
+  }
+  .non-active::before{
+    border-color : transparent #111111 transparent transparent;
+  }
+}
+
+
+#middle-button-container{
+  margin-left: 20px;
+}
+
+#app-canvas{
+  z-index: 2;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,8 +69,17 @@
   background-color: $container-background;
 }
 
+#app-canvas-container{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
 #app-canvas-title{
-  margin: 2rem 0;
+  margin: 1.5rem 0;
   color: $title-color;
 }
 

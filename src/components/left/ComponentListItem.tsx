@@ -3,7 +3,6 @@ import AppContext from '../../context/AppContext';
 import { CopyCustomComp, CopyNativeEl, OrigCustomComp, AppInterface, Parent } from '../../utils/interfaces';
 import { Originals, Copies } from '../../utils/interfaces';
 import Modal from './Modal';
-import { isCopyCustomComp } from '../../utils/parser';
 import { trashCan } from '../../utils/trashCan';
 import { deepCopy } from '../../utils/deepCopy';
 
@@ -22,11 +21,8 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	// set State for components this needs to go on the originals
-	//  and on copies?
 	const [newState, setNewState] = useState('');
 	// the input state will go on originals[name].state
-	// 
-	
 
 	const handleClick = () => {
 		setNewState('');
@@ -47,7 +43,6 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 					<button className='list-state-button' 
 									onClick={(e) => {
 										handleStateClick(e)
-										setTimeout(()=>document.getElementById('state-modal-input').focus(), 50)
 									}
 						}>State</button>
 					<button className='list-delete-button'onClick={(e) => handleDeleteClick(e)}>Delete</button>
@@ -64,12 +59,8 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		setCurrentModal('delete');
 	}
 
-	// TODO: Add a modal that asks the user if they are sure they want to delete the component
-	// TODO: import type of event object
 	// type for event React.MouseEvent<HTMLElement> but hasn't been working, so using any for now
 	const handleDeleteConfirmClick = (event: any): void => {
-
-		
 
 		let newCopies = deepCopy(copies) as Copies;
 		let newOriginals = deepCopy(originals) as Originals;
@@ -99,14 +90,15 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		if (currentComponent === OriginalCustomComponent.name) setCurrentComponent('App');
 	}
 	
-	// TODO: Add a modal for the user to input state
 	const handleStateClick = (event: any): void => {
 
 		// prevent the click from propagating to the parent div
 		event.cancelBubble = true;
 		event.stopPropagation && event.stopPropagation();
 		
-		// TODO: Flesh out state modal
+		//autofocus the input
+		setTimeout(()=>document.getElementById('state-modal-input').focus(), 50)
+		
 		setIsOpen(true)
 		setCurrentModal('state')
 		console.log('clicked state')
@@ -134,10 +126,6 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		})
 		setNewState('');
 	}
-
-	const handleClose = (): void => {
-		setIsOpen(false);
-	};
 
 	const handleDeleteState = (value: string): void => {
 		setOriginals((prevOriginals) => {
@@ -186,7 +174,7 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 									<p>This will delete all occurrences of {OriginalCustomComponent.name} everywhere!</p>
 									<div id='delete-modal-buttons'>
 										<button className='list-state-button delete-confirm-button' onClick={handleDeleteConfirmClick}>Confirm</button>
-										<button className='list-delete-button' onClick={() => handleClose()}>Cancel</button>	
+										<button className='list-delete-button' onClick={() => setIsOpen(false)}>Cancel</button>	
 									</div>
 								</div> )
 							: null
