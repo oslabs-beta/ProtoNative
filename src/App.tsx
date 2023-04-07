@@ -19,7 +19,7 @@ const App = () => {
     App: {
       type: 'App',
       // children: [],
-      children: [],
+      children: ['CoolComponent0', 'BruhComponent0'],
       state: [],
     } as AppInterface,
     View: { type: 'View', index: 0 } as OrigNativeEl,
@@ -38,35 +38,41 @@ const App = () => {
     TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
     StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
     ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
-    // CoolComponent: {
-    //   name: 'CoolComponent',
-    //   type: 'custom',
-    //   children: [],
-    //   state: [],
-    //   index: 1,
-    //   copies: ['CoolComponent0'],
-    // } as OrigCustomComp,
-    // BruhComponent: {
-    //   name: 'BruhComponent',
-    //   type: 'custom',
-    //   children: [],
-    //   state: [],
-    //   index: 1,
-    //   copies: ['BruhComponent0'],
-    // } as OrigCustomComp,
+    CoolComponent: {
+      name: 'CoolComponent',
+      type: 'custom',
+      children: [],
+      state: [],
+      index: 1,
+      copies: ['CoolComponent0'],
+    } as OrigCustomComp,
+    BruhComponent: {
+      name: 'BruhComponent',
+      type: 'custom',
+      children: [],
+      state: [],
+      index: 1,
+      copies: ['BruhComponent0'],
+    } as OrigCustomComp,
   });
   const [copies, setCopies] = React.useState<Copies>({
-    // CoolComponent0: {
-    //   name: 'CoolComponent0',
-    //   type: 'custom',
-    //   parent: { origin: 'original', key: 'App' },
-    //   pointer: 'CoolComponent',
-    // } as CopyCustomComp,
-    // BruhComponent0: {
+    CoolComponent0: {
+      name: 'CoolComponent0',
+      type: 'custom',
+      parent: { origin: 'original', key: 'App' },
+      pointer: 'CoolComponent',
+    } as CopyCustomComp,
+    BruhComponent0: {
+      name: 'BruhComponent0',
+      type: 'custom',
+      parent: { origin: 'original', key: 'App' },
+      pointer: 'BruhComponent',
+    } as CopyCustomComp,
+    // BruhComponent1: {
     //   name: 'BruhComponent0',
     //   type: 'custom',
-    //   parent: { origin: 'original', key: 'App' },
-    //   pointer: 'CoolComponent',
+    //   parent: { origin: 'original', key: 'CoolComponent' },
+    //   pointer: 'BruhComponent',
     // } as CopyCustomComp,
   });
   const [currentComponent, setCurrentComponent] = React.useState('App');

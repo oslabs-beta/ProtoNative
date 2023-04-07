@@ -13,61 +13,61 @@ import {
   isOrigCustomComp,
 } from './parser';
 
-const originals: Originals = {
-  App: {
-    type: 'App',
-    children: ['TestComponent0'],
-    state: [],
-  } as AppInterface,
-  View: { type: 'View', index: 3 } as OrigNativeEl,
-  Button: { type: 'Button', index: 3 } as OrigNativeEl,
-  Text: { type: 'Text', index: 1 } as OrigNativeEl,
-  Image: { type: 'Image', index: 0 } as OrigNativeEl,
-  TextInput: { type: 'TextInput', index: 0 } as OrigNativeEl,
-  ScrollView: { type: 'ScrollView', index: 0 } as OrigNativeEl,
-  FlatList: { type: 'FlatList', index: 0 } as OrigNativeEl,
-  SectionList: { type: 'SectionList', index: 0 } as OrigNativeEl,
-  Switch: { type: 'Switch', index: 0 } as OrigNativeEl,
-  TouchableHighlight: {
-    type: 'TouchableHighlight',
-    index: 0,
-  } as OrigNativeEl,
-  TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
-  StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
-  ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
-  TestComponent: {
-    name: 'TestComponent',
-    type: 'custom',
-    children: ['CoolComponent0'],
-    state: [],
-    index: 1,
-    copies: ['TestComponent0'],
-  } as OrigCustomComp,
-  CoolComponent: {
-    name: 'CoolComponent',
-    type: 'custom',
-    children: [],
-    state: [],
-    index: 1,
-    copies: ['CoolComponent0'],
-  } as OrigCustomComp,
-};
+// const originals: Originals = {
+//   App: {
+//     type: 'App',
+//     children: ['TestComponent0'],
+//     state: [],
+//   } as AppInterface,
+//   View: { type: 'View', index: 3 } as OrigNativeEl,
+//   Button: { type: 'Button', index: 3 } as OrigNativeEl,
+//   Text: { type: 'Text', index: 1 } as OrigNativeEl,
+//   Image: { type: 'Image', index: 0 } as OrigNativeEl,
+//   TextInput: { type: 'TextInput', index: 0 } as OrigNativeEl,
+//   ScrollView: { type: 'ScrollView', index: 0 } as OrigNativeEl,
+//   FlatList: { type: 'FlatList', index: 0 } as OrigNativeEl,
+//   SectionList: { type: 'SectionList', index: 0 } as OrigNativeEl,
+//   Switch: { type: 'Switch', index: 0 } as OrigNativeEl,
+//   TouchableHighlight: {
+//     type: 'TouchableHighlight',
+//     index: 0,
+//   } as OrigNativeEl,
+//   TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
+//   StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
+//   ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
+//   TestComponent: {
+//     name: 'TestComponent',
+//     type: 'custom',
+//     children: ['CoolComponent0'],
+//     state: [],
+//     index: 1,
+//     copies: ['TestComponent0'],
+//   } as OrigCustomComp,
+//   CoolComponent: {
+//     name: 'CoolComponent',
+//     type: 'custom',
+//     children: [],
+//     state: [],
+//     index: 1,
+//     copies: ['CoolComponent0'],
+//   } as OrigCustomComp,
+// };
 
-const copies: Copies = {
-  TestComponent0: {
-    name: 'TestComponent0',
-    type: 'custom',
-    parent: { origin: 'original', key: 'App' },
-    pointer: 'TestComponent',
-  } as CopyCustomComp,
-  CoolComponent0: {
-    name: 'CoolComponent0',
-    type: 'custom',
-    parent: { origin: 'original', key: 'TestComponent' },
-    pointer: 'CoolComponent',
-  } as CopyCustomComp,
+// const copies: Copies = {
+//   TestComponent0: {
+//     name: 'TestComponent0',
+//     type: 'custom',
+//     parent: { origin: 'original', key: 'App' },
+//     pointer: 'TestComponent',
+//   } as CopyCustomComp,
+//   CoolComponent0: {
+//     name: 'CoolComponent0',
+//     type: 'custom',
+//     parent: { origin: 'original', key: 'TestComponent' },
+//     pointer: 'CoolComponent',
+//   } as CopyCustomComp,
   
-};
+// };
 
 class TreeNode {
   private _name: string;
@@ -252,5 +252,57 @@ const generateNode = (
 // );
 // console.log(generateTree(originals['App'] as AppInterface, originals, copies).PreOrder());
 // console.log(generateNode(copies['CoolComponent0'], originals, copies));
+
+// const treeNodes: any[] = [];
+// const treeEdges: any[] = [];
+// const tree = generateTree(
+//   originals['App'] as AppInterface,
+//   originals,
+//   copies
+// );
+
+// const makeNodes = (root) => {
+//   let newNode;
+//   let newEdge;
+//   if (root.name === 'App') {
+//     newNode = {
+//       id: root.name,
+//       type: 'input',
+//       data: { label: 'App' },
+//       position: { x: 0, y: 0 },
+//     };
+//   } else {
+//     if (root.children.length) {
+//       newNode = {
+//         id: root.name,
+//         type: 'default',
+//         data: { label: root.name },
+//         position: { x: 0, y: 0 },
+//       };
+//     } else {
+//       newNode = {
+//         id: root.name,
+//         type: 'output',
+//         data: { label: root.name },
+//         position: { x: 0, y: 0 },
+//       };
+//     }
+//   }
+//   treeNodes.push(newNode);
+//   // console.log(root.children);
+//   root.children.forEach((node) => {
+//     newEdge = {
+//       id: `${root.name}-to-${node.name}`,
+//       source: root.name,
+//       target: node.name,
+//       type: 'smoothstep',
+//     };
+
+//     treeEdges.push(newEdge);
+//     return makeNodes(node);
+//   });
+// };
+
+// makeNodes(tree.root);
 
 export default generateTree;

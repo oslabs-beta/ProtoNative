@@ -1,12 +1,12 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import ReactFlow, {
-  addEdge,
   ConnectionLineType,
   useNodesState,
   useEdgesState,
 } from 'reactflow';
 import dagre from 'dagre';
 
+import 'reactflow/dist/style.css';
 import AppContext from '../../context/AppContext';
 import generateTree from '../../utils/generateTree';
 import { AppInterface } from '../../utils/interfaces';
@@ -33,7 +33,7 @@ const TreeHierarchy = (): JSX.Element => {
         position: { x: 0, y: 0 },
       };
     } else {
-      if (root.children) {
+      if (root.children.length) {
         newNode = {
           id: root.name,
           type: 'default',
@@ -64,11 +64,13 @@ const TreeHierarchy = (): JSX.Element => {
   };
 
   makeNodes(tree.root);
+  console.log(treeNodes, treeEdges);
 
+  // console.log(treeNodes);
   const dagreGraph = new dagre.graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-  const nodeWidth = 172;
+  const nodeWidth = 140;
   const nodeHeight = 36;
 
   const getLayout = (treeNodes, treeEdges, direction = 'TB') => {
@@ -96,45 +98,32 @@ const TreeHierarchy = (): JSX.Element => {
 
       return node;
     });
-    return { nodes, edges };
+    return { treeNodes, treeEdges };
   };
 
-  const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
+  const { treeNodes: layoutedNodes, treeEdges: layoutedEdges } = getLayout(
     treeNodes,
     treeEdges
   );
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
 
-  const onConnect = useCallback(
-    (params) =>
-      setEdges((eds) =>
-        addEdge(
-          { ...params, type: ConnectionLineType.SmoothStep, animated: true },
-          eds
-        )
-      ),
-    []
-  );
-  const onLayout = useCallback(
-    (direction) => {
-      const { nodes: layoutedNodes, edges: layoutedEdges } =
-        getLayoutedElements(nodes, edges, direction);
-
-      setNodes([...layoutedNodes]);
-      setEdges([...layoutedEdges]);
-    },
-    [nodes, edges]
-  );
+  // const onConnect = useCallback(
+  //   (params) =>
+  //     setEdges((eds) =>
+  //       addEdge({ ...params, type: ConnectionLineType.SmoothStep }, eds)
+  //     ),
+  //   []
+  // );
 
   return (
-    <div>
+    <div id='tree-hierarchy'>
       <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
+        // onConnect={onConnect}
         connectionLineType={ConnectionLineType.SmoothStep}
         fitView
       />

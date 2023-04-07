@@ -31,3 +31,13 @@
 #phone-screen-container::-webkit-scrollbar{
   display: none;
 }
+
+#tree-hierarchy {
+  width: 33%;
+  max-width: 700px;
+}
+
+.react-flow__node {
+  background: $button-primary;
+  border-radius: 8px;
+}
