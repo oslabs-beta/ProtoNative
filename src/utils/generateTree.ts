@@ -268,7 +268,7 @@ class Tree {
   }
 }
 
-const generateTree = (
+export const generateTree = (
   root: AppInterface,
   originals: Originals,
   copies: Copies
