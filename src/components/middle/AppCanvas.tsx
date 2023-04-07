@@ -18,6 +18,7 @@ const AppCanvas = (): JSX.Element => {
   const App = originals.App as AppInterface;
   const [appComponents, setAppComponents] = useState([]);
   const [counter, setCounter] = useState(0);
+  const [current, setCurrent] = useState('app')
 
   useEffect(() => {
     let appChildren: JSX.Element[] = App.children.map((child, index) => {
@@ -58,31 +59,46 @@ const AppCanvas = (): JSX.Element => {
 
   const dropLayerIndex = App.children.length ? App.children.length : 0;
 
+  const handleClick = (button:string) => {
+    setCurrent(button)
+  }
+
   return (
     <div id='middle-container'>
       <div id='middle-button-container'>
-        <button>App</button>
-        <button className='active'>Tree</button>
+        <button onClick={()=>handleClick('app')}>App</button>
+        <button className='non-active' onClick={()=>handleClick('tree')}>Tree</button>
       </div>
 
 
       <div id='app-canvas'>
-        <h1 id='app-canvas-title'>My App</h1>
-        <div id='phone-screen-container'>
-          {appComponents}
-          {/* initial drop layer for bottom of app */}
-          <DropLayer
-            index={dropLayerIndex}
-            setCounter={setCounter}
-            parent={'App'}
-            copies={copies}
-            setCopies={setCopies}
-            originals={originals}
-            setOriginals={setOriginals}
-            elementLocation={'app'}
-            area={'drop-layer-large'}
-          />
+        {current==='app'
+        ? 
+        <div id='app-canvas-container'>
+          <h1 id='app-canvas-title'>My App</h1>
+          <div id='phone-screen-container'>
+            {appComponents}
+            {/* initial drop layer for bottom of app */}
+            <DropLayer
+              index={dropLayerIndex}
+              setCounter={setCounter}
+              parent={'App'}
+              copies={copies}
+              setCopies={setCopies}
+              originals={originals}
+              setOriginals={setOriginals}
+              elementLocation={'app'}
+              area={'drop-layer-large'}
+            />
+          </div>
         </div>
+        :
+        <div>
+          
+        </div>
+
+        }
+
       </div>
     </div>
   );
