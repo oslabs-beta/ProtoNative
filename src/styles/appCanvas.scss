@@ -100,3 +100,37 @@
 #phone-screen-container::-webkit-scrollbar{
   display: none;
 }
+
+
+.react-flow__node {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $button-primary;
+  border-radius: 10px;
+}
+
+#tree-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height:100%;
+}
+
+.react-flow {
+  width: 100%;
+  height: 100%;
+}
+
+.react-flow__panel.react-flow__attribution.bottom.right {
+  opacity: 0;
+}
+
+a {
+  cursor: default;
+}
+
+.react-flow__pane {
+  background-color: #333232;
+}

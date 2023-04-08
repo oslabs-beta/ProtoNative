@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import AppContext from '../../context/AppContext';
 import ElementBlock from '../right/ElementBlock';
 import DropLayer from '../right/DropLayer';
+import TreeHierarchy from './TreeHierarchy';
 
 import {
   AppInterface,
@@ -12,6 +13,7 @@ import {
   CopyNativeEl,
   Copies,
 } from '../../utils/interfaces';
+
 
 const AppCanvas = (): JSX.Element => {
   const { setCopies, setOriginals, originals, copies } = useContext(AppContext);
@@ -92,9 +94,9 @@ const AppCanvas = (): JSX.Element => {
             />
           </div>
         </div>
-        :
-        <div>
-          
+        : 
+        <div id='tree-container'>
+          <TreeHierarchy />
         </div>
 
         }
