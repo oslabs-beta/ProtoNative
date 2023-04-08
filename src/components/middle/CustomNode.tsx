@@ -1,11 +1,20 @@
 import React from 'react';
 import CustomHandle from './CustomHandle';
 
+type Props = {
+  data: {
+    label: string,
+    state: string[],
+    direction: boolean,
+    children: number,
+    nodeId: string
+  }
+}
 
-const CustomNode = ({ data }):JSX.Element => {
+const CustomNode = ({ data }: Props):JSX.Element => {
 
 
-  const state = data.state.map((ele: string, idx: number) => {
+  const state: JSX.Element[] = data.state.map((ele: string, idx: number) => {
     return <li key={idx}>{ele}</li>
   })
 
@@ -20,7 +29,7 @@ const CustomNode = ({ data }):JSX.Element => {
           {state}
         </ul>
       </div>
-       {data.children > 0 ? data.direction ? 
+       {data.children ? data.direction ? 
       <CustomHandle nodeId={data.nodeId} type="source" position='right'  /> : 
       <CustomHandle  nodeId={data.nodeId} type="source" position='bottom' /> : null }
     </div>

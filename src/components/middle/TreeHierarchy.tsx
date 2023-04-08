@@ -5,7 +5,6 @@ import ReactFlow, {
   useEdgesState,
   Controls,
   ControlButton,
-  Background
 } from 'reactflow';
 import dagre from 'dagre';
 
@@ -13,29 +12,62 @@ import 'reactflow/dist/style.css';
 import AppContext from '../../context/AppContext';
 import generateTree from '../../utils/generateTree';
 import { AppInterface } from '../../utils/interfaces';
+import { Tree, TreeNode } from '../../utils/generateTree';
 import CustomNode from './CustomNode';
 
 const nodeTypes = {
   stateNode: CustomNode,
 }
+
+type CustomFlowNodesType = {
+  id: string,
+  type: string,
+  data: {
+    label: string,
+    state: string[],
+    direction: boolean,
+    children: number,
+    nodeId: string
+  }
+  position: {x: number, y: number}
+}
+
+type DefaultFlowNodesType = {
+  id: string,
+  type: string,
+  data: {}
+  position: {x: number, y: number}
+}
+
+type FlowEdges = {
+  id: string,
+  source: string,
+  target: string,
+  type: string,
+}
+
 const TreeHierarchy = (): JSX.Element => {
-  const treeNodes: any[] = [];
-  const treeEdges: any[] = [];
   const { originals, copies } = useContext(AppContext);
-  const [tree, setTree] = useState(generateTree(originals['App'] as AppInterface, originals, copies))
+  const [tree, setTree] = useState<Tree>(generateTree(originals['App'] as AppInterface, originals, copies))
   const [horizontal, setHorizontal] = useState(false)
   
-
+  
   useEffect(() => {
     setTree(generateTree(originals['App'] as AppInterface, originals, copies))
   }, [originals])
   
-  const nodeIndex: any = {};
-  const makeNodes = (root) => {
-    let newNode;
-    let newEdge;
+  const treeNodes: CustomFlowNodesType | DefaultFlowNodesType[] = [];
+  const treeEdges: FlowEdges[] = [];
+  const nodeIndex: {[key: string]: number} = {};
 
+  //generate nodes and edges for React Flow tree hierarchy
+  const makeNodes = (root: TreeNode) => {
+    let newNode: CustomFlowNodesType | DefaultFlowNodesType;
+    let newEdge: FlowEdges;
+
+    //if component has state, type is custom state node
     if (root.data.state.length) {
+      //if the tree node is App, id doesn't have to be hashed
       if (root.name === 'App') {
         newNode = {
           id: root.name,
@@ -43,7 +75,9 @@ const TreeHierarchy = (): JSX.Element => {
           data: {label: 'App', state: root.data.state, direction: horizontal, children: root.children.length, nodeId: root.name},
           position: {x: 0, y: 0},
         }
-      } else {
+      }
+      //normal components have to be hashed 
+      else {
         newNode = {
           id: root.hashedName + nodeIndex[root.name],
           type: 'stateNode',
@@ -51,7 +85,10 @@ const TreeHierarchy = (): JSX.Element => {
           position: {x: 0, y: 0},
         }
       }
-    } else {
+    } 
+    //else,type is normal nodes (input, default, output)
+    else {
+      //app is always an input node
       if (root.name === 'App') {
           newNode = {
             id: root.name,
@@ -60,6 +97,7 @@ const TreeHierarchy = (): JSX.Element => {
             position: { x: 0, y: 0 },
           };
       } else {
+        //if component has children, node is default
         if (root.children.length) {
           newNode = {
             id: root.hashedName + nodeIndex[root.name],
@@ -67,7 +105,9 @@ const TreeHierarchy = (): JSX.Element => {
             data: { label: root.name },
             position: { x: 0, y: 0 },
           };
-        } else {
+        } 
+        //otherwise, node is output
+        else {
           newNode = {
             id: root.hashedName + nodeIndex[root.name],
             type: 'output',
@@ -78,7 +118,10 @@ const TreeHierarchy = (): JSX.Element => {
       }
     }
     treeNodes.push(newNode);
-    root.children.forEach((node) => {
+
+    //iterate through each child of root, make edge, recursively call function to make nodes for all the children
+    root.children.forEach((node: TreeNode) => {
+      //keeps track of hashing to ensure components are unique
       if (!nodeIndex.hasOwnProperty(node.name)) {
         nodeIndex[node.name] = 0;
       } else {
@@ -86,9 +129,9 @@ const TreeHierarchy = (): JSX.Element => {
       }
       if (root.name === 'App') {
         newEdge = {
-          id: `App-to-${node.hashedName + nodeIndex[node.name]}`,
+          id: `App-to-${node.hashedName + nodeIndex[node.name].toString()}`,
           source: 'App',
-          target: node.hashedName + nodeIndex[node.name],
+          target: node.hashedName + nodeIndex[node.name].toString(),
           type: 'smoothstep'
         };
       } else {
@@ -99,7 +142,6 @@ const TreeHierarchy = (): JSX.Element => {
           type: 'smoothstep'
         };
       }
-
       treeEdges.push(newEdge);
       return makeNodes(node);
     });
@@ -107,28 +149,27 @@ const TreeHierarchy = (): JSX.Element => {
   
   makeNodes(tree.root);
 
-
   const dagreGraph = new dagre.graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-  const nodeWidth = 160;
-  const nodeHeight = 60;
+  const nodeWidth: number = 160;
+  const nodeHeight: number = 60;
 
-  const getLayout = (treeNodes, treeEdges, horizontal: boolean) => {
+  const getLayout = (treeNodes: any, treeEdges: any, horizontal: boolean) => {
     const direction = horizontal ? 'LR' : 'TB'
     dagreGraph.setGraph({ rankdir: direction });
 
-    treeNodes.forEach((node) => {
+    treeNodes.forEach((node: any) => {
       dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
     });
 
-    treeEdges.forEach((edge) => {
+    treeEdges.forEach((edge: any) => {
       dagreGraph.setEdge(edge.source, edge.target);
     });
 
     dagre.layout(dagreGraph);
 
-    treeNodes.forEach((node) => {
+    treeNodes.forEach((node: any) => {
       const nodeWithPosition = dagreGraph.node(node.id);
       node.targetPosition = horizontal ? 'left' : 'top';
       node.sourcePosition = horizontal ? 'right' : 'bottom';
