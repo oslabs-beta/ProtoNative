@@ -209,8 +209,6 @@ describe('generateTree tests', () => {
 
   // test that App's children are correct
   it('should generate the expected children for App', () => {
-    console.log(tree.root.children);
-    console.log(tree.root.children[0].children);
     const TestComponent = tree.root.children[0];
     const HelloComponent = tree.root.children[1];
     const WorldComponent = tree.root.children[2];
@@ -227,7 +225,6 @@ describe('generateTree tests', () => {
   it('should generate the expected tree output from a deeply nested component', () => {
     const CoolComponent = tree.root.children[0].children[0];
     expect(CoolComponent.name).toBe('CoolComponent');
-    console.log(CoolComponent.children);
     const DownBadComponent = CoolComponent.children[0];
     const BruhComponent = CoolComponent.children[1];
     expect(DownBadComponent.name).toBe('DownBadComponent');

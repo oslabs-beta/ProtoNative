@@ -100,11 +100,9 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		
 		setIsOpen(true)
 		setCurrentModal('state')
-		console.log('clicked state')
 	}
 
 	const handleStateSaveClick = (event: any): void => {
-		console.log(`new state for ${OriginalCustomComponent.name ?? comp.type}: ${newState}`);
 		// create a copy of the originals object
 		// update the componant with the added state in the copies
 		event.preventDefault();
