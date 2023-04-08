@@ -78,7 +78,6 @@ const NavBar = (): JSX.Element => {
 
   const handleClick = () => {
     setIsOpen(false);
-    console.log('close button clicked');
   };
 
   return (

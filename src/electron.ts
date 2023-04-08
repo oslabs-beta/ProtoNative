@@ -14,7 +14,6 @@ function createWindow() {
       contextIsolation: false,
     },
   });
-  console.log(__dirname, '../build/index.html')
   if (isDev) {
     win.loadURL('http://localhost:3000');
   } else {

@@ -3,9 +3,10 @@ import { useDrag } from 'react-dnd';
 
 type Props = {
   name: string;
+  type: string;
 };
 
-const AddChild = ({ name }: Props): JSX.Element => {
+const AddChild = ({ name, type }: Props): JSX.Element => {
   // make this component draggable
   const [, drag] = useDrag({
     type: 'newElement',
@@ -13,9 +14,13 @@ const AddChild = ({ name }: Props): JSX.Element => {
   });
 
   return (
-    <div className='addableElement' ref={drag}>
-      {name}
-    </div>
+      type === 'custom'
+      ? <div className='addableComponent' ref={drag}>
+          {name}
+        </div>
+      : <div className='addableElement' ref={drag}>
+          {name}
+        </div>
   );
 };
 
