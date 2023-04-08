@@ -1,4 +1,4 @@
-import { Originals, Copies, CopyCustomComp, OrigCustomComp, CopyNativeEl, AppInterface, } from "./interfaces";
+import { Originals, Copies, OrigCustomComp, CopyNativeEl, } from "./interfaces";
 
 /**
  * @method moveItem
@@ -26,7 +26,7 @@ export const moveItem = (
   let dropArr: string[];
   let item: string;
   let itemParent: { origin: string; key: string };
-  let newSpot: any; //copy comp or originals comp type
+  let newSpot: OrigCustomComp | CopyNativeEl; 
 
   //item is in the top level custom component
   if (originals[parentComp]) {
@@ -41,7 +41,7 @@ export const moveItem = (
       //if moving between top level to a nested element (like a view)
       dragArr = [...draggedItemsParent.children];
       dropArr = [...dropzone.children];
-      newSpot = copies[parent];
+      newSpot = copies[parent] as CopyNativeEl;
       itemParent = { origin: 'copies', key: newSpot.name };
     }
   } 

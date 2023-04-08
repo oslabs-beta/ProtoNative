@@ -1,14 +1,20 @@
 import React, {useEffect} from 'react';
-import { useUpdateNodeInternals, Handle, Position } from 'reactflow';
+import { useUpdateNodeInternals, Handle, Position, HandleType } from 'reactflow';
 
 
-const CustomHandle = ({ nodeId, type, position}: any) => {
+type Props = {
+  nodeId: string,
+  type: HandleType,
+  position: string
+}
+
+const CustomHandle = ({ nodeId, type, position}: Props) => {
   const updateNodeInternals = useUpdateNodeInternals();
   useEffect(() => {
       updateNodeInternals(nodeId);
   }, [position]);
 
-  let handlePosition;
+  let handlePosition: Position;
   if (position === 'top') handlePosition = Position.Top;
   else if (position === 'bottom') handlePosition = Position.Bottom;
   else if (position === 'left') handlePosition = Position.Left;

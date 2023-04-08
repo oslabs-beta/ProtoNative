@@ -6,6 +6,7 @@ import {
   CopyCustomComp,
   Originals,
   OrigCustomComp,
+  AppInterface,
 } from '../../utils/interfaces';
 import DropLayer from './DropLayer';
 import { isDoubleTagElement } from '../../utils/parser';
@@ -69,15 +70,15 @@ const ElementBlock = ({
     return allNested;
   };
 
+  const copiesParent = copies[parent] as CopyNativeEl;
   //show bottom drop layer for native elements
-  let inNative =
-    copies[parent] && copies[parent].children.length - 1 === index
+  const inNative =
+    copiesParent && copiesParent.children.length - 1 === index
       ? true
       : false;
 
   //unable to drag nested custom components in app canvas
   let nestedComponentInApp: boolean;
-
   let showLayers: boolean;
 
   //check to see if ancestor is a custom component
@@ -86,10 +87,11 @@ const ElementBlock = ({
     name: string
   ): boolean => {
     if (ancestor.type === 'custom') return true;
+    const origAncestorParent = originals[ancestor.parent.key] as OrigCustomComp;
     return ancestor.parent.key === 'App'
       ? false
       : ancestor.parent.origin === 'original'
-      ? originals[ancestor.parent.key].copies.some((copyName: string) =>
+      ? origAncestorParent.copies.some((copyName: string) =>
           hasCustomAncestor(copies[copyName], name)
         )
       : hasCustomAncestor(copies[ancestor.parent.key], name);
@@ -108,7 +110,8 @@ const ElementBlock = ({
       //create children array of uncle/nephew relations
       children = pushCustoms(originalElement.children);
       //drop layer at top of elements in top level of app canvas, allow them to drag
-      if (originals.App.children.includes(componentDef.name)) {
+      const appObj = originals.App as AppInterface
+      if (appObj.children.includes(componentDef.name)) {
         nestedComponentInApp = false;
         showLayers = true;
       }
@@ -206,6 +209,8 @@ const ElementBlock = ({
     });
   }
 
+  const copyNativeEle = copies[componentName] as CopyNativeEl;
+
   return (
     <div>
       {showLayers && (
@@ -235,8 +240,8 @@ const ElementBlock = ({
             : copies[componentName].type}
         </p>
         {/* creating a starter drop layer for empty native elements */}
-        {isDoubleTagElement(copies[componentName].type) &&
-          copies[componentName].children.length === 0 && (
+        {isDoubleTagElement(copyNativeEle.type) &&
+          copyNativeEle.children.length === 0 && (
             <DropLayer
               index={0}
               setCounter={setCounter}
