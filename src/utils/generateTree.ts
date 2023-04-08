@@ -73,9 +73,11 @@ class TreeNode {
   private _name: string;
   private _data: OrigCustomComp | AppInterface;
   private _children: TreeNode[];
+  private _hashedName: string;
 
-  constructor(data: OrigCustomComp | AppInterface) {
+  constructor(hashedName: string, data: OrigCustomComp | AppInterface) {
     this._name = isOrigCustomComp(data) ? data.name : data.type;
+    this._hashedName = hashedName;
     this._data = data;
     this._children = [];
   }
@@ -90,6 +92,10 @@ class TreeNode {
 
   get children(): TreeNode[] {
     return this._children;
+  }
+
+  get hashedName(): string {
+    return this._hashedName;
   }
 
   addChild(child: TreeNode): void {
@@ -134,13 +140,13 @@ class Tree {
   }
 }
 
-const generateTree = (
+export const generateTree = (
   root: AppInterface,
   originals: Originals,
   copies: Copies
 ): Tree => {
   // create new tree node that be the root of our tree
-  const ComponentTreeRoot = new TreeNode(root);
+  const ComponentTreeRoot = new TreeNode(root.type, root);
   // we only want a single instance of the child in ComponentTreeRoot's children, so keep track if there are multiple copies as children
   const prevPointers: { [key: string]: boolean } = {};
   // loop over the root's children (children array in AppInterface)
@@ -152,25 +158,15 @@ const generateTree = (
       isCopyCustomComp(childInCopies) &&
       !(childInCopies.pointer in prevPointers)
     ) {
-      // if (ComponentTreeRoot.children.every(child => child.name !== childInCopies.pointer)) {
-      //   // const newChildNode = new TreeNode(originals[childInCopies.pointer] as OrigCustomComp);
-      //   ComponentTreeRoot.addChild(generateNode(childInCopies, originals, copies));
-      // }
 
       ComponentTreeRoot.addChild(
         generateNode(childInCopies, originals, copies)
       );
       prevPointers[childInCopies.pointer] = true;
     } else if (isDoubleTagElement(childInCopies.type)) {
-      // const newNode = generateNode(childInCopies, originals, copies);
-      // // console.log('NEW NODE', newNode);
-      // if (newNode !== null && !(comp.pointer in prevPointers)) {
-      //   compNode.addChild(newNode);
-      // }
       const newNodes = generateNode(childInCopies, originals, copies).flat(
         Infinity
       );
-      // console.log('NEW NODE', newNode);
       for (const node of newNodes) {
         if (node !== null && !(node.name in prevPointers)) {
           ComponentTreeRoot.addChild(node);
@@ -200,7 +196,13 @@ const generateNode = (
 
   const originalsComp = originals[comp.pointer] as OrigCustomComp;
   const prevPointers: { [key: string]: boolean } = {};
-  const compNode = isCopyCustomComp(comp) ? new TreeNode(originalsComp) : null;
+
+  const compNode = isCopyCustomComp(comp) ? new TreeNode(comp.name, originalsComp) : null;
+  // const compNode = isCopyCustomComp(comp) ? new TreeNode(originalsComp) : comp.type;
+
+  // if (isCopyCustomComp(comp) && !(comp.pointer in prevPointers)) {
+  //   prevPointers[comp.pointer] = true;
+  // }
   const componentChildren: string[] = isCopyCustomComp(comp)
     ? originalsComp.children
     : comp.children;
@@ -214,7 +216,6 @@ const generateNode = (
   const arrNodes: TreeNode[] = [];
   for (const child of componentChildren) {
     const childInCopies: CopyNativeEl | CopyCustomComp = copies[child];
-    console.log('CHILD', child);
     if (isCopyCustomComp(childInCopies)) {
       const newNode = generateNode(childInCopies, originals, copies);
 

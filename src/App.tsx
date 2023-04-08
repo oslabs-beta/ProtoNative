@@ -41,7 +41,7 @@ const App = () => {
     CoolComponent: {
       name: 'CoolComponent',
       type: 'custom',
-      children: [],
+      children: ['BruhComponent1'],
       state: [],
       index: 1,
       copies: ['CoolComponent0'],
@@ -68,12 +68,12 @@ const App = () => {
       parent: { origin: 'original', key: 'App' },
       pointer: 'BruhComponent',
     } as CopyCustomComp,
-    // BruhComponent1: {
-    //   name: 'BruhComponent0',
-    //   type: 'custom',
-    //   parent: { origin: 'original', key: 'CoolComponent' },
-    //   pointer: 'BruhComponent',
-    // } as CopyCustomComp,
+    BruhComponent1: {
+      name: 'BruhComponent1',
+      type: 'custom',
+      parent: { origin: 'original', key: 'CoolComponent' },
+      pointer: 'BruhComponent',
+    } as CopyCustomComp,
   });
   const [currentComponent, setCurrentComponent] = React.useState('App');
 

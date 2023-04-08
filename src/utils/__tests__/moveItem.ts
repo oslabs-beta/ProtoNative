@@ -1,6 +1,12 @@
 import { moveItem } from '../moveItem';
 import { AppInterface, OrigNativeEl, OrigCustomComp, CopyNativeEl, Originals, Copies } from '../interfaces';
 
+/**
+ 
+ * @description - runs jest tests on the moveItem function
+ 
+ */
+
 describe('moveItem tests', () => {
   let originals: Originals = {
     App: {
