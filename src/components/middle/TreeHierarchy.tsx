@@ -72,8 +72,8 @@ const TreeHierarchy = (): JSX.Element => {
         };
       } else {
         newEdge = {
-          id: `${root.hashedName +  nodeIndex[node.name].toString()}-to-${node.hashedName + nodeIndex[node.name].toString()}`,
-          source: root.hashedName +  nodeIndex[node.name].toString(),
+          id: `${root.hashedName +  nodeIndex[root.name].toString()}-to-${node.hashedName + nodeIndex[node.name].toString()}`,
+          source: root.hashedName +  nodeIndex[root.name].toString(),
           target: node.hashedName +  nodeIndex[node.name].toString(),
         };
       }
@@ -154,13 +154,13 @@ const TreeHierarchy = (): JSX.Element => {
 
   return (
     <div id='tree-hierarchy'
-      style={{height: '100%', width: '100%'}}>
+      style={{height: '95%', width: '95%'}}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
-        defaultViewport={{ x: 0, y: 300, zoom: 1.5 }}
+        defaultViewport={{ x: 0, y: 260, zoom: 1.8 }}
         connectionLineType={ConnectionLineType.SmoothStep}
         >
         <Controls />
