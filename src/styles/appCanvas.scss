@@ -134,3 +134,28 @@ a {
 .react-flow__pane {
   background-color: #333232;
 }
+
+.direction {
+  width: 20px;
+  height: 20px;
+}
+
+.custom-node {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 36px;
+  border: 1px solid black;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.custom-node ul {
+  // list-style: none;
+  font-size: 10px;
+}
+
+#tree-hierarchy button {
+  background-color: white;
+}
