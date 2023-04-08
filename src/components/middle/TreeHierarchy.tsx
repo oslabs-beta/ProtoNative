@@ -3,6 +3,8 @@ import ReactFlow, {
   ConnectionLineType,
   useNodesState,
   useEdgesState,
+  Controls,
+  SetViewport
 } from 'reactflow';
 import dagre from 'dagre';
 
@@ -18,6 +20,12 @@ const TreeHierarchy = (): JSX.Element => {
   const [tree, setTree] = useState(generateTree(originals['App'] as AppInterface, originals, copies))
 
   const nodeIndex: any = {};
+
+  useEffect(() => {
+    setTree(generateTree(originals['App'] as AppInterface, originals, copies))
+  }, [originals])
+
+  console.log(tree.root)
   const makeNodes = (root) => {
     let newNode;
     let newEdge;
@@ -52,7 +60,7 @@ const TreeHierarchy = (): JSX.Element => {
 
     root.children.forEach((node) => {
       if (!nodeIndex.hasOwnProperty(node.name)) {
-        nodeIndex[node.name] = 1;
+        nodeIndex[node.name] = 0;
       } else {
         nodeIndex[node.name]++;
       }
@@ -74,9 +82,11 @@ const TreeHierarchy = (): JSX.Element => {
       return makeNodes(node);
     });
   };
-
-
+  
   makeNodes(tree.root);
+  
+    console.log(treeNodes)
+    console.log(treeEdges)
 
   const dagreGraph = new dagre.graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -116,9 +126,15 @@ const TreeHierarchy = (): JSX.Element => {
     treeNodes,
     treeEdges
   );
+
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutEdges);
 
+
+  useEffect(() => {
+    setNodes(layoutNodes);
+    setEdges(layoutEdges);
+  }, [tree])
 
   // const onLayout = useCallback(
   //   (direction) => {
@@ -134,9 +150,7 @@ const TreeHierarchy = (): JSX.Element => {
   //   [nodes, edges]
   // );
 
-  useEffect(() => {
-    setTree(generateTree(originals['App'] as AppInterface, originals, copies))
-  }, [originals])
+
 
   return (
     <div id='tree-hierarchy'
@@ -146,10 +160,11 @@ const TreeHierarchy = (): JSX.Element => {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
-        // onConnect={onConnect}
+        defaultViewport={{ x: 0, y: 300, zoom: 1.5 }}
         connectionLineType={ConnectionLineType.SmoothStep}
-        fitView
-      />
+        >
+        <Controls />
+      </ReactFlow>
     </div>
   );
 };
