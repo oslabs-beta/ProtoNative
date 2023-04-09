@@ -224,7 +224,7 @@ const TreeHierarchy = (): JSX.Element => {
 
   return (
     <div id='tree-hierarchy'
-      style={{height: '95%', width: '95%'}}>
+      style={{height: '95%', width: '93%'}}>
       <ReactFlow
         nodeTypes={nodeTypes}
         nodes={nodes}
@@ -235,7 +235,7 @@ const TreeHierarchy = (): JSX.Element => {
         connectionLineType={ConnectionLineType.SmoothStep}
         >
         <Controls>
-          <ControlButton onClick={() => onLayout(!horizontal)}>
+          <ControlButton id='orientation' onClick={() => onLayout(!horizontal)}>
             <div>
               {horizontal ? 
               <img className='direction' src={'./icons/vertical-arrows.png'} />: 

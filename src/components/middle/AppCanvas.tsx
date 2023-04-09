@@ -53,15 +53,18 @@ const AppCanvas = (): JSX.Element => {
 
   const dropLayerIndex: number = App.children.length ? App.children.length : 0;
 
-  const handleClick = (button:string) => {
+  const handleClick = (button:string): void => {
     setCurrent(button)
   }
+
+  const activeApp: string = current === 'app' ? 'tabs' : 'non-active tabs'
+  const activeTree: string = current === 'tree' ? 'tabs' : 'non-active tabs'
 
   return (
     <div id='middle-container'>
       <div id='middle-button-container'>
-        <button className='tabs' onClick={()=>handleClick('app')}>App</button>
-        <button className='non-active tabs' onClick={() => handleClick('tree')}>Tree</button>
+        <button className={activeApp} onClick={()=>handleClick('app')}>App</button>
+        <button className={activeTree} onClick={() => handleClick('tree')}>Tree</button>
       </div>
 
 
