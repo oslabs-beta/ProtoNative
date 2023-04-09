@@ -11,15 +11,18 @@ type Props = {
   }
 }
 
+//custom node for stateful components
+
 const CustomNode = ({ data }: Props):JSX.Element => {
 
-
+  //create list element for each state
   const state: JSX.Element[] = data.state.map((ele: string, idx: number) => {
     return <li key={idx}>{ele}</li>
   })
 
   return (
     <div className="custom-node">
+      {/* create input node for App, otherwise create handle at top */}
       {data.label === 'App' ? null : data.direction ? 
       <CustomHandle nodeId={data.nodeId} type='target' position='left'  /> : 
       <CustomHandle  nodeId={data.nodeId} type='target' position='top'  /> }
@@ -29,6 +32,7 @@ const CustomNode = ({ data }: Props):JSX.Element => {
           {state}
         </ul>
       </div>
+      {/* create output node if no children, else create handle at bottom */}
        {data.children ? data.direction ? 
       <CustomHandle nodeId={data.nodeId} type="source" position='right'  /> : 
       <CustomHandle  nodeId={data.nodeId} type="source" position='bottom' /> : null }

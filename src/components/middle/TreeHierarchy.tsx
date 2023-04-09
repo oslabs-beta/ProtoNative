@@ -86,7 +86,7 @@ const TreeHierarchy = (): JSX.Element => {
         }
       }
     } 
-    //else,type is normal nodes (input, default, output)
+    //else, type is normal nodes (input, default, output)
     else {
       //app is always an input node
       if (root.name === 'App') {
@@ -127,6 +127,7 @@ const TreeHierarchy = (): JSX.Element => {
       } else {
         nodeIndex[node.name]++;
       }
+      //if root is app, edge source should be App
       if (root.name === 'App') {
         newEdge = {
           id: `App-to-${node.hashedName + nodeIndex[node.name].toString()}`,
@@ -134,7 +135,9 @@ const TreeHierarchy = (): JSX.Element => {
           target: node.hashedName + nodeIndex[node.name].toString(),
           type: 'smoothstep'
         };
-      } else {
+      }
+      //otherwise, the source is the hashed name + the index 
+      else {
         newEdge = {
           id: `${root.hashedName +  nodeIndex[root.name].toString()}-to-${node.hashedName + nodeIndex[node.name].toString()}`,
           source: root.hashedName +  nodeIndex[root.name].toString(),
@@ -155,6 +158,7 @@ const TreeHierarchy = (): JSX.Element => {
   const nodeWidth: number = 160;
   const nodeHeight: number = 60;
 
+  //set the positioning of the nodes so they render in different places.
   const getLayout = (treeNodes: any, treeEdges: any, horizontal: boolean) => {
     const direction = horizontal ? 'LR' : 'TB'
     dagreGraph.setGraph({ rankdir: direction });
@@ -169,6 +173,7 @@ const TreeHierarchy = (): JSX.Element => {
 
     dagre.layout(dagreGraph);
 
+    //check the direction of the tree hierarchy (vertical vs horizontal)
     treeNodes.forEach((node: any) => {
       const nodeWithPosition = dagreGraph.node(node.id);
       node.targetPosition = horizontal ? 'left' : 'top';
@@ -184,6 +189,7 @@ const TreeHierarchy = (): JSX.Element => {
     return { treeNodes, treeEdges };
   };
 
+  //store the nodes with their positions in layoutNodes and layoutEdges
   const { treeNodes: layoutNodes, treeEdges: layoutEdges } = getLayout(
     treeNodes,
     treeEdges,
@@ -195,10 +201,12 @@ const TreeHierarchy = (): JSX.Element => {
 
 
   useEffect(() => {
+    //update the nodes based on the new tree + direction
     setNodes(layoutNodes);
     setEdges(layoutEdges);
   }, [tree, horizontal])
 
+  //changes the direction
   const onLayout = useCallback(
     (horizontal: boolean) => {
       const { treeNodes: layoutNodes, treeEdges: layoutEdges } = getLayout(

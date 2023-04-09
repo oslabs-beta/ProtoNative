@@ -8,6 +8,7 @@ type Props = {
   position: string
 }
 
+//customHandle for tree orientation changes
 const CustomHandle = ({ nodeId, type, position}: Props) => {
   const updateNodeInternals = useUpdateNodeInternals();
   useEffect(() => {

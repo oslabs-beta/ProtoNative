@@ -3,7 +3,7 @@
   flex-direction: column;
   width: 33%;
   height: 100%;
-  button{
+  .tabs{
     z-index: 999;
     position: relative;
     top: 7px;
@@ -17,19 +17,19 @@
     margin: 0 0px;
     cursor: pointer;
   }
-  button:before{
+  .tabs:before{
     border-color : transparent $container-background transparent transparent;
     transform : rotate(48deg);
     left: -30px;
     top: 7px;
   }
-  button:after{
+  .tabs:after{
     border-color : transparent transparent transparent $container-background;
     transform : rotate(-48deg);
     right: -30px;
     top: 7px;
   }
-  button:before, button:after{
+  .tabs:before, .tabs:after{
     content : '';
     background : transparent;
     height: 20px;
@@ -133,9 +133,11 @@ a {
 
 .react-flow__pane {
   background-color: #333232;
+  border-radius: 10px;
 }
 
 .direction {
+  padding-top: 5px;
   width: 20px;
   height: 20px;
 }
@@ -151,11 +153,19 @@ a {
   font-size: 12px;
 }
 
+.custom-node p {
+  padding: 0;
+  margin-bottom: 2px;
+}
 .custom-node ul {
   // list-style: none;
   font-size: 10px;
 }
 
+
 #tree-hierarchy button {
+  display: flex;
+  align-items: center;
   background-color: white;
+  padding: 8px;
 }
