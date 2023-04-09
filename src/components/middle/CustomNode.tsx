@@ -19,6 +19,8 @@ const CustomNode = ({ data }: Props):JSX.Element => {
   const state: JSX.Element[] = data.state.map((ele: string, idx: number) => {
     return <li key={idx}>{ele}</li>
   })
+  
+  const spanText: string = showState ? 'Hide State' : 'Show State'
 
   
   return (
@@ -30,10 +32,13 @@ const CustomNode = ({ data }: Props):JSX.Element => {
       <div className='custom-node'>
         <p>{data.label}</p>
         <div className='state-container'>
-          <img className='state-button-img' src={'./icons/state-info.png'} onClick={() => setShowState(!showState)}/>
           {showState && <ul>
             {state}
           </ul>}
+          <div>
+            <img className='state-button-img' src={'./icons/state-info.png'} onClick={() => setShowState(!showState)}/>
+            <span className='show-state'>{spanText}</span>
+          </div>
         </div>
       </div>
       {/* create output node if no children, else create handle at bottom */}

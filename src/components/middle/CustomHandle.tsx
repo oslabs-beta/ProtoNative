@@ -9,7 +9,7 @@ type Props = {
 }
 
 //customHandle for tree orientation changes
-const CustomHandle = ({ nodeId, type, position}: Props) => {
+const CustomHandle = ({ nodeId, type, position}: Props): JSX.Element => {
   const updateNodeInternals = useUpdateNodeInternals();
   useEffect(() => {
       updateNodeInternals(nodeId);

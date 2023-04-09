@@ -39,7 +39,7 @@ const ElementBlock = ({
   location,
   parent,
   setCounter,
-}: ElementBlockProps) => {
+}: ElementBlockProps): JSX.Element => {
   const componentDef = copies[componentName] as CopyCustomComp | CopyNativeEl;
   let childElements: JSX.Element[];
   let children: string[];
@@ -71,35 +71,31 @@ const ElementBlock = ({
   };
 
   const copiesParent = copies[parent] as CopyNativeEl;
-  //show bottom drop layer for native elements
-  const inNative =
-    copiesParent && copiesParent.children.length - 1 === index
-      ? true
-      : false;
-
-  //unable to drag nested custom components in app canvas
-  let nestedComponentInApp: boolean;
-  let showLayers: boolean;
-
+  
   //check to see if ancestor is a custom component
   const hasCustomAncestor = (
     ancestor: CopyCustomComp | CopyNativeEl,
     name: string
-  ): boolean => {
-    if (ancestor.type === 'custom') return true;
-    const origAncestorParent = originals[ancestor.parent.key] as OrigCustomComp;
-    return ancestor.parent.key === 'App'
+    ): boolean => {
+      if (ancestor.type === 'custom') return true;
+      const origAncestorParent = originals[ancestor.parent.key] as OrigCustomComp;
+      return ancestor.parent.key === 'App'
       ? false
       : ancestor.parent.origin === 'original'
       ? origAncestorParent.copies.some((copyName: string) =>
-          hasCustomAncestor(copies[copyName], name)
-        )
+      hasCustomAncestor(copies[copyName], name)
+      )
       : hasCustomAncestor(copies[ancestor.parent.key], name);
-  };
-
-  // showLayers: top dropLayer between elements
-  //inNative: bottom dropLayer for native elements (nesting);
-  //nestedComponentInApp: make components draggable if in app canvas but not inside custom component.
+    };
+    
+    //show bottom drop layer for native elements
+    const inNative =
+      copiesParent && copiesParent.children.length - 1 === index
+        ? true
+        : false;
+  
+    let nestedComponentInApp: boolean; // unable to drag nested custom components in app canvas
+    let showLayers: boolean; //show top dropLayer between elements
 
   //component is custom component copy
   if (isCopyCustomComp(componentDef)) {
@@ -127,17 +123,14 @@ const ElementBlock = ({
           nestedComponentInApp = true;
         }
         //if it is a custom component within a native element, add top dropLayer
-        else {
-          showLayers = true;
-        }
+        else showLayers = true;
       }
       //if custom component is in the app canvas, nested custom components can't move
       else if (
         componentDef.parent.origin === 'original' &&
         componentDef.parent.key !== 'App'
-      ) {
-        nestedComponentInApp = true;
-      }
+      ) nestedComponentInApp = true;
+      
     }
     //location is component details, show layers between all elements
     //don't need other logic because only showing 1 level deep for custom components
@@ -230,6 +223,7 @@ const ElementBlock = ({
         style={{
           border: '2px solid black',
           backgroundColor: 'rgba(50, 2, 59, 0.6)',
+          transform: 'translate(0, 0)',
         }}
         className='element'
         ref={nestedComponentInApp ? null : drag}
