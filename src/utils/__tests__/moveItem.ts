@@ -53,7 +53,7 @@ describe('moveItem tests', () => {
     } as OrigCustomComp,
   }
 
-  let setOriginals = (callback: Function) => {
+  const setOriginals = (callback: Function) => {
     originals = callback(originals);
   }
 
@@ -126,7 +126,7 @@ describe('moveItem tests', () => {
     }
   };
 
-  let setCopies = (callback: Function) => {
+  const setCopies = (callback: Function) => {
     copies = callback(copies);
   }
   
