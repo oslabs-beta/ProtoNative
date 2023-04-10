@@ -7,17 +7,14 @@ import {
   Originals,
   Copies,
   OrigNativeEl,
-  AppInterface
+  AppInterface,
 } from './utils/interfaces';
 import './styles/main.scss';
 
 const App = () => {
+  // the originals state is where we store original React Native elements and custom components created by the user
   const [originals, setOriginals] = React.useState<Originals>({
-    App: {
-      type: 'App',
-      children: [],
-      state: [],
-    } as AppInterface,
+    App: { type: 'App', children: [], state: [] } as AppInterface,
     View: { type: 'View', index: 0 } as OrigNativeEl,
     Button: { type: 'Button', index: 0 } as OrigNativeEl,
     Text: { type: 'Text', index: 0 } as OrigNativeEl,
@@ -35,7 +32,11 @@ const App = () => {
     StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
     ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
   });
+
+  // the copies state is where we store copies of originals when they are placed on the canvas
   const [copies, setCopies] = React.useState<Copies>({});
+
+  // where we store the current component being rendered in ComponentDetails (App displays nothing)
   const [currentComponent, setCurrentComponent] = React.useState('App');
 
   return (

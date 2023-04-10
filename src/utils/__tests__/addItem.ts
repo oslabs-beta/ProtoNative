@@ -1,6 +1,12 @@
 import { addItem } from "../addItem";
 import { AppInterface, OrigNativeEl, OrigCustomComp, CopyNativeEl, Originals, Copies } from '../interfaces';
 
+/**
+ 
+ * @description - runs jest test on the addItem function
+ 
+ */
+
 describe('addItem tests', () => {
   
   let originals: Originals;

@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect, useCallback } from 'react';
 import AppContext from '../../context/AppContext';
-import { CopyCustomComp, CopyNativeEl, OrigCustomComp, AppInterface, Parent } from '../../utils/interfaces';
+import { OrigCustomComp, AppInterface } from '../../utils/interfaces';
 import { Originals, Copies } from '../../utils/interfaces';
 import Modal from './Modal';
 import { trashCan } from '../../utils/trashCan';
