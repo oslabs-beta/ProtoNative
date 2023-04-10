@@ -3,30 +3,28 @@ import AppContext from '../../context/AppContext';
 import ComponentListItem from './ComponentListItem';
 import { OrigCustomComp, AppInterface, OrigNativeEl } from '../../utils/interfaces';
 
-// these components should be from originals
-// display  with a scroll bar
-// the components in this list need to have a delete button and a state button: modal opens up
-// delete asks are you sure?, state asks you to input state & save
-// when you click on one of these components, it opens up in comp details (use setCurrentComponents() to change the context of the current component)
-// current component should be highlighted
+
+/**
+ * @description - lists App and custom components
+ * @parent - LeftContainer.tsx
+ * @children - ComponentListItem.tsx
+ *
+ */
+
 const ComponentList = (): JSX.Element => {
-
   const { originals } = useContext(AppContext);
-
-  // create a state variable to hold list of elements
   const [components, setComponents] = useState<JSX.Element[]>([]);
 
+  // update component list with all custom components + App
   useEffect(() => {
     const newComponents: JSX.Element[] = [];
     for (const name in originals) {
       const element: (OrigCustomComp | AppInterface | OrigNativeEl) = originals[name];
       if (element.type === 'App' || element.type === 'custom') {
-        // push component block elements to array. They have the original context component name in them
         newComponents.push(<ComponentListItem key={name} comp={element} />);
       }
     }
     setComponents(newComponents);
-
   }, [originals])
 
   return (

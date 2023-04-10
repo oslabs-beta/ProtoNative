@@ -3,6 +3,7 @@ import React from 'react';
 const Modal = (props: {handleClick: any, children: any}) => {
   const { handleClick, children } = props;
 
+  // create svg of x button and add onClick event to close modal
   return (
     <div id='modal-container'>
       <div id='actual-modal'>
