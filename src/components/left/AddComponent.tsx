@@ -72,5 +72,4 @@ const AddComponent = () => {
   );
 };
 
-
 export default AddComponent;
