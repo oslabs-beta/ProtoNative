@@ -24,7 +24,7 @@
 ----
 
 <div align="center">
-ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. With its seamless drag-and-drop interface, live code preview, and much, much more, ProtoNative is your one-stop shop for all things React Native.
+ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. With its seamless drag-and-drop interface, live code preview, and much, much more, ProtoNative is your all-in-one tool for all things React Native.
 <br>
 <br>
   <a href="http://www.protonative.com/"><b>Download for Windows or Mac</b></a>
