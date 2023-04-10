@@ -110,6 +110,7 @@ export const generateTree = (
       // generate a new instance of TreeNode for that child, recursively add all of that child's descendants
       // add the child to the root's children
       ComponentTreeRoot.addChild(generateNode(childInCopies, originals, copies) as TreeNode);
+      // add this child to our prevPointers to indicate that we have come across this instance of child
       prevPointers[childInCopies.pointer] = true;
     } 
     // else if the child is a DoubleTagElement (the child can have children and is not an instance of CopyCustomComp), 
@@ -119,14 +120,12 @@ export const generateTree = (
       // and build its instance of TreeNode and its children as instances of TreeNode
       // newNodes will be an array of TreeNodes
       let newNodes = generateNode(childInCopies, originals, copies) as TreeNode[];
-      // flatten in case of nested arrays
+      // Flat is used here if there are elements nested in more than one level of a double tag element
       newNodes = newNodes.flat(Infinity);
       for (const node of newNodes) {
         // only add as a child of ComponentTreeRoot if node isn't null (which means the node created was an instance of CopyCustomComp) AND we have NOT yet seen this instance of child (not in our prevPointers store)
         if (node !== null && !(node.name in prevPointers)) {
-          // add the child to the root's children
           ComponentTreeRoot.addChild(node);
-          // add this child to our prevPointers store to indicate that we have come across this instance of child
           prevPointers[node.name] = true;
         }
       }
@@ -149,22 +148,39 @@ const generateNode = (
   originals: Originals,
   copies: Copies
 ): TreeNode | TreeNode[] => {
-
+  
+  // if the component passed in is a CopyCustomComp, find its instance in originals context (which will be OrigCustomComp)
   const originalsComp = originals[comp.pointer] as OrigCustomComp;
   const prevPointers: { [key: string]: boolean } = {};
 
+  // Only create a new TreeNode instance if the component we are looking at is a CopyCustomComp
   const compNode = isCopyCustomComp(comp) ? new TreeNode(comp.name, originalsComp) : null;
+  // find the children of the component passed in 
   const componentChildren: string[] = isCopyCustomComp(comp) ? originalsComp.children : comp.children;
-
+  
+  // if the component has no children
   if (componentChildren.length === 0) {
+    // if compNode is null (which means the component passed in is a CopyNativeEl, Double Tagged Element 
+    // because we only create an instance of TreeNode if the component passed in is a CopyCustomComp)
     if (compNode === null) return [];
+    // else the compNode is an instance of TreeNode
     return compNode;
   }
 
-  // return arrNodes if compNode is Double Tagged Element
+  // arrNodes will only be used if we are in a double tagged element(native only)
   const arrNodes: TreeNode[] = [];
+  // loop over the children of the component passed in
+  // all children will be instances in our copies context
+
+  /*
+    This for loop will go through all the children of the component passed in and create a TreeNode only for custom components.
+    If a custom component is found, we make a recursive call to that component and create nodes for it children first.
+    If a double tagged element is a child of the current component, we will generate TreeNodes for all custom components within that double tag through yet
+    another recursive call and an array of TreeNodes will be returned. We then go through this array and add only unique components (not in prevPointers). 
+  */
   for (const child of componentChildren) {
     const childInCopies: CopyNativeEl | CopyCustomComp = copies[child];
+
     if (isCopyCustomComp(childInCopies)) {
       const newNode = generateNode(childInCopies, originals, copies) as TreeNode;
 
