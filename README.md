@@ -55,37 +55,12 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 
 ### Built With
 
-[![Typescript][TS.js]][TS-url][![JavaScript][JavaScript]][JavaScript-url][![React][React.js]][React-url][![Electron][Electron]][Electron-url][![Jest][Jest]][Jest-url][![Vite][Vite]][Vite-url][![HTML5][HTML5]][HTML5-url][![CSS3][CSS3]][CSS3-url][![SASS][SASS]][SASS-url][![Git][Git]][Git-url]
+[![Typescript][TS.js]][TS-url][![JavaScript][JavaScript]][JavaScript-url][![React][React.js]][React-url][![Electron][Electron]][Electron-url][![ElectronBuilder][ElectronBuilder]][ElectronBuilder-url][![ReactDnD][ReactDnD]][ReactDnD-url][![Jest][Jest]][Jest-url][![Babel][Babel]][Babel-url][![Vite][Vite]][Vite-url][![Prettier][Prettier]][Prettier-url][![FileSaver][FileSaver]][FileSaver-url][![Prism][Prism]][Prism-url][![HTML5][HTML5]][HTML5-url][![CSS3][CSS3]][CSS3-url][![SASS][SASS]][SASS-url][![Git][Git]][Git-url]
 
 <p align="right"><a href="#readme-top">back to top</a></p>
 
 
-
-
-// built with clickable buttons, plus list with any that 
-Make buttons for:
-Electron
-Electron Builder
-Babel
-Prism.js
-FileSaver?
-JS zip
-Prettier
-React DND
-
-Copy Buttons:
-React
-Typescript
-HTML5
-CSS3
-Javascript
-Jest 
-Vite
-Git
-SaSS
-
-
-
+<!--
 // table of contents with clickable links
 // overview with gif image of main app
 // installation instructions (maybe with images)
@@ -95,6 +70,8 @@ SaSS
 // next steps / roadmap : link to another readme for devs who want to iterate
 // our team
 // license
+-->
+
 
 [React.js]: https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB
 [React-url]: https://reactjs.org/
@@ -116,3 +93,15 @@ SaSS
 [SASS-url]: https://sass-lang.com/
 [Electron]: https://img.shields.io/badge/Electron-191970?style=for-the-badge&logo=Electron&logoColor=white
 [Electron-url]: https://www.electronjs.org/
+[ElectronBuilder]: https://img.shields.io/badge/Electron_Builder-2094f3?style=for-the-badge&logo=electron-builder&logoColor=white
+[ElectronBuilder-url]: https://www.electron.build/
+[Babel]: https://img.shields.io/badge/Babel-323330?style=for-the-badge&logo=Babel
+[Babel-url]: https://babeljs.io/
+[Prism]: https://img.shields.io/badge/Prism-blue?style=for-the-badge&logo=Prisma
+[Prism-url]: https://Prismjs.com/
+[FileSaver]: https://img.shields.io/badge/FileSaver-darkgreen?style=for-the-badge&logo=Files&logoColor=white
+[FileSaver-url]: https://www.npmjs.com/package/file-saver
+[Prettier]: https://img.shields.io/badge/Prettier-1a2b34?style=for-the-badge&logo=Prettier
+[Prettier-url]: https://prettier.io/
+[ReactDnD]: https://img.shields.io/badge/React_DnD-%2320232a?style=for-the-badge&logo=createreactapp
+[ReactDnD-url]: https://react-dnd.github.io/react-dnd/about
