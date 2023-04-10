@@ -135,20 +135,27 @@ type CompCode = {
  */
 const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp, originals: Originals, copies: Copies): CompCode => {
 
+  // store all imports necessary for the component
   const toImport: string[] = [];
 
-  const getCompCode = (comp: CopyNativeEl | CopyCustomComp) => {
+  const getCompCode = (comp: CopyNativeEl | CopyCustomComp): string => {
 
+    // name of the component passed in
     const currElement: string = isCopyCustomComp(comp) ? comp.pointer : comp.type;
 
+    // make sure to include necessary props for the component
     let necessaryProps: string = '';
     if (currElement === 'Button') necessaryProps += `title=''`;
     else if (currElement === 'SectionList') necessaryProps += `sections={[]}`;
     else if (currElement === 'TextInput') necessaryProps += `value={''}`;
 
+    // find the children of the component passed in
     const originalsComp = originals[comp.pointer] as OrigCustomComp;
     const componentChildren: string[] = isCopyCustomComp(comp) ? originalsComp.children : comp.children;
 
+    // if the component passed in has no children, or is a CopyCustomComp
+    // add this component to the imports
+    // and return the tags for the component with its necessary props
     if (componentChildren.length === 0 || comp.type === 'custom') {
       isCopyCustomComp(comp) ? toImport.push(comp.pointer) : toImport.push(comp.type);
       return isDoubleTagElement(currElement)
@@ -157,16 +164,21 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp, originals: O
         : `<${currElement} ${necessaryProps}/>`;
     }
 
+    // add imports for current component passed in if it is a Copy Native Element (not a Copy Custom Component)
     if (!isCopyCustomComp(comp)) {
       toImport.push(comp.type);
     }
 
     let childrenNodes: string = '';
+    // loop over children of component passed in 
+    // add imports for child
+    // recursively gather code for the child and its descendants
     for (const child of componentChildren) {
       const childInCopies = copies[child];
       isCopyCustomComp(childInCopies) ? toImport.push(childInCopies.pointer) : toImport.push(childInCopies.type);
       childrenNodes += `${getCompCode(childInCopies)}\n`;
     }
+    // pass in the children nodes to be children of the current component
     return  `<${currElement} ${necessaryProps}> 
                 ${childrenNodes} 
           </${currElement} ${necessaryProps}>`;
