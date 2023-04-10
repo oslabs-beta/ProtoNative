@@ -118,7 +118,7 @@ export const moveItem = (
         };
       });
       //change children array of top level component
-      setOriginals((prevState: any) => {
+      setOriginals((prevState: Originals) => {
         const oldParentObj = prevState[parentComp];
         const newParentObj = {
           ...oldParentObj,
@@ -132,7 +132,7 @@ export const moveItem = (
     } 
     //item is moving top level to top level
     else {
-      setOriginals((prevState: any) => {
+      setOriginals((prevState: Originals) => {
         const oldParentObj = prevState[parentComp];
         const newParentObj = {
           ...oldParentObj,
@@ -147,7 +147,7 @@ export const moveItem = (
   }
   //nested item moved somewhere
   else {
-    setCopies((prevState: any) => {
+    setCopies((prevState: Copies) => {
       const oldParentObj = prevState[parentComp];
       const newParentObj = {
         ...oldParentObj,
@@ -160,7 +160,7 @@ export const moveItem = (
     });
     //nested item to top level
     if (originals[parent]) {
-      setOriginals((prevState: any) => {
+      setOriginals((prevState: Originals) => {
         const oldDropObj = prevState[parent];
         const newDropObj = {
           ...oldDropObj,
@@ -175,7 +175,7 @@ export const moveItem = (
     } 
     //nested item to another nested element
     else {
-      setCopies((prevState: any) => {
+      setCopies((prevState: Copies) => {
         const oldDropObj = prevState[parent];
         const newDropObj = {
           ...oldDropObj,

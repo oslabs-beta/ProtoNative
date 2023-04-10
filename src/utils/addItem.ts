@@ -31,6 +31,7 @@ export const addItem =
   //adding a custom element
   if (originals[name].type === 'custom') {
     //custom component dropped to top level
+    
     if (originals[parent]) {
       newElement = {
         name: newEleObj.name + newEleObj.index,
@@ -132,8 +133,8 @@ export const addItem =
       
       //incrementing index + adding copies to the originals
       //update children array of the original component to include new item
-      setOriginals((previous: any) => {
-        const prevDroppedElement = previous[name];
+      setOriginals((previous: Originals) => {
+        const prevDroppedElement = previous[name] as (OrigNativeEl | OrigCustomComp);
         const newDroppedElement = {
           ...prevDroppedElement,
           index: prevDroppedElement.index + 1,
