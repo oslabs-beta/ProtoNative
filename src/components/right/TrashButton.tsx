@@ -23,7 +23,6 @@ const TrashButton = (): JSX.Element => {
       isOver: monitor.isOver(),
     }),
   });
-  // accept type of 'element'
   // use the item object in the drop method that we will declare
   // deep copy the two contexts' and feed that as well as item.name to the trashCan function
 

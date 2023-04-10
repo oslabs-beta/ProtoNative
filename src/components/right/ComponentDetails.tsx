@@ -44,6 +44,7 @@ const ComponentDetails = (): JSX.Element => {
     );
   }, [currentComponent, counter, copies]);
 
+  //set the index for drop layer to add to end of parent
   const dropLayerIndex: number = displayedComponent.children.length
     ? displayedComponent.children.length
     : 0;

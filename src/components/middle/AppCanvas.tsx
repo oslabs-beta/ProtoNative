@@ -4,8 +4,7 @@ import ElementBlock from '../right/ElementBlock';
 import DropLayer from '../right/DropLayer';
 import TreeHierarchy from './TreeHierarchy';
 
-import {
-  AppInterface} from '../../utils/interfaces';
+import {AppInterface} from '../../utils/interfaces';
 
 
 const AppCanvas = (): JSX.Element => {
@@ -13,11 +12,10 @@ const AppCanvas = (): JSX.Element => {
   const App = originals.App as AppInterface;
   const [appComponents, setAppComponents] = useState<JSX.Element[]>([]);
   const [counter, setCounter] = useState<number>(0);
-  const [current, setCurrent] = useState<string>('app')
+  const [current, setCurrent] = useState<string>('app') //renders app canvas or tree hierarchy
 
   useEffect(() => {
     setAppComponents(App.children.map((child: string, index: number) => {
-      if (copies[child].type === 'custom') {
         return (
           <ElementBlock
             key={index}
@@ -32,39 +30,21 @@ const AppCanvas = (): JSX.Element => {
             setCounter={setCounter}
           />
         );
-      } else {
-        return (
-          <ElementBlock
-            key={index}
-            componentName={child}
-            copies={copies}
-            setCopies={setCopies}
-            originals={originals}
-            setOriginals={setOriginals}
-            index={index}
-            location={'app'}
-            parent={'App'}
-            setCounter={setCounter}
-          />
-        );
-      }
     }));
   }, [counter, originals]);
 
+  //set the index for drop layer to add to end of parent
   const dropLayerIndex: number = App.children.length ? App.children.length : 0;
 
-  const handleClick = (button:string): void => {
-    setCurrent(button)
-  }
-
+  //set the active tab 
   const activeApp: string = current === 'app' ? 'tabs' : 'non-active tabs'
   const activeTree: string = current === 'tree' ? 'tabs' : 'non-active tabs'
 
   return (
     <div id='middle-container'>
       <div id='middle-button-container'>
-        <button className={activeApp} onClick={()=>handleClick('app')}>App</button>
-        <button className={activeTree} onClick={() => handleClick('tree')}>Tree</button>
+        <button className={activeApp} onClick={()=>setCurrent('app')}>App</button>
+        <button className={activeTree} onClick={() => setCurrent('tree')}>Tree</button>
       </div>
 
 

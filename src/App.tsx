@@ -7,10 +7,7 @@ import {
   Originals,
   Copies,
   OrigNativeEl,
-  AppInterface,
-  OrigCustomComp,
-  CopyNativeEl,
-  CopyCustomComp,
+  AppInterface
 } from './utils/interfaces';
 import './styles/main.scss';
 
