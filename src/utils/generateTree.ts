@@ -108,7 +108,6 @@ export const generateTree = (
     // if the child is a CopyCustomComp AND we have NOT yet seen this instance of child (not in our prevPointers store)
     if (isCopyCustomComp(childInCopies) && !(childInCopies.pointer in prevPointers)) {
       // generate a new instance of TreeNode for that child, recursively add all of that child's descendants
-      // add the child to the root's children
       ComponentTreeRoot.addChild(generateNode(childInCopies, originals, copies) as TreeNode);
       // add this child to our prevPointers to indicate that we have come across this instance of child
       prevPointers[childInCopies.pointer] = true;
@@ -131,7 +130,6 @@ export const generateTree = (
       }
     }
   }
-  // return new instance of tree
   return new Tree(ComponentTreeRoot);
 };
 
