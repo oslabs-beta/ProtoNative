@@ -160,7 +160,7 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp, originals: O
       isCopyCustomComp(comp) ? toImport.push(comp.pointer) : toImport.push(comp.type);
       return isDoubleTagElement(currElement)
         ? `<${currElement} ${necessaryProps}>
-          </${currElement} ${necessaryProps}>`
+          </${currElement}>`
         : `<${currElement} ${necessaryProps}/>`;
     }
 
