@@ -4,18 +4,22 @@ import Modal from './Modal';
 import { Originals } from '../../utils/interfaces';
 
 
-// user clicks Add CC button, modal opens
-// they type in their name in camelCase : if not camelCase error? or can we convert?
-// when first created, goes into originals
-// then when user drags into app or wherever, then it gets copied into copies
-
+/**
+ * @description - creates a custom component based on user input
+ * @parent - LeftContainer.tsx
+ * @children - Modal.tsx
+ *
+ */
 
 const AddComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [componentName, setComponentName] = useState('');
   const { originals, setOriginals, setCurrentComponent } = useContext(AppContext);
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    
+    // check if component name is valid
     if (componentName in originals) return document.querySelector('.error-message').innerHTML = 'Component name already exists!';
     if (!/^[A-Z][a-zA-Z]*$/.test(componentName)) return document.querySelector('.error-message').innerHTML = 'Component name must be in PascalCase!';
     setOriginals((previous: Originals): Originals => {
@@ -67,6 +71,5 @@ const AddComponent = () => {
     </div>
   );
 };
-
 
 export default AddComponent;

@@ -6,7 +6,15 @@ type Props = {
   type: string;
 };
 
-const AddChild = ({ name, type }: Props): JSX.Element => {
+
+/**
+ * @description - displays a draggable element with its name
+ * @parent - AddChild.tsx
+ * @children - none
+ *
+ */
+
+const AddableChild = ({ name, type }: Props): JSX.Element => {
   // make this component draggable
   const [, drag] = useDrag({
     type: 'newElement',
@@ -24,4 +32,4 @@ const AddChild = ({ name, type }: Props): JSX.Element => {
   );
 };
 
-export default AddChild;
+export default AddableChild;
