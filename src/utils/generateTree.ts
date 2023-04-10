@@ -13,6 +13,7 @@ import {
 } from './parser';
 
 // TreeNode Class (each instance of TreeNode will represent a node in our tree hierarchy visualization in app canvas)
+// Each instance has these 4 properties:
 // name: name of the original custom component (or app component) represented in the node
 // data: the actual object of the component that exists in our originals context (can either be an OrigCustomComp or AppInterface)
 // children: array of TreeNodes, representing the instances of components represented by TreeNodes that are its children
@@ -51,6 +52,9 @@ export class TreeNode {
   }
 }
 
+// Tree class (instance of this class will represent the tree in our tree hierarchy visualization in app canvas)
+// instance will only have a root of the tree, and the entire tree can be traversed starting from the root
+// root: the root of a tree, which will be an instance of TreeNode, but its data property will only be an AppInterface (not OrigCustomComp) since App is always the root 
 export class Tree {
   private _root: TreeNode;
 
