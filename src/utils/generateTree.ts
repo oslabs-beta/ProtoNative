@@ -12,6 +12,11 @@ import {
   isOrigCustomComp,
 } from './parser';
 
+// TreeNode Class (each instance of TreeNode will represent a node in our tree hierarchy visualization in app canvas)
+// name: name of the original custom component (or app component) represented in the node
+// data: the actual object of the component that exists in our originals context (can either be an OrigCustomComp or AppInterface)
+// children: array of TreeNodes, representing the instances of components represented by TreeNodes that are its children
+// hashedName: the name of the copy of the original custom component that exists in our copies context, used to differentiate copies of nodes in our tree when using react flow
 export class TreeNode {
   private _name: string;
   private _data: OrigCustomComp | AppInterface;
@@ -43,10 +48,6 @@ export class TreeNode {
 
   addChild(child: TreeNode): void {
     this._children.push(child);
-  }
-
-  deleteChild(child: TreeNode): void {
-    this._children.splice(this._children.indexOf(child), 1);
   }
 }
 
