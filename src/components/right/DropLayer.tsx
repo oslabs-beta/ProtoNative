@@ -87,8 +87,9 @@ const DropLayer = (props: DropLayerProps) => {
         return;
       }
 
-      const dragIndex: number = item.index;
-      const hoverIndex: number = index;
+      const dragIndex: number = item.index; 
+      const hoverIndex: number = index; 
+      //item is already in component, move element
       if (item.type === 'elements') {
         moveItem(
           originals,
@@ -101,7 +102,9 @@ const DropLayer = (props: DropLayerProps) => {
           item.parentComp,
           parent
         );
-      } else {
+      } 
+      //item is from add child section
+      else {
         addItem(
           originals,
           setOriginals,
