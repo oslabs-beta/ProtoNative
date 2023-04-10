@@ -35,7 +35,7 @@ type CustomFlowNodesType = {
 type DefaultFlowNodesType = {
   id: string,
   type: string,
-  data: {}
+  data: {label: string}
   position: {x: number, y: number}
 }
 

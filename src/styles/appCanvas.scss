@@ -16,12 +16,14 @@
     font-family: $main-font;
     margin: 0 0px;
     cursor: pointer;
+    transform-style: preserve-3d;
   }
-  .tabs:before{
+  .tabs::before{
     border-color : transparent $container-background transparent transparent;
     transform : rotate(48deg);
     left: -30px;
     top: 7px;
+
   }
   .tabs:after{
     border-color : transparent transparent transparent $container-background;
@@ -29,7 +31,7 @@
     right: -30px;
     top: 7px;
   }
-  .tabs:before, .tabs:after{
+  .tabs::before, .tabs::after{
     content : '';
     background : transparent;
     height: 20px;
@@ -38,6 +40,8 @@
     border-width: 10px;
     border-style : solid;
     position : absolute;
+    z-index: -1;
+
   }
   .non-active{
     background-color: #111111;
@@ -45,13 +49,17 @@
     z-index: 1;
   }
   .non-active::after{
-    border-color: transparent transparent transparent #111111
+    position: absolute;
+    z-index: -1;
+    border-color: transparent transparent transparent #111111;
+    
   }
   .non-active::before{
+    position: absolute;
+    z-index: -1;
     border-color : transparent #111111 transparent transparent;
   }
 }
-
 
 #middle-button-container{
   margin-left: 20px;
