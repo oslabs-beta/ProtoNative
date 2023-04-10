@@ -181,7 +181,7 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp, originals: O
     // pass in the children nodes to be children of the current component
     return  `<${currElement} ${necessaryProps}> 
                 ${childrenNodes} 
-          </${currElement} ${necessaryProps}>`;
+          </${currElement}>`;
   }
 
   return { JSXcode: getCompCode(comp), allToImport: toImport };
