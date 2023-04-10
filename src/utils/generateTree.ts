@@ -98,7 +98,7 @@ export const generateTree = (
 ): Tree => {
   // create new tree node that be the root of our tree
   const ComponentTreeRoot = new TreeNode(root.type, root);
-  // we only want a single instance of the child in ComponentTreeRoot's children, so keep track if there are multiple copies as children
+  // We use prevPointers to keep track of children we have already visited, if two instances of a custom component are present, we only want to keep one to display in the tree
   const prevPointers: { [key: string]: boolean } = {};
   // loop over the root's children (children array of strings in AppInterface)
   // every child will be in copies context
@@ -110,32 +110,36 @@ export const generateTree = (
       // generate a new instance of TreeNode for that child, recursively add all of that child's descendants
       // add the child to the root's children
       ComponentTreeRoot.addChild(generateNode(childInCopies, originals, copies) as TreeNode);
-      // add this child to our prevPointers store to indicate that we have come across this instance of child
       prevPointers[childInCopies.pointer] = true;
     } 
     // else if the child is a DoubleTagElement (the child can have children and is not an instance of CopyCustomComp), 
     // then we want to keep searching our copies context to see if more instances of CopyCustomComponents exist down the descendant lineage
     else if (isDoubleTagElement(childInCopies.type)) {
-      // feed the double tag element child in generateNode to filter out all copy Native elements, and build its instance of TreeNode and its children as instances of TreeNode
+      // feed the double tag element child in generateNode to filter out all copy Native elements, 
+      // and build its instance of TreeNode and its children as instances of TreeNode
       // newNodes will be an array of TreeNodes
       let newNodes = generateNode(childInCopies, originals, copies) as TreeNode[];
       // flatten in case of nested arrays
       newNodes = newNodes.flat(Infinity);
       for (const node of newNodes) {
-        // only add as a child of ComponentTreeRoot if node isn't null (which means )
+        // only add as a child of ComponentTreeRoot if node isn't null (which means the node created was an instance of CopyCustomComp) AND we have NOT yet seen this instance of child (not in our prevPointers store)
         if (node !== null && !(node.name in prevPointers)) {
+          // add the child to the root's children
           ComponentTreeRoot.addChild(node);
+          // add this child to our prevPointers store to indicate that we have come across this instance of child
           prevPointers[node.name] = true;
         }
       }
     }
   }
+  // return new instance of tree
   return new Tree(ComponentTreeRoot);
 };
 
 /**
  * @method generateNode
- * @description generates the instance of TreeNode and recursively generate all instances of its children as TreeNodes, filters out instances of CopyNativeEl but keeps instances of CopyCustomComp
+ * @description generates the instance of TreeNode and recursively generate all instances of its children as TreeNodes, filters out instances of CopyNativeEl 
+ * but keeps instances of CopyCustomComp and if custom components are siblings, only display one of them
  * @input component to generate the node for (can either be CopyNativeEl or CopyCustomComp)
  * @output either a single TreeNode or array of TreeNodes, depending on whether the component has multiple children
  */
@@ -150,9 +154,7 @@ const generateNode = (
   const prevPointers: { [key: string]: boolean } = {};
 
   const compNode = isCopyCustomComp(comp) ? new TreeNode(comp.name, originalsComp) : null;
-  const componentChildren: string[] = isCopyCustomComp(comp)
-    ? originalsComp.children
-    : comp.children;
+  const componentChildren: string[] = isCopyCustomComp(comp) ? originalsComp.children : comp.children;
 
   if (componentChildren.length === 0) {
     if (compNode === null) return [];
