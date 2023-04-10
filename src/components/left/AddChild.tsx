@@ -16,8 +16,9 @@ const AddChild = (): JSX.Element => {
     for (const name in originals) {
       const element: (OrigCustomComp | OrigNativeEl | AppInterface) = originals[name];
       if (element.type !== 'App') {
+        const type = element.type;
         children.push(
-          <AddableChild name={name} key={name} />
+          <AddableChild name={name} type={type} key={name} />
         );
       }
     }

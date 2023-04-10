@@ -46,3 +46,22 @@
     color: white;
   }
 }
+
+.addableComponent {
+  background-color: $button-primary;
+  transform: translate(0, 0);
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  border: 1px solid black;
+  height: 40px;
+  margin: 8px;
+  padding: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  &:hover {
+    transition: .3s;
+    background-color: $highlight-color;
+    color: white;
+  }
+}

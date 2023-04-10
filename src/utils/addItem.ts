@@ -1,5 +1,4 @@
 import {
-  AppInterface,
   OrigCustomComp,
   Originals,
   Copies,
@@ -7,6 +6,8 @@ import {
   CopyNativeEl,
   OrigNativeEl,
 } from './interfaces';
+
+import { isOrigCustomComp } from './parser';
 
 /**
  * @method addItem
@@ -25,11 +26,11 @@ export const addItem =
   name: string, 
   hoverIndex: number, 
   parent: string) => {
-  let newElement = {} as CopyCustomComp | CopyNativeEl;
-  let newEleObj = originals[name] as OrigNativeEl | OrigCustomComp;
+  let newElement: CopyCustomComp | CopyNativeEl;
+  let newEleObj = originals[name] as (OrigNativeEl | OrigCustomComp);
 
   //adding a custom element
-  if (originals[name].type === 'custom') {
+  if (isOrigCustomComp(newEleObj)) {
     //custom component dropped to top level
     
     if (originals[parent]) {
@@ -38,8 +39,9 @@ export const addItem =
         type: newEleObj.type,
         parent: { origin: 'original', key: parent },
         pointer: name,
-      };
-      const dropArr: string[] = [...originals[parent].children];
+      } as CopyCustomComp;
+      const dropParentArrOrig = originals[parent] as OrigCustomComp;
+      const dropArr: string[] = [...dropParentArrOrig.children];
       dropArr.splice(hoverIndex, 0, newElement.name);
 
       //incrementing index + adding copies to the originals 
@@ -81,8 +83,8 @@ export const addItem =
         parent: { origin: 'copies', key: parent },
         pointer: name,
       };
-
-      const dropArr: string[] = [...copies[parent].children];
+      const dropParentArrCopy = copies[parent] as CopyNativeEl;
+      const dropArr: string[] = [...dropParentArrCopy.children];
       dropArr.splice(hoverIndex, 0, newElement.name);
 
       //incrementing index + adding copies to the originals
@@ -127,8 +129,8 @@ export const addItem =
         parent: { origin: 'original', key: parent },
         children: [],
       };
-
-      const dropArr = [...originals[parent].children];
+      const dropParentArrOrig = originals[parent] as OrigCustomComp;
+      const dropArr = [...dropParentArrOrig.children];
       dropArr.splice(hoverIndex, 0, newElement.name);
       
       //incrementing index + adding copies to the originals
@@ -169,7 +171,8 @@ export const addItem =
         children: [],
       };
 
-      const dropArr = [...copies[parent].children];
+      const dropParentArrCopy = copies[parent] as CopyNativeEl;
+      const dropArr = [...dropParentArrCopy.children];
       dropArr.splice(hoverIndex, 0, newElement.name);
 
       //update index of dropped element

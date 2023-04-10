@@ -78,7 +78,6 @@ const NavBar = (): JSX.Element => {
 
   const handleClick = () => {
     setIsOpen(false);
-    console.log('close button clicked');
   };
 
   return (
@@ -107,8 +106,7 @@ const NavBar = (): JSX.Element => {
             <div id='confirmModal'>
               <h3>Are you sure you want to clear all?</h3>
               <p>
-                This will delete <b>absolutely everything</b> from your
-                application!
+                This will delete everything from your application!
               </p>
               <p>Please confirm to proceed.</p>
               <div id='confirm-modal-buttons'>

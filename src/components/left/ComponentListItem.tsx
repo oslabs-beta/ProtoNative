@@ -3,7 +3,6 @@ import AppContext from '../../context/AppContext';
 import { CopyCustomComp, CopyNativeEl, OrigCustomComp, AppInterface, Parent } from '../../utils/interfaces';
 import { Originals, Copies } from '../../utils/interfaces';
 import Modal from './Modal';
-import { isCopyCustomComp } from '../../utils/parser';
 import { trashCan } from '../../utils/trashCan';
 import { deepCopy } from '../../utils/deepCopy';
 
@@ -22,11 +21,8 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	// set State for components this needs to go on the originals
-	//  and on copies?
 	const [newState, setNewState] = useState('');
 	// the input state will go on originals[name].state
-	// 
-	
 
 	const handleClick = () => {
 		setNewState('');
@@ -47,7 +43,6 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 					<button className='list-state-button' 
 									onClick={(e) => {
 										handleStateClick(e)
-										setTimeout(()=>document.getElementById('state-modal-input').focus(), 50)
 									}
 						}>State</button>
 					<button className='list-delete-button'onClick={(e) => handleDeleteClick(e)}>Delete</button>
@@ -64,12 +59,8 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		setCurrentModal('delete');
 	}
 
-	// TODO: Add a modal that asks the user if they are sure they want to delete the component
-	// TODO: import type of event object
 	// type for event React.MouseEvent<HTMLElement> but hasn't been working, so using any for now
 	const handleDeleteConfirmClick = (event: any): void => {
-
-		
 
 		let newCopies = deepCopy(copies) as Copies;
 		let newOriginals = deepCopy(originals) as Originals;
@@ -99,25 +90,89 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		if (currentComponent === OriginalCustomComponent.name) setCurrentComponent('App');
 	}
 	
-	// TODO: Add a modal for the user to input state
 	const handleStateClick = (event: any): void => {
-
 		// prevent the click from propagating to the parent div
 		event.cancelBubble = true;
 		event.stopPropagation && event.stopPropagation();
 		
-		// TODO: Flesh out state modal
+		//autofocus the input
+		setTimeout(()=>document.getElementById('state-modal-input').focus(), 50)
+		
 		setIsOpen(true)
 		setCurrentModal('state')
-		console.log('clicked state')
 	}
 
 	const handleStateSaveClick = (event: any): void => {
-		console.log(`new state for ${OriginalCustomComponent.name ?? comp.type}: ${newState}`);
 		// create a copy of the originals object
 		// update the componant with the added state in the copies
 		event.preventDefault();
 		setOriginals((prevOriginals) => {
+			const reservedJSKeywords = {
+				'abstract': true,
+				'arguments': true,
+				'await': true,
+				'boolean': true,
+				'break': true,
+				'byte': true,
+				'case': true,
+				'catch': true,
+				'char': true,
+				'class': true,
+				'const': true,
+				'continue': true,
+				'debugger': true,
+				'default': true,
+				'delete': true,
+				'do': true,
+				'double': true,
+				'else': true,
+				'enum': true,
+				'eval': true,
+				'export': true,
+				'extends': true,
+				'false': true,
+				'final': true,
+				'finally': true,
+				'float': true,
+				'for': true,
+				'function': true,
+				'goto': true,
+				'if': true,
+				'implements': true,
+				'import': true,
+				'in': true,
+				'instanceof': true,
+				'int': true,
+				'interface': true,
+				'let': true,
+				'long': true,
+				'native': true,
+				'new': true,
+				'null': true,
+				'package': true,
+				'private': true,
+				'protected': true,
+				'public': true,
+				'return': true,
+				'short': true,
+				'static': true,
+				'super': true,
+				'switch': true,
+				'synchronized': true,
+				'this': true,
+				'throw': true,
+				'throws': true,
+				'transient': true,
+				'true': true,
+				'try': true,
+				'typeof': true,
+				'var': true,
+				'void': true,
+				'volatile': true,
+				'while': true,
+				'with': true,
+				'yield': true,
+			}
 			const updatedOriginals = { ...prevOriginals };
 			const originalElement = updatedOriginals[OriginalCustomComponent.name ?? comp.type] as OrigCustomComp | AppInterface;
 			if (originalElement.state.includes(newState)) {
@@ -125,6 +180,9 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 				return prevOriginals;
 			} else if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(newState)) {
 				document.querySelector('.error-message').innerHTML = 'State must not include symbols!';
+				return prevOriginals;
+			} else if (reservedJSKeywords[newState as keyof typeof reservedJSKeywords]) {
+				document.querySelector('.error-message').innerHTML = 'State must not be a reserved javascript keyword!';
 				return prevOriginals;
 			} else  {
 			  originalElement.state.push(newState);
@@ -134,10 +192,6 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 		})
 		setNewState('');
 	}
-
-	const handleClose = (): void => {
-		setIsOpen(false);
-	};
 
 	const handleDeleteState = (value: string): void => {
 		setOriginals((prevOriginals) => {
@@ -186,7 +240,7 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 									<p>This will delete all occurrences of {OriginalCustomComponent.name} everywhere!</p>
 									<div id='delete-modal-buttons'>
 										<button className='list-state-button delete-confirm-button' onClick={handleDeleteConfirmClick}>Confirm</button>
-										<button className='list-delete-button' onClick={() => handleClose()}>Cancel</button>	
+										<button className='list-delete-button' onClick={() => setIsOpen(false)}>Cancel</button>	
 									</div>
 								</div> )
 							: null

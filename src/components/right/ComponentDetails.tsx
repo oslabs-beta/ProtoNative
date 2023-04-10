@@ -5,7 +5,6 @@ import DropLayer from './DropLayer';
 import {
   AppInterface,
   OrigCustomComp,
-  Originals,
 } from '../../utils/interfaces';
 
 const ComponentDetails = (): JSX.Element => {
@@ -56,6 +55,7 @@ const ComponentDetails = (): JSX.Element => {
         {currentComponent === 'App' ? '' : <span> {currentComponent}</span>}
       </h2>
 
+      {/* only show if the active commponent is not App */}
       {currentComponent !== 'App' && (
         <div style={{ border: '1px solid black' }} id='component-box'>
           {childElements}

@@ -1,7 +1,7 @@
 {
   "name": "protonative",
   "version": "1.0.0",
-  "description": "A React Native prototyping tool",
+  "description": "React Native prototyping tool",
   "main": "./src/electron.ts",
   "scripts": {
     "start": "concurrently \"npm run vite\" \"node -e \\\"setTimeout(() => process.exit(0), 1000)\\\" && npm run electron\"",
@@ -14,7 +14,10 @@
     "preview": "vite preview",
     "test": "jest --verbose"
   },
-  "author": "Team ProtoNative",
+  "author": {
+    "name": "Team ProtoNative",
+    "url": "https://www.protonative.com/"
+  },
   "contributors": [
     "Matthew Kymn",
     "Michelle Leong",
@@ -32,12 +35,13 @@
     "react",
     "native"
   ],
-  "homepage": "https://github.com/oslabs-beta/ProtoNative#readme",
+  "homepage": "https://github.com/oslabs-beta/ProtoNative",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.21.4",
     "@babel/preset-env": "^7.21.4",
     "@babel/preset-typescript": "^7.21.4",
+    "@types/dagre": "^0.7.48",
     "@types/file-saver": "^2.0.5",
     "@types/jest": "^29.5.0",
     "@types/prismjs": "^1.26.0",
@@ -47,6 +51,7 @@
     "babel-jest": "^29.5.0",
     "concurrently": "8.0.1",
     "cross-env": "^7.0.3",
+    "dagre": "^0.8.5",
     "electron": "^23.2.0",
     "electron-builder": "^24.1.1",
     "electron-reloader": "1.2.3",
@@ -61,6 +66,7 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
+    "reactflow": "^11.7.0",
     "sass": "^1.60.0",
     "scss": "^0.2.4",
     "ts-node": "^10.9.1",
@@ -73,11 +79,29 @@
     "asar": true,
     "win": {
       "target": "nsis",
-      "icon": "./build/icons/windowsIcon.png"
+      "icon": "./build/icons/windowsIcon.png",
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "nsis": {
+      "oneClick": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "ProtoNative",
+      "perMachine": false,
+      "deleteAppDataOnUninstall": true,
+      "allowElevation": false,
+      "allowToChangeInstallationDirectory": true,
+      "menuCategory": true,
+      "installerLanguages": ["en_US"]
     },
     "mac": {
       "target": "dmg",
-      "icon": "./build/icons/macIcon.icns"
+      "icon": "./build/icons/macIcon.icns",
+      "category": "public.app-category.developer-tools"
+    },
+    "dmg": {
+      "icon": "./build/icons/macIcon.icns",
+      "title": "ProtoNative"
     },
     "linux": {
       "target": "AppImage"
@@ -89,5 +113,8 @@
     "directories": {
       "buildResources": "assets"
     }
+  },
+  "bugs": {
+    "url": "https://github.com/oslabs-beta/ProtoNative/issues"
   }
 }

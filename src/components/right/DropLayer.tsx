@@ -2,17 +2,14 @@ import React, { useState } from 'react';
 import { useDrop } from 'react-dnd';
 import Modal from '../left/Modal';
 import {
-  AppInterface,
   OrigCustomComp,
   Originals,
   Copies,
   CopyCustomComp,
   CopyNativeEl,
-  OrigNativeEl,
 } from '../../utils/interfaces';
 import { moveItem } from '../../utils/moveItem';
 import { addItem } from '../../utils/addItem';
-import { compileFunction } from 'vm';
 
 type DropLayerProps = {
   index: number;
@@ -54,16 +51,18 @@ const DropLayer = (props: DropLayerProps) => {
         name: string
       ): boolean => {
         if (name === ancestor.parent.key) return true;
+        const origAncestorParent = originals[ancestor.parent.key] as OrigCustomComp;
         return ancestor.parent.key === 'App'
           ? false
           : ancestor.parent.origin === 'original'
-          ? originals[ancestor.parent.key].copies.some((copyName: string) =>
+          ? origAncestorParent.copies.some((copyName: string) =>
               isItsOwnAncestor(copies[copyName], name)
             )
           : isItsOwnAncestor(copies[ancestor.parent.key], name);
       };
 
       // prevent circular references by checking full component lineage
+      const origCustom = originals[parent] as OrigCustomComp;
       if (item.name === parent) {
         setErrorMsg('Cannot add a component to itself!');
         setIsOpen(true);
@@ -79,7 +78,7 @@ const DropLayer = (props: DropLayerProps) => {
       } else if (
         originals[parent] &&
         parent !== 'App' &&
-        originals[parent].copies.some((copyName: string) =>
+        origCustom.copies.some((copyName: string) =>
           isItsOwnAncestor(copies[copyName], item.name)
         )
       ) {

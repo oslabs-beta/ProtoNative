@@ -18,7 +18,6 @@ const App = () => {
   const [originals, setOriginals] = React.useState<Originals>({
     App: {
       type: 'App',
-      // children: [],
       children: [],
       state: [],
     } as AppInterface,
@@ -42,12 +41,7 @@ const App = () => {
   const [copies, setCopies] = React.useState<Copies>({});
   const [currentComponent, setCurrentComponent] = React.useState('App');
 
-  // FIXME: Turn off strict mode when unnecesary
-  // FIXME: Turn off strict mode when unnecesary
-  // FIXME: Turn off strict mode when unnecesary
-  // FIXME: Turn off strict mode when unnecesary
   return (
-    <React.StrictMode>
       <AppContext.Provider
         value={{
           originals,
@@ -63,24 +57,7 @@ const App = () => {
           <MainContainer />
         </div>
       </AppContext.Provider>
-    </React.StrictMode>
   );
 };
 
-// use create root instead of render
 createRoot(document.getElementById('root')).render(<App />);
-
-{
-  /* //    CoolerComponent0: {
-                type: 'custom',
-            parent: 'App',
-            pointer: 'CoolerComponent',
-            children: function() {
-        return originals[this.pointer].children;
-      },
-            state: function() {
-        return originals[this.pointer].state;
-      }
-    } as CopyCustomComp,
-  });</AppContext.Provider> */
-}

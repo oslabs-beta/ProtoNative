@@ -6,6 +6,7 @@ import {
   CopyCustomComp,
   Originals,
   OrigCustomComp,
+  AppInterface,
 } from '../../utils/interfaces';
 import DropLayer from './DropLayer';
 import { isDoubleTagElement } from '../../utils/parser';
@@ -38,7 +39,7 @@ const ElementBlock = ({
   location,
   parent,
   setCounter,
-}: ElementBlockProps) => {
+}: ElementBlockProps): JSX.Element => {
   const componentDef = copies[componentName] as CopyCustomComp | CopyNativeEl;
   let childElements: JSX.Element[];
   let children: string[];
@@ -69,35 +70,32 @@ const ElementBlock = ({
     return allNested;
   };
 
-  //show bottom drop layer for native elements
-  let inNative =
-    copies[parent] && copies[parent].children.length - 1 === index
-      ? true
-      : false;
-
-  //unable to drag nested custom components in app canvas
-  let nestedComponentInApp: boolean;
-
-  let showLayers: boolean;
-
+  const copiesParent = copies[parent] as CopyNativeEl;
+  
   //check to see if ancestor is a custom component
   const hasCustomAncestor = (
     ancestor: CopyCustomComp | CopyNativeEl,
     name: string
-  ): boolean => {
-    if (ancestor.type === 'custom') return true;
-    return ancestor.parent.key === 'App'
+    ): boolean => {
+      if (ancestor.type === 'custom') return true;
+      const origAncestorParent = originals[ancestor.parent.key] as OrigCustomComp;
+      return ancestor.parent.key === 'App'
       ? false
       : ancestor.parent.origin === 'original'
-      ? originals[ancestor.parent.key].copies.some((copyName: string) =>
-          hasCustomAncestor(copies[copyName], name)
-        )
+      ? origAncestorParent.copies.some((copyName: string) =>
+      hasCustomAncestor(copies[copyName], name)
+      )
       : hasCustomAncestor(copies[ancestor.parent.key], name);
-  };
-
-  // showLayers: top dropLayer between elements
-  //inNative: bottom dropLayer for native elements (nesting);
-  //nestedComponentInApp: make components draggable if in app canvas but not inside custom component.
+    };
+    
+    //show bottom drop layer for native elements
+    const inNative =
+      copiesParent && copiesParent.children.length - 1 === index
+        ? true
+        : false;
+  
+    let nestedComponentInApp: boolean; // unable to drag nested custom components in app canvas
+    let showLayers: boolean; //show top dropLayer between elements
 
   //component is custom component copy
   if (isCopyCustomComp(componentDef)) {
@@ -108,7 +106,8 @@ const ElementBlock = ({
       //create children array of uncle/nephew relations
       children = pushCustoms(originalElement.children);
       //drop layer at top of elements in top level of app canvas, allow them to drag
-      if (originals.App.children.includes(componentDef.name)) {
+      const appObj = originals.App as AppInterface
+      if (appObj.children.includes(componentDef.name)) {
         nestedComponentInApp = false;
         showLayers = true;
       }
@@ -124,17 +123,14 @@ const ElementBlock = ({
           nestedComponentInApp = true;
         }
         //if it is a custom component within a native element, add top dropLayer
-        else {
-          showLayers = true;
-        }
+        else showLayers = true;
       }
       //if custom component is in the app canvas, nested custom components can't move
       else if (
         componentDef.parent.origin === 'original' &&
         componentDef.parent.key !== 'App'
-      ) {
-        nestedComponentInApp = true;
-      }
+      ) nestedComponentInApp = true;
+      
     }
     //location is component details, show layers between all elements
     //don't need other logic because only showing 1 level deep for custom components
@@ -206,6 +202,8 @@ const ElementBlock = ({
     });
   }
 
+  const copyNativeEle = copies[componentName] as CopyNativeEl;
+
   return (
     <div>
       {showLayers && (
@@ -225,6 +223,7 @@ const ElementBlock = ({
         style={{
           border: '2px solid black',
           backgroundColor: 'rgba(50, 2, 59, 0.6)',
+          transform: 'translate(0, 0)',
         }}
         className='element'
         ref={nestedComponentInApp ? null : drag}
@@ -235,8 +234,8 @@ const ElementBlock = ({
             : copies[componentName].type}
         </p>
         {/* creating a starter drop layer for empty native elements */}
-        {isDoubleTagElement(copies[componentName].type) &&
-          copies[componentName].children.length === 0 && (
+        {isDoubleTagElement(copyNativeEle.type) &&
+          copyNativeEle.children.length === 0 && (
             <DropLayer
               index={0}
               setCounter={setCounter}

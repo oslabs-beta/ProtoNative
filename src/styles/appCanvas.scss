@@ -1,6 +1,66 @@
-#app-canvas{
+#middle-container{
+  display: flex;
+  flex-direction: column;
   width: 33%;
-  max-width: 700px;
+  height: 100%;
+  .tabs{
+    z-index: 998;
+    position: relative;
+    top: 7px;
+    background-color: $container-background;
+    color: white;
+    font-size: 1.5rem;
+    border: 0;
+    padding: 10px 15px;
+    border-radius: 10px 10px 0 0;
+    font-family: $main-font;
+    margin: 0 0px;
+    cursor: pointer;
+  }
+  .tabs:before{
+    border-color : transparent $container-background transparent transparent;
+    transform : rotate(48deg);
+    left: -30px;
+    top: 7px;
+  }
+  .tabs:after{
+    border-color : transparent transparent transparent $container-background;
+    transform : rotate(-48deg);
+    right: -30px;
+    top: 7px;
+  }
+  .tabs:before, .tabs:after{
+    content : '';
+    background : transparent;
+    height: 20px;
+    width: 20px;
+    border-radius: 100%;
+    border-width: 10px;
+    border-style : solid;
+    position : absolute;
+  }
+  .non-active{
+    background-color: #111111;
+    color: white;
+    z-index: 1;
+  }
+  .non-active::after{
+    border-color: transparent transparent transparent #111111
+  }
+  .non-active::before{
+    border-color : transparent #111111 transparent transparent;
+  }
+}
+
+
+#middle-button-container{
+  margin-left: 20px;
+}
+
+#app-canvas{
+  z-index: 2;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,8 +69,17 @@
   background-color: $container-background;
 }
 
+#app-canvas-container{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
 #app-canvas-title{
-  margin: 2rem 0;
+  margin: 1.5rem 0;
   color: $title-color;
 }
 
@@ -31,3 +100,133 @@
 #phone-screen-container::-webkit-scrollbar{
   display: none;
 }
+
+
+.react-flow__node {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $button-primary;
+  border-radius: 10px;
+}
+
+#tree-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height:100%;
+}
+
+.react-flow {
+  width: 100%;
+  height: 100%;
+}
+
+.react-flow__panel.react-flow__attribution.bottom.right {
+  opacity: 0;
+}
+
+a {
+  cursor: default;
+}
+
+.react-flow__pane {
+  background-color: #333232;
+  border-radius: 10px;
+}
+
+.direction {
+  padding-top: 5px;
+  width: 20px;
+  height: 20px;
+}
+
+.custom-node-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  min-height: 36px;
+  border: 1px solid black;
+  border-radius: 10px;
+  font-size: 12px;
+ 
+}
+
+.custom-node {
+  width: 100%;
+}
+
+.custom-node p {
+  padding: 0;
+  text-align: center;
+}
+.custom-node ul {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+  font-size: 8px;
+  margin: 2px 0 3px 22px;
+  // margin-left: 20px;
+}
+
+.custom-node li {
+  margin-left: 10px;
+}
+
+
+#tree-hierarchy button {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 8px;
+}
+
+#tree-hierarchy button:hover{
+  background-color: #eceaea
+}
+
+.react-flow__controls-zoomin {
+  border-radius: 5px 5px 0 0;
+}
+
+#orientation {
+  border-radius: 0 0 5px 5px;
+}
+
+.state-button-img {
+  height: 15px;
+  width: 15px;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+.show-state{
+  position: absolute;
+  top: -14px;
+  left: -10px;
+  font-size: 8px;
+  background-color: #1c1b1b;
+  padding: 2px;
+  color: #f1f1f1; 
+  opacity: 0;
+}
+
+.show-state::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #1c1b1b transparent transparent transparent;
+}
+
+.state-button-img:hover + .show-state{
+  opacity: 1;
+}
+

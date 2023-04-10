@@ -5,6 +5,7 @@
   padding: 20px;
   height: 45%;
   overflow-y: hidden;
+  overflow-x: hidden;
   h2{
     color: $title-color;
   }
@@ -19,14 +20,18 @@
 }
 
 #code-preview-container{
+  overflow-x: hidden;
   overflow-y: scroll;
   height: 90%;
 }
 
 pre{
-  max-width: 90%px;
+  overflow-x: hidden;
 }
 
+pre::-webkit-scrollbar{
+  display: none;
+}
 #code-preview-container::-webkit-scrollbar{
   display: none;
 }
