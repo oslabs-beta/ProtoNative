@@ -164,14 +164,14 @@ const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp, originals: O
         : `<${currElement} ${necessaryProps}/>`;
     }
 
-    // add imports for current component passed in if it is a Copy Native Element (not a Copy Custom Component)
+    // add current component passed in to imports if it is a Copy Native Element (not a Copy Custom Component)
     if (!isCopyCustomComp(comp)) {
       toImport.push(comp.type);
     }
 
     let childrenNodes: string = '';
     // loop over children of component passed in 
-    // add imports for child
+    // add child to the imports
     // recursively gather code for the child and its descendants
     for (const child of componentChildren) {
       const childInCopies = copies[child];
