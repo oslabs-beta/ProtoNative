@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import CustomHandle from './CustomHandle';
 
 type Props = {
@@ -11,24 +11,37 @@ type Props = {
   }
 }
 
+//custom node for stateful components
+
 const CustomNode = ({ data }: Props):JSX.Element => {
-
-
+  const [showState, setShowState] = useState(false);
+  //create list element for each state
   const state: JSX.Element[] = data.state.map((ele: string, idx: number) => {
     return <li key={idx}>{ele}</li>
   })
+  
+  const spanText: string = showState ? 'Hide State' : 'Show State'
 
+  
   return (
-    <div className="custom-node">
+    <div className="custom-node-container">
+      {/* create input node for App, otherwise create handle at top */}
       {data.label === 'App' ? null : data.direction ? 
       <CustomHandle nodeId={data.nodeId} type='target' position='left'  /> : 
       <CustomHandle  nodeId={data.nodeId} type='target' position='top'  /> }
-      <div>
+      <div className='custom-node'>
         <p>{data.label}</p>
-        <ul>
-          {state}
-        </ul>
+        <div className='state-container'>
+          {showState && <ul>
+            {state}
+          </ul>}
+          <div>
+            <img className='state-button-img' src={'./icons/state-info.png'} onClick={() => setShowState(!showState)}/>
+            <span className='show-state'>{spanText}</span>
+          </div>
+        </div>
       </div>
+      {/* create output node if no children, else create handle at bottom */}
        {data.children ? data.direction ? 
       <CustomHandle nodeId={data.nodeId} type="source" position='right'  /> : 
       <CustomHandle  nodeId={data.nodeId} type="source" position='bottom' /> : null }

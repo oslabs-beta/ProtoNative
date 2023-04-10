@@ -3,8 +3,8 @@
   flex-direction: column;
   width: 33%;
   height: 100%;
-  button{
-    z-index: 999;
+  .tabs{
+    z-index: 998;
     position: relative;
     top: 7px;
     background-color: $container-background;
@@ -17,19 +17,19 @@
     margin: 0 0px;
     cursor: pointer;
   }
-  button:before{
+  .tabs:before{
     border-color : transparent $container-background transparent transparent;
     transform : rotate(48deg);
     left: -30px;
     top: 7px;
   }
-  button:after{
+  .tabs:after{
     border-color : transparent transparent transparent $container-background;
     transform : rotate(-48deg);
     right: -30px;
     top: 7px;
   }
-  button:before, button:after{
+  .tabs:before, .tabs:after{
     content : '';
     background : transparent;
     height: 20px;
@@ -133,29 +133,100 @@ a {
 
 .react-flow__pane {
   background-color: #333232;
+  border-radius: 10px;
 }
 
 .direction {
+  padding-top: 5px;
   width: 20px;
   height: 20px;
 }
 
-.custom-node {
+.custom-node-container {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 150px;
-  height: 36px;
+  min-height: 36px;
   border: 1px solid black;
   border-radius: 10px;
   font-size: 12px;
+ 
 }
 
-.custom-node ul {
-  // list-style: none;
-  font-size: 10px;
+.custom-node {
+  width: 100%;
 }
+
+.custom-node p {
+  padding: 0;
+  text-align: center;
+}
+.custom-node ul {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+  font-size: 8px;
+  margin: 2px 0 3px 22px;
+  // margin-left: 20px;
+}
+
+.custom-node li {
+  margin-left: 10px;
+}
+
 
 #tree-hierarchy button {
+  display: flex;
+  align-items: center;
   background-color: white;
+  padding: 8px;
 }
+
+#tree-hierarchy button:hover{
+  background-color: #eceaea
+}
+
+.react-flow__controls-zoomin {
+  border-radius: 5px 5px 0 0;
+}
+
+#orientation {
+  border-radius: 0 0 5px 5px;
+}
+
+.state-button-img {
+  height: 15px;
+  width: 15px;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+.show-state{
+  position: absolute;
+  top: -14px;
+  left: -10px;
+  font-size: 8px;
+  background-color: #1c1b1b;
+  padding: 2px;
+  color: #f1f1f1; 
+  opacity: 0;
+}
+
+.show-state::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #1c1b1b transparent transparent transparent;
+}
+
+.state-button-img:hover + .show-state{
+  opacity: 1;
+}
+

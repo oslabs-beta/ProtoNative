@@ -30,11 +30,28 @@
 }
 
 .master-button{
-  width: 75px;
+  width: 85px;
   padding: 7.5px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
+  // color: #f1f1f1;
+  // background-color: rgba(106, 9, 123, 0.8);
+  // border: 1px solid rgba(106, 9, 123, 0.8);
+  background-color: $button-primary;
+  border: 1px solid $button-primary;
+  font: $main-font;
+  font-size: 17px;
+}
+
+.master-button:hover {
+  cursor: pointer;
+  transition: 0.2s;
+  color: #f1f1f1;
+  background-color: #17001f;
+  // border: 1px solid rgba(106, 9, 123, 0.8);
+  border: 1px solid $button-primary;
+  
 }
 
 #confirmModal{
@@ -80,4 +97,7 @@
     
   }
 }
+
+
+
 

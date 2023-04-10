@@ -5,25 +5,18 @@ import DropLayer from '../right/DropLayer';
 import TreeHierarchy from './TreeHierarchy';
 
 import {
-  AppInterface,
-  Originals,
-  OrigNativeEl,
-  OrigCustomComp,
-  CopyCustomComp,
-  CopyNativeEl,
-  Copies,
-} from '../../utils/interfaces';
+  AppInterface} from '../../utils/interfaces';
 
 
 const AppCanvas = (): JSX.Element => {
   const { setCopies, setOriginals, originals, copies } = useContext(AppContext);
   const App = originals.App as AppInterface;
-  const [appComponents, setAppComponents] = useState([]);
-  const [counter, setCounter] = useState(0);
-  const [current, setCurrent] = useState('app')
+  const [appComponents, setAppComponents] = useState<JSX.Element[]>([]);
+  const [counter, setCounter] = useState<number>(0);
+  const [current, setCurrent] = useState<string>('app')
 
   useEffect(() => {
-    let appChildren: JSX.Element[] = App.children.map((child, index) => {
+    setAppComponents(App.children.map((child: string, index: number) => {
       if (copies[child].type === 'custom') {
         return (
           <ElementBlock
@@ -49,27 +42,29 @@ const AppCanvas = (): JSX.Element => {
             originals={originals}
             setOriginals={setOriginals}
             index={index}
-            location={'app'} //changed from details
+            location={'app'}
             parent={'App'}
             setCounter={setCounter}
           />
         );
       }
-    });
-    setAppComponents(appChildren);
+    }));
   }, [counter, originals]);
 
-  const dropLayerIndex = App.children.length ? App.children.length : 0;
+  const dropLayerIndex: number = App.children.length ? App.children.length : 0;
 
-  const handleClick = (button:string) => {
+  const handleClick = (button:string): void => {
     setCurrent(button)
   }
+
+  const activeApp: string = current === 'app' ? 'tabs' : 'non-active tabs'
+  const activeTree: string = current === 'tree' ? 'tabs' : 'non-active tabs'
 
   return (
     <div id='middle-container'>
       <div id='middle-button-container'>
-        <button onClick={()=>handleClick('app')}>App</button>
-        <button className='non-active' onClick={() => handleClick('tree')}>Tree</button>
+        <button className={activeApp} onClick={()=>handleClick('app')}>App</button>
+        <button className={activeTree} onClick={() => handleClick('tree')}>Tree</button>
       </div>
 
 
