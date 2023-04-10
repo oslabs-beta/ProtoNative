@@ -1,7 +1,7 @@
 {
   "name": "protonative",
   "version": "1.0.0",
-  "description": "A React Native prototyping tool",
+  "description": "React Native prototyping tool",
   "main": "./src/electron.ts",
   "scripts": {
     "start": "concurrently \"npm run vite\" \"node -e \\\"setTimeout(() => process.exit(0), 1000)\\\" && npm run electron\"",
@@ -14,7 +14,10 @@
     "preview": "vite preview",
     "test": "jest --verbose"
   },
-  "author": "Team ProtoNative",
+  "author": {
+    "name": "Team ProtoNative",
+    "url": "https://www.protonative.com/"
+  },
   "contributors": [
     "Matthew Kymn",
     "Michelle Leong",
@@ -32,7 +35,7 @@
     "react",
     "native"
   ],
-  "homepage": "https://github.com/oslabs-beta/ProtoNative#readme",
+  "homepage": "https://github.com/oslabs-beta/ProtoNative",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.21.4",
@@ -110,5 +113,8 @@
     "directories": {
       "buildResources": "assets"
     }
+  },
+  "bugs": {
+    "url": "https://github.com/oslabs-beta/ProtoNative/issues"
   }
 }
