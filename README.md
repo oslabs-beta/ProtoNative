@@ -105,18 +105,16 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
     <img alt="Add custom components gif" src="gifs/Adding-custom-components.gif" width="800px">
   </picture>
 
-4. Creating a custom component will also add it to your bin of addable children in the bottom-left corner, highlighted in purple. Drag and drop the component onto the App canvas or another component's details to add it.
+4. Creating a custom component will also add it to your "Add Child" bin, highlighted in purple. Drag and drop the component onto the App canvas or another component's details to add it.
 
-5. Navigate between components by clicking on the component name in the "Components" section on the left side.
-
-6. Add state variables to your components by clicking the "Add State" button in the "Component Details" section. Remove by clicking on the variable's name.
+5. Navigate between components by clicking on the component name in the "Components" section on the left side or add state variables. Remove state by clicking on the variable's name.
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="gifs/Add-state-to-components.gif">
     <source media="(prefers-color-scheme: light)" srcset="gifs/Add-state-to-components.gif">
     <img alt="Add state to components gif" src="gifs/Add-state-to-components.gif" width="800px">
   </picture>
 
-7. Switch to the "Tree" tab above your App canvas to see a visual representation of your App's structure.
+6. Switch to the "Tree" tab above your App canvas to see a visual representation of your App's structure.
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="gifs/Tree-view.gif">
     <source media="(prefers-color-scheme: light)" srcset="gifs/Tree-view.gif">
