@@ -36,7 +36,7 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 
 <ol>
   <li>
-    <a href="#built-with">Built With</a>
+    <a href="#built-with">Built with</a>
   </li>
   <li>
     <a href="#installation">Installation</a>
@@ -45,8 +45,8 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
       <li><a href="#mac">Mac</a></li>
     </ul>
   </li>
-  <li><a href="#how-to-use">How To Use</a></li>
-  <li><a href="#running-your-app">Running Your App</a></li>
+  <li><a href="#how-it-works">How it works</a></li>
+  <li><a href="#running-your-app">Running your app</a></li>
   <li><a href="#contributing">Contributing</a></li>
   <li><a href="#our-team">Our Team</a></li>
   <li><a href="#license">License</a></li>
@@ -58,7 +58,7 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 <br>
 
 
-## Built With
+## Built with
 
 [![Typescript][TS.js]][TS-url][![JavaScript][JavaScript]][JavaScript-url][![React][React.js]][React-url][![Electron][Electron]][Electron-url][![ElectronBuilder][ElectronBuilder]][ElectronBuilder-url][![ReactDnD][ReactDnD]][ReactDnD-url][![Jest][Jest]][Jest-url][![Babel][Babel]][Babel-url][![Vite][Vite]][Vite-url][![Prettier][Prettier]][Prettier-url][![FileSaver][FileSaver]][FileSaver-url][![Prism][Prism]][Prism-url][![HTML5][HTML5]][HTML5-url][![CSS3][CSS3]][CSS3-url][![SASS][SASS]][SASS-url][![Git][Git]][Git-url]
 
@@ -87,7 +87,7 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 <br>
 
 
-# How To Use
+# How it works
 
 1. To get started, add React Native elements to the "App" canvas by dragging and dropping them from the bottom-left bin. Rearrange elements or drag them to the trash.
   <picture>
@@ -123,7 +123,7 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 
 <p align="right"><a href="#readme-top">back to top</a></p>
 
-## Running Your App
+## Running your app
 
 1. When you're ready to export your app, click the "Export" button in the top right corner.
   <picture>
