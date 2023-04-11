@@ -53,9 +53,34 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 
 #
 
-### Built With
+## Built With
 
 [![Typescript][TS.js]][TS-url][![JavaScript][JavaScript]][JavaScript-url][![React][React.js]][React-url][![Electron][Electron]][Electron-url][![ElectronBuilder][ElectronBuilder]][ElectronBuilder-url][![ReactDnD][ReactDnD]][ReactDnD-url][![Jest][Jest]][Jest-url][![Babel][Babel]][Babel-url][![Vite][Vite]][Vite-url][![Prettier][Prettier]][Prettier-url][![FileSaver][FileSaver]][FileSaver-url][![Prism][Prism]][Prism-url][![HTML5][HTML5]][HTML5-url][![CSS3][CSS3]][CSS3-url][![SASS][SASS]][SASS-url][![Git][Git]][Git-url]
+
+#
+
+## Installation
+
+### Windows
+
+1. Download the latest release for Windows [here](www.protonative.com).
+2. Run the installer.
+3. Run ProtoNative from your desktop.
+
+### Mac
+
+1. Download the latest release for Mac [here](www.protonative.com).
+2. Run the installer.
+3. If you get a warning that the app is from an unidentified developer, go to System Preferences > Security & Privacy > General and click "Open Anyway".
+4. Run ProtoNative from your applications folder.
+
+<p align="right"><a href="#readme-top">back to top</a></p>
+
+#
+
+## Getting Started
+
+1. 
 
 <p align="right"><a href="#readme-top">back to top</a></p>
 
