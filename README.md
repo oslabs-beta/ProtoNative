@@ -110,9 +110,9 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 
 6. Switch to the "Tree" tab above your "App" canvas to see a visual representation of your app's structure.
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="gifs/Tree-view.gif">
-      <source media="(prefers-color-scheme: light)" srcset="gifs/Tree-view.gif">
-      <img alt="View components as a tree gif" src="gifs/Tree-view.gif" width="800px">
+      <source media="(prefers-color-scheme: dark)" srcset="gifs/tree-hierarchy-state.gif">
+      <source media="(prefers-color-scheme: light)" srcset="gifs/tree-hierarchy-state.gif">
+      <img alt="View components as a tree gif" src="gifs/tree-hierarchy-state.gif" width="800px">
     </picture>
 
 <p align="right"><a href="#readme-top">back to top</a></p>
