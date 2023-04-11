@@ -159,7 +159,7 @@ Contributions are an incredibly important part of the open source community. Any
 5. Open a Pull Request (from `feature/AmazingFeature` to `dev`)
 6. Create a new issue on GitHub
 
-**Read about how to spin up ProtoNative for development [here](contributing.md).**
+**Read about how to spin up ProtoNative for development [here](CONTRIBUTING.md).**
 
 **We look forward to your exciting contributions!**
 
