@@ -168,7 +168,7 @@ Contributions are an incredibly important part of the open source community. Any
 
 ## License
 
-Distributed under the MIT License. See [LICENSE](LICENSE.txt) for more information.
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
 <br>
 
