@@ -80,8 +80,6 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 <p align="right"><a href="#readme-top">back to top</a></p>
 
 <br>
-<br>
-
 
 # How it works
 
