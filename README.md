@@ -181,10 +181,11 @@ Distributed under the MIT License. See `LICENSE` for more information.
 | Patricia Good | [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/pkg415) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/patricia-g415) |
 | Raymond Ferrer | [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/rnferrer) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/rnferrer) |
 
-<p align="right"><a href="#readme-top">back to top</a></p>
+<br>
 
 Give a ⭐️ if this project helped you!
 
+<p align="right"><a href="#readme-top">back to top</a></p>
 
 [React.js]: https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB
 [React-url]: https://reactjs.org/
