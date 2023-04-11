@@ -62,15 +62,15 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 <br>
 
 
-# Installation
+## Installation
 
-## Windows
+### Windows
 
 1. Download the latest release for Windows [here](www.protonative.com).
 2. Run the installer.
 3. Run ProtoNative from your desktop.
 
-## Mac
+### Mac
 
 1. Download the latest release for Mac [here](www.protonative.com).
 2. Run the installer.
@@ -81,7 +81,7 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 
 <br>
 
-# How it works
+## How it works
 
 1. To get started, add React Native elements to the "App" canvas by dragging and dropping them from the bottom-left bin. Rearrange elements or drag them to the trash.
     <picture>
