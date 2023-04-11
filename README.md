@@ -14,7 +14,7 @@
 <p>
 
 [![Website](https://img.shields.io/badge/-our_website-black.svg?style=for-the-badge&logo=React&logoColor=b39ecd&colorB=17001f)](http://protonative.com/)
-[![Linkedin](https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=0A66C2)](https://www.linkedin.com/company/protonative)
+[![Linkedin](https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=%230077B5)](https://www.linkedin.com/company/protonative)
 [![Medium](https://img.shields.io/badge/-Medium-black.svg?style=for-the-badge&logo=medium&logoColor=black&colorB=white)](https://medium.com/)
 
 </p>
@@ -48,7 +48,7 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
   <li><a href="#how-it-works">How it works</a></li>
   <li><a href="#running-your-mobile-app">Running your mobile app</a></li>
   <li><a href="#contributing">Contributing</a></li>
-  <li><a href="#our-team">Our Team</a></li>
+  <li><a href="#our-team">The ProtoNative Team</a></li>
   <li><a href="#license">License</a></li>
 </ol>
 
@@ -56,7 +56,7 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 
 ### Built with
 
-[![Typescript][TS.js]][TS-url][![JavaScript][JavaScript]][JavaScript-url][![React][React.js]][React-url][![Electron][Electron]][Electron-url][![ElectronBuilder][ElectronBuilder]][ElectronBuilder-url][![ReactDnD][ReactDnD]][ReactDnD-url][![Jest][Jest]][Jest-url][![Babel][Babel]][Babel-url][![Vite][Vite]][Vite-url][![Prettier][Prettier]][Prettier-url][![FileSaver][FileSaver]][FileSaver-url][![Prism][Prism]][Prism-url][![HTML5][HTML5]][HTML5-url][![CSS3][CSS3]][CSS3-url][![SASS][SASS]][SASS-url][![Git][Git]][Git-url]
+[![Typescript][TS.js]][TS-url][![JavaScript][JavaScript]][JavaScript-url][![React][React.js]][React-url][![Electron][Electron]][Electron-url][![ElectronBuilder][ElectronBuilder]][ElectronBuilder-url][![ReactDnD][ReactDnD]][ReactDnD-url][![Jest][Jest]][Jest-url][![Vite][Vite]][Vite-url][![Babel][Babel]][Babel-url][![Prettier][Prettier]][Prettier-url][![FileSaver][FileSaver]][FileSaver-url][![Prism][Prism]][Prism-url][![HTML5][HTML5]][HTML5-url][![CSS3][CSS3]][CSS3-url][![SASS][SASS]][SASS-url][![Git][Git]][Git-url]
 
 <br>
 <br>
@@ -90,25 +90,25 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
       <img alt="Adding elements to canvas gif" src="gifs/Adding-elements-to-App-Canvas.gif" width="800px">
     </picture>
 
-2. When you feel like your App needs more depth, click the "Add Custom Component" button in the top left corner and enter a name.
+2. When you feel like your app needs more depth, click the "Add Custom Component" button in the top-left corner and enter a name.
 
-3. You can also add elements to your custom component by dragging and dropping them from the bottom left bin onto its mini canvas in "Component Details."
+3. You can also add elements to your custom component by dragging and dropping them from the bottom-left bin onto its mini canvas in "Component Details."
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="gifs/Adding-custom-components.gif">
       <source media="(prefers-color-scheme: light)" srcset="gifs/Adding-custom-components.gif">
       <img alt="Add custom components gif" src="gifs/Adding-custom-components.gif" width="800px">
     </picture>
 
-4. Creating a custom component will also add it to your "Add Child" bin, highlighted in purple. Drag and drop the component onto the App canvas or another component's details to add it.
+4. Creating a custom component will also add it to your "Add Child" bin, highlighted in purple. Drag and drop the component onto the app canvas or another component's details to add it.
 
-5. Navigate between components by clicking on the component name in the "Components" section on the left side or add state variables. Remove state by clicking on the variable's name.
+5. Navigate between components by clicking on the component name in the "Components" section on the left side or add state variables. Remove state variables by clicking on their names.
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="gifs/Add-state-to-components.gif">
       <source media="(prefers-color-scheme: light)" srcset="gifs/Add-state-to-components.gif">
       <img alt="Add state to components gif" src="gifs/Add-state-to-components.gif" width="800px">
     </picture>
 
-6. Switch to the "Tree" tab above your App canvas to see a visual representation of your App's structure.
+6. Switch to the "Tree" tab above your "App" canvas to see a visual representation of your app's structure.
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="gifs/Tree-view.gif">
       <source media="(prefers-color-scheme: light)" srcset="gifs/Tree-view.gif">
@@ -119,7 +119,7 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 
 ## Running your mobile app
 
-1. When you're ready to export your app, click the "Export" button in the top right corner.
+1. When you're ready to export your app, click the "Export" button in the top-right corner.
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="gifs/Export.gif">
       <source media="(prefers-color-scheme: light)" srcset="gifs/Export.gif">
@@ -136,15 +136,56 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 
 <p align="right"><a href="#readme-top">back to top</a></p>
 
+## Contributing
 
-<!--
-// installation instructions (maybe with images)
+Contributions are an incredibly important part of the open source community. Any contributions you make are **greatly appreciated**.
 
-// articles 
-// next steps / roadmap : link to another readme for devs who want to iterate
-// our team
-// license
--->
+### Roadmap
+
+1. Add support for more React Native components (React Native Paper)
+2. Add support for more React Native APIs (React Navigation, React Native Gesture Handler, etc.)
+3. Allow for custom styling of components
+4. Add attribute editing for components (e.g. changing the text of a Text component)
+5. Add connection to local storage for session persistence
+6. Containerize the app for easier installation
+7. Automate testing
+
+### How to contribute
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request (from `feature/AmazingFeature` to `dev`)
+6. Create a new issue on GitHub
+
+**Read about how to spin up ProtoNative for development [here](contributing.md).**
+
+**We look forward to your exciting contributions!**
+
+<p align="right"><a href="#readme-top">back to top</a></p>
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+<br>
+
+----
+
+## The ProtoNative Team
+
+| Developed By|                                                                                                                                                         |                                                                                                                                                             |
+| :-------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| Jonathan Klibansky | [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/jon19200) |         [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/jonathanklibansky) |
+| Matthew Kymn | [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/mkymn10) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mkymn10/) |
+| Michelle Leong | [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/michelle-leong) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/michelle-w-leong) |
+| Patricia Good | [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/pkg415) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/patricia-g415) |
+| Raymond Ferrer | [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/rnferrer) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/rnferrer) |
+
+<p align="right"><a href="#readme-top">back to top</a></p>
+
+Give a ⭐️ if this project helped you!
 
 
 [React.js]: https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB
