@@ -11,228 +11,6 @@ import {
 declare const prettier: any;
 declare const prettierPlugins: any;
 
-// const originals: Originals = {
-//   App: {
-//     type: 'App',
-//     children: ['TestComponent0', 'View0', 'TestComponent1', 'TestComponent2'],
-//     state: [],
-//   } as AppInterface,
-//   View: { type: 'View', index: 3 } as OrigNativeEl,
-//   Button: { type: 'Button', index: 3 } as OrigNativeEl,
-//   Text: { type: 'Text', index: 1 } as OrigNativeEl,
-//   Image: { type: 'Image', index: 0 } as OrigNativeEl,
-//   TextInput: { type: 'TextInput', index: 0 } as OrigNativeEl,
-//   ScrollView: { type: 'ScrollView', index: 0 } as OrigNativeEl,
-//   FlatList: { type: 'FlatList', index: 0 } as OrigNativeEl,
-//   SectionList: { type: 'SectionList', index: 0 } as OrigNativeEl,
-//   Switch: { type: 'Switch', index: 0 } as OrigNativeEl,
-//   TouchableHighlight: {
-//     type: 'TouchableHighlight',
-//     index: 0,
-//   } as OrigNativeEl,
-//   TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
-//   StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
-//   ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
-//   TestComponent: {
-//     name: 'TestComponent',
-//     type: 'custom',
-//     children: ['Button0', 'CoolComponent0'],
-//     state: [],
-//     index: 3,
-//     copies: ['TestComponent0', 'TestComponent1', 'TestComponent2'],
-//   } as OrigCustomComp,
-//   CoolComponent: {
-//     name: 'CoolComponent',
-//     type: 'custom',
-//     children: ['Button2', 'View1', 'View2', 'BruhComponent0'],
-//     state: [],
-//     index: 1,
-//     copies: ['CoolComponent0'],
-//   } as OrigCustomComp,
-//   BruhComponent: {
-//     name: 'BruhComponent',
-//     type: 'custom',
-//     children: ['Button3', 'View3'],
-//     state: [],
-//     index: 1,
-//     copies: ['BruhComponent0', 'BruhComponent1'],
-//   } as OrigCustomComp,
-// };
-
-// const copies: Copies = {
-//   Button0: {
-//     name: 'Button0',
-//     type: 'Button',
-//     parent: { origin: 'original', key: 'TestComponent' },
-//     children: [],
-//   } as CopyNativeEl,
-//   Button3: {
-//     name: 'Button3',
-//     type: 'Button',
-//     parent: { origin: 'original', key: 'BruhComponent' },
-//     children: [],
-//   } as CopyNativeEl,
-//   Button4: {
-//     name: 'Button4',
-//     type: 'Button',
-//     parent: { origin: 'copies', key: 'View3' },
-//     children: [],
-//   } as CopyNativeEl,
-//   View2: {
-//     name: 'View2',
-//     type: 'View',
-//     parent: { origin: 'original', key: 'CoolComponent' },
-//     children: [],
-//   } as CopyNativeEl,
-//   View3: {
-//     name: 'View3',
-//     type: 'View',
-//     parent: { origin: 'original', key: 'BruhComponent' },
-//     children: ['Button4'],
-//   } as CopyNativeEl,
-//   Text0: {
-//     name: 'Text0',
-//     type: 'Text',
-//     parent: { origin: 'copies', key: 'View1' },
-//     children: ['Button1'],
-//   } as CopyNativeEl,
-//   View0: {
-//     name: 'View0',
-//     type: 'View',
-//     parent: { origin: 'original', key: 'App' },
-//     children: [],
-//   } as CopyNativeEl,
-//   Button1: {
-//     name: 'Button1',
-//     type: 'Button',
-//     parent: { origin: 'copies', key: 'Text0' },
-//     children: [],
-//   } as CopyNativeEl,
-//   View1: {
-//     name: 'View1',
-//     type: 'View',
-//     parent: { origin: 'original', key: 'CoolComponent' },
-//     children: ['Text0', 'BruhComponent1'],
-//   } as CopyNativeEl,
-//   Button2: {
-//     name: 'Button2',
-//     type: 'Button',
-//     parent: { origin: 'original', key: 'CoolComponent' },
-//     children: [],
-//   } as CopyNativeEl,
-//   TestComponent0: {
-//     name: 'TestComponent0',
-//     type: 'custom',
-//     parent: { origin: 'original', key: 'App' },
-//     pointer: 'TestComponent',
-//   } as CopyCustomComp,
-//   TestComponent1: {
-//     name: 'TestComponent1',
-//     type: 'custom',
-//     parent: { origin: 'original', key: 'App' },
-//     pointer: 'TestComponent',
-//   } as CopyCustomComp,
-//   TestComponent2: {
-//     name: 'TestComponent2',
-//     type: 'custom',
-//     parent: { origin: 'original', key: 'App' },
-//     pointer: 'TestComponent',
-//   } as CopyCustomComp,
-//   CoolComponent0: {
-//     name: 'CoolComponent0',
-//     type: 'custom',
-//     parent: { origin: 'original', key: 'TestComponent' },
-//     pointer: 'CoolComponent',
-//   } as CopyCustomComp,
-//   BruhComponent0: {
-//     name: 'BruhComponent0',
-//     type: 'custom',
-//     parent: { origin: 'original', key: 'CoolComponent' },
-//     pointer: 'BruhComponent',
-//   } as CopyCustomComp,
-//   BruhComponent1: {
-//     name: 'BruhComponent1',
-//     type: 'custom',
-//     parent: { origin: 'copies', key: 'View1' },
-//     pointer: 'BruhComponent',
-//   } as CopyCustomComp,
-// }
-
-// const originals: Originals = {
-//   App: {
-//     type: 'App',
-//     children: ['A0'],
-//     state: [],
-//   } as AppInterface,
-//   View: { type: 'View', index: 3 } as OrigNativeEl,
-//   Button: { type: 'Button', index: 3 } as OrigNativeEl,
-//   Text: { type: 'Text', index: 1 } as OrigNativeEl,
-//   Image: { type: 'Image', index: 0 } as OrigNativeEl,
-//   TextInput: { type: 'TextInput', index: 0 } as OrigNativeEl,
-//   ScrollView: { type: 'ScrollView', index: 0 } as OrigNativeEl,
-//   FlatList: { type: 'FlatList', index: 0 } as OrigNativeEl,
-//   SectionList: { type: 'SectionList', index: 0 } as OrigNativeEl,
-//   Switch: { type: 'Switch', index: 0 } as OrigNativeEl,
-//   TouchableHighlight: {
-//     type: 'TouchableHighlight',
-//     index: 0,
-//   } as OrigNativeEl,
-//   TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
-//   StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
-//   ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,
-//   A: {
-//     name: 'A',
-//     type: 'custom',
-//     children: ['View0'],
-//     state: [],
-//     index: 0,
-//     copies: [],
-//   } as OrigCustomComp,
-//   B: {
-//     name: 'B',
-//     type: 'custom',
-//     children: ['View1'],
-//     state: [],
-//     index: 1,
-//     copies: ['B0'],
-//   } as OrigCustomComp,
-//   C: {
-//     name: 'C',
-//     type: 'custom',
-//     children: [],
-//     state: [],
-//     index: 1,
-//     copies: ['C0'],
-//   } as OrigCustomComp
-// };
-
-// const copies: Copies = {
-//   View0: {
-//     name: 'View0',
-//     type: 'View',
-//     parent: { origin: 'original', key: 'A' },
-//     children: ['B0'],
-//   } as CopyNativeEl,
-//   View1: {
-//     name: 'View1',
-//     type: 'View',
-//     parent: { origin: 'original', key: 'B' },
-//     children: ['C0'],
-//   } as CopyNativeEl,
-//   B0: {
-//     name: 'B0',
-//     type: 'custom',
-//     parent: { origin: 'copies', key: 'View0' },
-//     pointer: 'B',
-//   } as CopyCustomComp,
-//   C0: {
-//     name: 'C0',
-//     type: 'custom',
-//     parent: { origin: 'copies', key: 'View1' },
-//     pointer: 'C',
-//   } as CopyCustomComp,
-// }
-
 /**
  * @method capitalizeFirst
  * @description - capitalizes first letter of input string
@@ -357,41 +135,53 @@ type CompCode = {
  */
 const generateComponentCode = (comp: CopyNativeEl | CopyCustomComp, originals: Originals, copies: Copies): CompCode => {
 
+  // store all imports necessary for the component
   const toImport: string[] = [];
 
-  const getCompCode = (comp: CopyNativeEl | CopyCustomComp) => {
+  const getCompCode = (comp: CopyNativeEl | CopyCustomComp): string => {
 
+    // name of the component passed in
     const currElement: string = isCopyCustomComp(comp) ? comp.pointer : comp.type;
 
+    // make sure to include necessary props for the component
     let necessaryProps: string = '';
     if (currElement === 'Button') necessaryProps += `title=''`;
     else if (currElement === 'SectionList') necessaryProps += `sections={[]}`;
     else if (currElement === 'TextInput') necessaryProps += `value={''}`;
 
+    // find the children of the component passed in
     const originalsComp = originals[comp.pointer] as OrigCustomComp;
     const componentChildren: string[] = isCopyCustomComp(comp) ? originalsComp.children : comp.children;
 
+    // if the component passed in has no children, or is a CopyCustomComp
+    // add this component to the imports
+    // and return the tags for the component with its necessary props
     if (componentChildren.length === 0 || comp.type === 'custom') {
       isCopyCustomComp(comp) ? toImport.push(comp.pointer) : toImport.push(comp.type);
       return isDoubleTagElement(currElement)
         ? `<${currElement} ${necessaryProps}>
-          </${currElement} ${necessaryProps}>`
+          </${currElement}>`
         : `<${currElement} ${necessaryProps}/>`;
     }
 
+    // add current component passed in to imports if it is a Copy Native Element (not a Copy Custom Component)
     if (!isCopyCustomComp(comp)) {
       toImport.push(comp.type);
     }
 
     let childrenNodes: string = '';
+    // loop over children of component passed in 
+    // add child to the imports
+    // recursively gather code for the child and its descendants
     for (const child of componentChildren) {
       const childInCopies = copies[child];
       isCopyCustomComp(childInCopies) ? toImport.push(childInCopies.pointer) : toImport.push(childInCopies.type);
       childrenNodes += `${getCompCode(childInCopies)}\n`;
     }
+    // pass in the children nodes to be children of the current component
     return  `<${currElement} ${necessaryProps}> 
                 ${childrenNodes} 
-          </${currElement} ${necessaryProps}>`;
+          </${currElement}>`;
   }
 
   return { JSXcode: getCompCode(comp), allToImport: toImport };
@@ -458,14 +248,7 @@ const generateCustomComponentCode = (component: OrigCustomComp | AppInterface, o
   `;
 };
 
-// const { format } = require('prettier');
-
 const formatCode = (code: string) => {
-  // return format(code, {
-  //   parser: 'babel',
-  //   jsxBracketSameLine: true,
-  //   singleQuote: true
-  // });
   return prettier.format(code, {
     parser: 'babel',
     plugins: prettierPlugins,
@@ -477,22 +260,3 @@ const formatCode = (code: string) => {
 export const formattedCompCode = (component: OrigCustomComp | AppInterface, originals: Originals, copies: Copies): string => {
   return formatCode(generateCustomComponentCode(component, originals, copies));
 }
-
-// const TestComponent = formattedCompCode(originals['TestComponent'] as OrigCustomComp, originals, copies);
-// console.log(TestComponent);
-// const CoolComponent = formattedCompCode(originals['CoolComponent'] as OrigCustomComp, originals, copies);
-// console.log(CoolComponent);
-// const BruhComponent = formattedCompCode(originals['BruhComponent'] as OrigCustomComp, originals, copies);
-// console.log(BruhComponent);
-// const App = formattedCompCode(originals['App'] as AppInterface, originals, copies);
-// console.log(App);
-
-// const A = formattedCompCode(originals['A'] as OrigCustomComp, originals, copies);
-// console.log(A);
-// const B = formattedCompCode(originals['B'] as OrigCustomComp, originals, copies);
-// console.log(B);
-// const C = formattedCompCode(originals['C'] as OrigCustomComp, originals, copies);
-// console.log(C);
-
-
-// TODO: add children, state for each node in tree
