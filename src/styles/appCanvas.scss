@@ -41,7 +41,7 @@
     border-style : solid;
     position : absolute;
     z-index: -1;
-
+    pointer-events: none;
   }
   .non-active{
     background-color: #111111;
