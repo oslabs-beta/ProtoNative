@@ -90,55 +90,55 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 # How it works
 
 1. To get started, add React Native elements to the "App" canvas by dragging and dropping them from the bottom-left bin. Rearrange elements or drag them to the trash.
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="gifs/Adding-elements-to-App-Canvas.gif">
-    <source media="(prefers-color-scheme: light)" srcset="gifs/Adding-elements-to-App-Canvas.gif">
-    <img alt="Adding elements to canvas gif" src="gifs/Adding-elements-to-App-Canvas.gif" width="800px">
-  </picture>
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="gifs/Adding-elements-to-App-Canvas.gif">
+      <source media="(prefers-color-scheme: light)" srcset="gifs/Adding-elements-to-App-Canvas.gif">
+      <img alt="Adding elements to canvas gif" src="gifs/Adding-elements-to-App-Canvas.gif" width="800px">
+    </picture>
 
 2. When you feel like your App needs more depth, click the "Add Custom Component" button in the top left corner and enter a name.
 
 3. You can also add elements to your custom component by dragging and dropping them from the bottom left bin onto its mini canvas in "Component Details."
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="gifs/Adding-custom-components.gif">
-    <source media="(prefers-color-scheme: light)" srcset="gifs/Adding-custom-components.gif">
-    <img alt="Add custom components gif" src="gifs/Adding-custom-components.gif" width="800px">
-  </picture>
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="gifs/Adding-custom-components.gif">
+      <source media="(prefers-color-scheme: light)" srcset="gifs/Adding-custom-components.gif">
+      <img alt="Add custom components gif" src="gifs/Adding-custom-components.gif" width="800px">
+    </picture>
 
 4. Creating a custom component will also add it to your "Add Child" bin, highlighted in purple. Drag and drop the component onto the App canvas or another component's details to add it.
 
 5. Navigate between components by clicking on the component name in the "Components" section on the left side or add state variables. Remove state by clicking on the variable's name.
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="gifs/Add-state-to-components.gif">
-    <source media="(prefers-color-scheme: light)" srcset="gifs/Add-state-to-components.gif">
-    <img alt="Add state to components gif" src="gifs/Add-state-to-components.gif" width="800px">
-  </picture>
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="gifs/Add-state-to-components.gif">
+      <source media="(prefers-color-scheme: light)" srcset="gifs/Add-state-to-components.gif">
+      <img alt="Add state to components gif" src="gifs/Add-state-to-components.gif" width="800px">
+    </picture>
 
 6. Switch to the "Tree" tab above your App canvas to see a visual representation of your App's structure.
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="gifs/Tree-view.gif">
-    <source media="(prefers-color-scheme: light)" srcset="gifs/Tree-view.gif">
-    <img alt="View components as a tree gif" src="gifs/Tree-view.gif" width="800px">
-  </picture>
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="gifs/Tree-view.gif">
+      <source media="(prefers-color-scheme: light)" srcset="gifs/Tree-view.gif">
+      <img alt="View components as a tree gif" src="gifs/Tree-view.gif" width="800px">
+    </picture>
 
 <p align="right"><a href="#readme-top">back to top</a></p>
 
 ## Running your app
 
 1. When you're ready to export your app, click the "Export" button in the top right corner.
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="gifs/Export.gif">
-    <source media="(prefers-color-scheme: light)" srcset="gifs/Export.gif">
-    <img alt="Export app gif" src="gifs/Export.gif" width="800px">
-  </picture>
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="gifs/Export.gif">
+      <source media="(prefers-color-scheme: light)" srcset="gifs/Export.gif">
+      <img alt="Export app gif" src="gifs/Export.gif" width="800px">
+    </picture>
 
 2. Install dependencies and make any changes to your app as you see fit in a code editor of your choosing.
 3. Run your app with "npm start" and scan the QR code using the Expo Go mobile app to view your application in real time.
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="gifs/Start-expo-app.gif">
-    <source media="(prefers-color-scheme: light)" srcset="gifs/Start-expo-app.gif">
-    <img alt="Export app gif" src="gifs/Start-expo-app.gif" width="800px">
-  </picture>
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="gifs/Start-expo-app.gif">
+      <source media="(prefers-color-scheme: light)" srcset="gifs/Start-expo-app.gif">
+      <img alt="Export app gif" src="gifs/Start-expo-app.gif" width="800px">
+    </picture>
 
 <p align="right"><a href="#readme-top">back to top</a></p>
 
