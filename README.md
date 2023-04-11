@@ -1,6 +1,6 @@
 <a name="readme-top"></a>
 <div align="center">
-<a href="http://www.protonative.com/"><img src="./public/icons/logo-no-background.png" alt="ProtoNative" width="445" height="auto"></a>
+<a href="http://protonative.com/"><img src="./public/icons/logo-no-background.png" alt="ProtoNative" width="445" height="auto"></a>
 <br>
 <br>
   
@@ -13,7 +13,7 @@
 
 <p>
 
-[![Website](https://img.shields.io/badge/-our_website-black.svg?style=for-the-badge&logo=React&logoColor=b39ecd&colorB=17001f)](http://www.protonative.com/)
+[![Website](https://img.shields.io/badge/-our_website-black.svg?style=for-the-badge&logo=React&logoColor=b39ecd&colorB=17001f)](http://protonative.com/)
 [![Linkedin](https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=0A66C2)](https://www.linkedin.com/company/protonative)
 [![Medium](https://img.shields.io/badge/-Medium-black.svg?style=for-the-badge&logo=medium&logoColor=black&colorB=white)](https://medium.com/)
 
@@ -27,7 +27,7 @@
 ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. With its seamless drag-and-drop interface, live code preview, and much, much more, ProtoNative is your all-in-one tool for all things React Native.
 <br>
 <br>
-  <a href="http://www.protonative.com/"><b>Download for Windows or Mac</b></a>
+  <a href="http://protonative.com/"><b>Download for Windows or Mac</b></a>
 </div>
 
 <!-- TABLE OF CONTENTS -->
@@ -66,13 +66,13 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 
 ### Windows
 
-1. Download the latest release for Windows [here](www.protonative.com).
+1. Download the latest release for Windows [here](http://protonative.com/).
 2. Run the installer.
 3. Run ProtoNative from your desktop.
 
 ### Mac
 
-1. Download the latest release for Mac [here](www.protonative.com).
+1. Download the latest release for Mac [here](http://protonative.com/).
 2. Run the installer.
 3. If you get a warning that the app is from an unidentified developer, go to System Preferences > Security & Privacy > General and click "Open Anyway".
 4. Run ProtoNative from your applications folder.
