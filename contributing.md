@@ -1,4 +1,4 @@
-# Developer Guide for Contributing to the Project
+# Developer Guide for Contributing to ProtoNative
 
 ### Instructions
 
