@@ -45,7 +45,7 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
       <li><a href="#mac">Mac</a></li>
     </ul>
   </li>
-  <li><a href="#getting-started">Getting Started</a></li>
+  <li><a href="#how-to-use">How To Use</a></li>
   <li><a href="#running-your-app">Running Your App</a></li>
   <li><a href="#contributing">Contributing</a></li>
   <li><a href="#our-team">Our Team</a></li>
@@ -87,7 +87,7 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 <br>
 
 
-# Getting Started
+# How To Use
 
 1. To get started, add React Native elements to the "App" canvas by dragging and dropping them from the bottom-left bin. Rearrange elements or drag them to the trash.
   <picture>
