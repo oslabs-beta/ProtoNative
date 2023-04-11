@@ -10,6 +10,8 @@
 4. You should now be able to see the app running in the electron window with hot reloading enabled.
 5. Run `npm test` to run the tests on `src/utils/`. That's where we keep the bulk of our functionality.
 
+<br>
+
 ## Building the App for Production
 
 1. Building the electron app for production must be done on a machine with the same operating system as the target machine.
