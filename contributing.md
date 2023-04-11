@@ -1,6 +1,6 @@
 # Developer Guide for Contributing to the Project
 
-## Instructions
+### Instructions
 
 1. After you have forked the project, created your feature branch, and cloned to your local machine, you can begin working on the project.
 2. Install the dependencies by running `npm install`.
@@ -12,7 +12,7 @@
 
 <br>
 
-## Building the App for Production
+### Building the App for Production
 
 1. Building the electron app for production must be done on a machine with the same operating system as the target machine.
 2. Run `npm run build:windows` to build the app for Windows.
