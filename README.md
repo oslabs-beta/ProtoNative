@@ -89,42 +89,34 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 
 # Getting Started
 
-1. To get started, add any React Native elements by dragging and dropping them from the bottom-left bin onto the "App" canvas in the middle of your screen. Rearrange elements as you see fit or drag them to the trash.
+1. To get started, add React Native elements to the "App" canvas by dragging and dropping them from the bottom-left bin. Rearrange elements or drag them to the trash.
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="gifs/Adding-elements-to-App-Canvas.gif">
     <source media="(prefers-color-scheme: light)" srcset="gifs/Adding-elements-to-App-Canvas.gif">
     <img alt="Adding elements to canvas gif" src="gifs/Adding-elements-to-App-Canvas.gif" width="800px">
   </picture>
 
-2. When you feel like your App needs more depth, click the "Add Custom Component" button in the top left corner and enter a name, pulling it up to the "Component Details" section on the right side of your screen. You can add elements to your custom component by dragging and dropping them from the bottom left bin onto the mini canvas in "Component Details."
+2. When you feel like your App needs more depth, click the "Add Custom Component" button in the top left corner and enter a name.
+
+3. You can also add elements to your custom component by dragging and dropping them from the bottom left bin onto its mini canvas in "Component Details."
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="gifs/Adding-custom-components.gif">
     <source media="(prefers-color-scheme: light)" srcset="gifs/Adding-custom-components.gif">
     <img alt="Add custom components gif" src="gifs/Adding-custom-components.gif" width="800px">
   </picture>
 
-3. Creating a custom component will also add it to your bin of addable children in the bottom-left corner, highlighted in purple. Drag and drop the component onto the App canvas or another component's details to add it.
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="gifs/Add-reuseable-components-as-child.gif">
-    <source media="(prefers-color-scheme: light)" srcset="gifs/Add-reuseable-components-as-child.gif">
-    <img alt="Add reuseable components as children gif" src="gifs/Add-reuseable-components-as-child.gif" width="800px">
-  </picture>
+4. Creating a custom component will also add it to your bin of addable children in the bottom-left corner, highlighted in purple. Drag and drop the component onto the App canvas or another component's details to add it.
 
-4. If you make multiple custom components, navigate between their details by clicking on the component name in the "Components" section on the left side.
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="gifs/Switch-between-components.gif">
-    <source media="(prefers-color-scheme: light)" srcset="gifs/Switch-between-components.gif">
-    <img alt="Switch between components gif" src="gifs/Switch-between-components.gif" width="800px">
-  </picture>
+5. Navigate between components by clicking on the component name in the "Components" section on the left side.
 
-5. Add state variables to your components by clicking the "Add State" button in the "Component Details" section. Remove by clicking on the variable's name.
+6. Add state variables to your components by clicking the "Add State" button in the "Component Details" section. Remove by clicking on the variable's name.
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="gifs/Add-state-to-components.gif">
     <source media="(prefers-color-scheme: light)" srcset="gifs/Add-state-to-components.gif">
     <img alt="Add state to components gif" src="gifs/Add-state-to-components.gif" width="800px">
   </picture>
 
-6. Switch to the "Tree" tab above your App canvas to see a visual representation of your App's structure.
+7. Switch to the "Tree" tab above your App canvas to see a visual representation of your App's structure.
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="gifs/Tree-view.gif">
     <source media="(prefers-color-scheme: light)" srcset="gifs/Tree-view.gif">
