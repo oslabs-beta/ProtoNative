@@ -46,6 +46,7 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
     </ul>
   </li>
   <li><a href="#getting-started">Getting Started</a></li>
+  <li><a href="#running-your-app">Running Your App</a></li>
   <li><a href="#contributing">Contributing</a></li>
   <li><a href="#our-team">Our Team</a></li>
   <li><a href="#license">License</a></li>
@@ -53,13 +54,19 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 
 #
 
+<br>
+<br>
+
+
 ## Built With
 
 [![Typescript][TS.js]][TS-url][![JavaScript][JavaScript]][JavaScript-url][![React][React.js]][React-url][![Electron][Electron]][Electron-url][![ElectronBuilder][ElectronBuilder]][ElectronBuilder-url][![ReactDnD][ReactDnD]][ReactDnD-url][![Jest][Jest]][Jest-url][![Babel][Babel]][Babel-url][![Vite][Vite]][Vite-url][![Prettier][Prettier]][Prettier-url][![FileSaver][FileSaver]][FileSaver-url][![Prism][Prism]][Prism-url][![HTML5][HTML5]][HTML5-url][![CSS3][CSS3]][CSS3-url][![SASS][SASS]][SASS-url][![Git][Git]][Git-url]
 
-#
+<br>
+<br>
 
-## Installation
+
+# Installation
 
 ### Windows
 
@@ -76,20 +83,78 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 
 <p align="right"><a href="#readme-top">back to top</a></p>
 
-#
+<br>
+<br>
 
-## Getting Started
 
-1. 
+# Getting Started
+
+1. To get started, add any React Native elements by dragging and dropping them from the bottom-left bin onto the "App" canvas in the middle of your screen. Rearrange elements as you see fit or drag them to the trash.
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="gifs/Adding-elements-to-App-Canvas.gif">
+    <source media="(prefers-color-scheme: light)" srcset="gifs/Adding-elements-to-App-Canvas.gif">
+    <img alt="Adding elements to canvas gif" src="gifs/Adding-elements-to-App-Canvas.gif" width="800px">
+  </picture>
+
+2. When you feel like your App needs more depth, click the "Add Custom Component" button in the top left corner and enter a name, pulling it up to the "Component Details" section on the right side of your screen. You can add elements to your custom component by dragging and dropping them from the bottom left bin onto the mini canvas in "Component Details."
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="gifs/Adding-custom-components.gif">
+    <source media="(prefers-color-scheme: light)" srcset="gifs/Adding-custom-components.gif">
+    <img alt="Add custom components gif" src="gifs/Adding-custom-components.gif" width="800px">
+  </picture>
+
+3. Creating a custom component will also add it to your bin of addable children in the bottom-left corner, highlighted in purple. Drag and drop the component onto the App canvas or another component's details to add it.
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="gifs/Add-reuseable-components-as-child.gif">
+    <source media="(prefers-color-scheme: light)" srcset="gifs/Add-reuseable-components-as-child.gif">
+    <img alt="Add reuseable components as children gif" src="gifs/Add-reuseable-components-as-child.gif" width="800px">
+  </picture>
+
+4. If you make multiple custom components, navigate between their details by clicking on the component name in the "Components" section on the left side.
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="gifs/Switch-between-components.gif">
+    <source media="(prefers-color-scheme: light)" srcset="gifs/Switch-between-components.gif">
+    <img alt="Switch between components gif" src="gifs/Switch-between-components.gif" width="800px">
+  </picture>
+
+5. Add state variables to your components by clicking the "Add State" button in the "Component Details" section. Remove by clicking on the variable's name.
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="gifs/Add-state-to-components.gif">
+    <source media="(prefers-color-scheme: light)" srcset="gifs/Add-state-to-components.gif">
+    <img alt="Add state to components gif" src="gifs/Add-state-to-components.gif" width="800px">
+  </picture>
+
+6. Switch to the "Tree" tab above your App canvas to see a visual representation of your App's structure.
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="gifs/Tree-view.gif">
+    <source media="(prefers-color-scheme: light)" srcset="gifs/Tree-view.gif">
+    <img alt="View components as a tree gif" src="gifs/Tree-view.gif" width="800px">
+  </picture>
+
+<p align="right"><a href="#readme-top">back to top</a></p>
+
+## Running Your App
+
+1. When you're ready to export your app, click the "Export" button in the top right corner.
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="gifs/Export.gif">
+    <source media="(prefers-color-scheme: light)" srcset="gifs/Export.gif">
+    <img alt="Export app gif" src="gifs/Export.gif" width="800px">
+  </picture>
+
+2. Install dependencies and make any changes to your app as you see fit in a code editor of your choosing.
+3. Run your app with "npm start" and scan the QR code using the Expo Go mobile app to view your application in real time.
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="gifs/Start-expo-app.gif">
+    <source media="(prefers-color-scheme: light)" srcset="gifs/Start-expo-app.gif">
+    <img alt="Export app gif" src="gifs/Start-expo-app.gif" width="800px">
+  </picture>
 
 <p align="right"><a href="#readme-top">back to top</a></p>
 
 
 <!--
-// table of contents with clickable links
-// overview with gif image of main app
 // installation instructions (maybe with images)
-// getting started / functionality
 
 // articles 
 // next steps / roadmap : link to another readme for devs who want to iterate
