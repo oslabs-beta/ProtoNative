@@ -36,9 +36,6 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 
 <ol>
   <li>
-    <a href="#built-with">Built with</a>
-  </li>
-  <li>
     <a href="#installation">Installation</a>
     <ul>
       <li><a href="#windows">Windows</a></li>
