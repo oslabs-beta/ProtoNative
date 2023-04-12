@@ -96,7 +96,7 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 
 <br>
 
-3. You can also add elements to your custom component by dragging and dropping them from the bottom-left bin onto its mini canvas in "Component Details."
+3. You can also add elements to your custom component by dragging and dropping them from the bottom-left bin onto its mini canvas in "Component Details".
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="gifs/Adding-custom-components.gif">
       <source media="(prefers-color-scheme: light)" srcset="gifs/Adding-custom-components.gif">
