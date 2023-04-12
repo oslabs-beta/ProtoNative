@@ -1,32 +1,120 @@
 {
-  "name": "testing",
+  "name": "protonative",
   "version": "1.0.0",
-  "description": "",
+  "description": "React Native prototyping tool",
   "main": "./src/electron.ts",
   "scripts": {
-    "watch": "webpack --config webpack.config.js --watch",
-    "start": "electron ."
+    "start": "concurrently \"npm run vite\" \"node -e \\\"setTimeout(() => process.exit(0), 1000)\\\" && npm run electron\"",
+    "vite": "vite",
+    "electron": "cross-env NODE_ENV=development electron .",
+    "build:windows": "npm run build && electron-builder --windows",
+    "build:mac": "npm run build && electron-builder --mac",
+    "build:linux": "npm run build && electron-builder --linux",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "jest --verbose"
   },
-  "author": "",
-  "license": "ISC",
+  "author": {
+    "name": "Team ProtoNative",
+    "url": "https://protonative.com/"
+  },
+  "contributors": [
+    "Matthew Kymn",
+    "Michelle Leong",
+    "Jonathan Klibansky",
+    "Patricia Good",
+    "Raymond Ferrer"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oslabs-beta/ProtoNative.git"
+  },
+  "keywords": [
+    "electron",
+    "prototyping",
+    "react",
+    "native"
+  ],
+  "homepage": "https://github.com/oslabs-beta/ProtoNative",
+  "license": "MIT",
   "devDependencies": {
-    "@types/react": "^18.0.28",
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "@babel/preset-typescript": "^7.21.4",
+    "@types/dagre": "^0.7.48",
+    "@types/file-saver": "^2.0.5",
+    "@types/jest": "^29.5.0",
+    "@types/prismjs": "^1.26.0",
+    "@types/react": "^18.0.31",
     "@types/react-dom": "^18.0.11",
-    "css-loader": "^6.7.3",
-    "electron": "^23.1.4",
-    "electron-reloader": "^1.2.3",
-    "html-webpack-plugin": "^5.5.0",
-    "node-loader": "^2.0.0",
+    "@vitejs/plugin-react": "^3.1.0",
+    "babel-jest": "^29.5.0",
+    "concurrently": "8.0.1",
+    "cross-env": "^7.0.3",
+    "dagre": "^0.8.5",
+    "electron": "^23.2.0",
+    "electron-builder": "^24.1.1",
+    "electron-reloader": "1.2.3",
+    "eslint": "^8.37.0",
+    "file-saver": "^2.0.5",
+    "jest": "^29.5.0",
+    "jszip": "^3.10.1",
+    "prettier": "2.8.7",
+    "prism-themes": "^1.9.0",
+    "prismjs": "^1.29.0",
     "react": "^18.2.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
-    "sass-loader": "^13.2.1",
-    "style-loader": "^3.3.2",
-    "ts-loader": "^9.4.2",
+    "reactflow": "^11.7.0",
+    "sass": "^1.60.0",
+    "scss": "^0.2.4",
+    "ts-node": "^10.9.1",
     "typescript": "^5.0.2",
-    "webpack": "^5.76.2",
-    "webpack-cli": "^5.0.1"
+    "vite": "^4.2.1"
   },
-  "dependencies": {
-    "node": "^19.8.1"
+  "build": {
+    "appId": "protonative",
+    "productName": "ProtoNative",
+    "asar": true,
+    "win": {
+      "target": "nsis",
+      "icon": "./build/icons/windowsIcon.png",
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "nsis": {
+      "oneClick": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "ProtoNative",
+      "perMachine": false,
+      "deleteAppDataOnUninstall": true,
+      "allowElevation": false,
+      "allowToChangeInstallationDirectory": true,
+      "menuCategory": true,
+      "installerLanguages": ["en_US"]
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "./build/icons/macIcon.icns",
+      "category": "public.app-category.developer-tools"
+    },
+    "dmg": {
+      "icon": "./build/icons/macIcon.icns",
+      "title": "ProtoNative"
+    },
+    "linux": {
+      "target": "AppImage"
+    },
+    "files": [
+      "build/**/*",
+      "src/electron.ts"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
+  },
+  "bugs": {
+    "url": "https://github.com/oslabs-beta/ProtoNative/issues"
   }
 }

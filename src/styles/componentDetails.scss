@@ -1,0 +1,54 @@
+#component-details-container{
+  border: 1px solid black;
+  border-radius: 10px;
+  height: 450px;
+  padding: 10px;
+  background-color: $container-background;
+  color: white;
+  h2{
+    margin: 10px 0;
+    color: $title-color;
+  }
+}
+
+#component-box{
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  height: 375px;
+  background-color: $scroll-container;
+}
+
+#component-box::-webkit-scrollbar{
+  display: none;
+}
+
+#component-box, .element{
+  margin: 0 10px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+
+.element p {
+  margin: 0 0 10px 0;
+  color: white;
+}
+
+#drop-layer-area{
+  height:25px;
+  width: 100%;
+  border-radius: 5px;
+}
+
+#drop-layer-large{
+  align-items: stretch;
+  min-height: 25px;
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+}
+
+#wrong {
+  background-color: blue;
+}

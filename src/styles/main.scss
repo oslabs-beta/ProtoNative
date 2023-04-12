@@ -1,0 +1,58 @@
+@import '_variables.scss';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: $main-font;
+  background-color: $main-background;
+}
+
+#main-container {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 1rem;
+  gap: 10px;
+  background-color: $main-background;
+  height: 92vh;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+
+
+#right-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 33%;
+  max-width: 800px;
+}
+
+#left-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  width: 33%;
+  max-width: 800px;
+}
+
+@import 'addChild.scss';
+@import 'addComponent.scss';
+@import 'appCanvas.scss';
+@import 'codeBlock.scss';
+@import 'componentDetails.scss';
+@import 'componentList.scss';
+@import 'modal.scss';
+@import 'navbar.scss';
+@import 'trashButton.scss';
+@import '_variables.scss';

@@ -1,0 +1,37 @@
+#code-block-container{
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: $container-background;
+  padding: 20px;
+  height: 45%;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  h2{
+    color: $title-color;
+  }
+}
+
+#code-block-container::-webkit-scrollbar{
+  display: none;
+}
+
+.custom-element {
+  color: #f240f8;
+}
+
+#code-preview-container{
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 90%;
+}
+
+pre{
+  overflow-x: hidden;
+}
+
+pre::-webkit-scrollbar{
+  display: none;
+}
+#code-preview-container::-webkit-scrollbar{
+  display: none;
+}

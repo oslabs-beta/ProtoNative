@@ -1,5 +1,13 @@
 {
   "compilerOptions": {
-    "jsx": "react"
-  }
+    "jsx": "react",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es6",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+  },
+  "include": ["src"]
 }

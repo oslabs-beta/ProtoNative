@@ -1,0 +1,103 @@
+#navbar-container{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  background-color: $primary-color;
+  padding: 0 1.5rem;
+  color: white;
+  overflow: hidden;
+}
+
+#logo-container{
+  width: 300px;
+  height: 60px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+#actual-logo{
+  width: 100%;
+  height: auto;
+}
+
+#master-button-container{
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.master-button{
+  width: 85px;
+  padding: 7.5px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  // color: #f1f1f1;
+  // background-color: rgba(106, 9, 123, 0.8);
+  // border: 1px solid rgba(106, 9, 123, 0.8);
+  background-color: $button-primary;
+  border: 1px solid $button-primary;
+  font: $main-font;
+  font-size: 17px;
+}
+
+.master-button:hover {
+  cursor: pointer;
+  transition: 0.2s;
+  color: #f1f1f1;
+  background-color: #17001f;
+  // border: 1px solid rgba(106, 9, 123, 0.8);
+  border: 1px solid $button-primary;
+  
+}
+
+#confirmModal{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: $modal-background;
+  height: 200px;
+  border-radius: 10px;
+  color: white;
+}
+
+#confirm-modal-buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 50%;
+  button{
+    border: 0;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  button:hover{
+    cursor: pointer;
+    transition: .2s;
+  }
+  #confirm{
+    background-color: rgb(46, 129, 46);
+  }
+  #confirm:hover{
+    color: rgb(46, 129, 46);
+    border: 1px solid rgb(46, 129, 46);
+    background-color: $modal-background;
+  }
+  #cancel {
+    border: 1px solid $button-delete;
+    background-color: $button-delete;
+  }
+  #cancel:hover {
+    background-color: $modal-background;
+    color: $button-delete
+    
+  }
+}
+
+
+
+
