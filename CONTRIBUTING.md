@@ -6,7 +6,7 @@
 2. Install the dependencies by running `npm install`.
 3. Run `npm start` to start the development server and electron at the same time.
     1. If you are having trouble starting the electron app, you can run `npm run vite` to start the development server and then run `npm run electron` to start the electron app separately.
-    2. The vite server must run on `port 3000`. If you are already running a server on that port, kill the process and run `npm run vite` again. (You might be able to use `kill -9 $(lsof -t -i:3000)` for this)
+    2. The vite server must run on `port 3000`. If you are already running a server on that port, kill the process and try again. (You might be able to use `kill -9 $(lsof -t -i:3000)` for this)
 4. You should now be able to see the app running in the electron window with hot reloading enabled.
 5. Run `npm test` to run the tests on `src/utils/`. That's where we keep the bulk of our functionality.
 
