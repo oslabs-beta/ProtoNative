@@ -15,7 +15,7 @@
 
 [![Website](https://img.shields.io/badge/-our_website-black.svg?style=for-the-badge&logo=React&logoColor=b39ecd&colorB=17001f)](https://protonative.com/)
 [![Linkedin](https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=%230077B5)](https://www.linkedin.com/company/protonative)
-[![Medium](https://img.shields.io/badge/-Medium-black.svg?style=for-the-badge&logo=medium&logoColor=black&colorB=white)](https://medium.com/)
+[![Medium](https://img.shields.io/badge/-Medium-black.svg?style=for-the-badge&logo=medium&logoColor=black&colorB=white)](https://medium.com/@patriciagood415/protonative-a-dynamic-react-native-prototyping-tool-fb205ea93615)
 
 </p>
 
