@@ -19,7 +19,7 @@
 3. Run `npm run build:mac` to build the app for Mac.
     1. Mac's that use Apple Silicon (M1) will create a different build than Mac's that use Intel processors. We currently have the Intel build showcased on the website which should work on both types of Mac's.
 4. The command will create two folders, `build/` and `dist/`.
-    1. The `build/` folder contains the vite build which is used to create the electron app.
-    2. The `dist/` folder contains the electron app.
+    1. The `build/` folder contains the Vite build files which are used to create the electron app.
+    2. The `dist/` folder contains the bundled distributable built using Electron-builder on the Vite build files.
 5. The `dist/` folder contains an installer in its root directory that can be distributed to users. (ProtoNative Setup 1.0.0.exe or ProtoNative-1.0.0.dmg)
 6. After distribution, you may delete the `build/` and `dist/` folders.
