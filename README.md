@@ -109,7 +109,7 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 
 <br>
 
-5. Navigate between components by clicking on the component name in the "Components" section on the left side or add state variables. Remove state variables by clicking on their names.
+5. Navigate between components by clicking on the component name in the "Components" section on the left side or add state variables. Remove state variables by clicking on their names.\n
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="gifs/Add-state-to-components.gif">
       <source media="(prefers-color-scheme: light)" srcset="gifs/Add-state-to-components.gif">
