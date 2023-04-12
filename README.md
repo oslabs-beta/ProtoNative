@@ -81,9 +81,9 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
     <br>
     
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="gifs/Adding-elements-to-App-Canvas.gif">
-      <source media="(prefers-color-scheme: light)" srcset="gifs/Adding-elements-to-App-Canvas.gif">
-      <img alt="Adding elements to canvas gif" src="gifs/Adding-elements-to-App-Canvas.gif" width="800px">
+      <source media="(prefers-color-scheme: dark)" srcset="docs/_media/Adding-elements-to-App-Canvas.gif">
+      <source media="(prefers-color-scheme: light)" srcset="docs/_media/Adding-elements-to-App-Canvas.gif">
+      <img alt="Adding elements to canvas gif" src="docs/_media/Adding-elements-to-App-Canvas.gif" width="800px">
     </picture>
 
 2. When you feel like your app needs more depth, click the "Add Custom Component" button in the top-left corner and enter a name.
@@ -92,9 +92,9 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
     <br>
     
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="gifs/Adding-custom-components.gif">
-      <source media="(prefers-color-scheme: light)" srcset="gifs/Adding-custom-components.gif">
-      <img alt="Add custom components gif" src="gifs/Adding-custom-components.gif" width="800px">
+      <source media="(prefers-color-scheme: dark)" srcset="docs/_media/Adding-custom-components.gif">
+      <source media="(prefers-color-scheme: light)" srcset="docs/_media/Adding-custom-components.gif">
+      <img alt="Add custom components gif" src="docs/_media/Adding-custom-components.gif" width="800px">
     </picture>
 
 4. Creating a custom component will also add it to your "Add Child" bin, highlighted in purple. Drag and drop the component onto the app canvas or another component's details to add it.
@@ -103,18 +103,18 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
     <br>
     
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="gifs/Add-state-to-components.gif">
-      <source media="(prefers-color-scheme: light)" srcset="gifs/Add-state-to-components.gif">
-      <img alt="Add state to components gif" src="gifs/Add-state-to-components.gif" width="800px">
+      <source media="(prefers-color-scheme: dark)" srcset="docs/_media/Add-state-to-components.gif">
+      <source media="(prefers-color-scheme: light)" srcset="docs/_media/Add-state-to-components.gif">
+      <img alt="Add state to components gif" src="docs/_media/Add-state-to-components.gif" width="800px">
     </picture>
 
 6. Switch to the "Tree" tab above your "App" canvas to see a visual representation of your app's structure.
     <br>
     
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="gifs/tree-hierarchy-state.gif">
-      <source media="(prefers-color-scheme: light)" srcset="gifs/tree-hierarchy-state.gif">
-      <img alt="View components as a tree gif" src="gifs/tree-hierarchy-state.gif" width="800px">
+      <source media="(prefers-color-scheme: dark)" srcset="docs/_media/tree-hierarchy-state.gif">
+      <source media="(prefers-color-scheme: light)" srcset="docs/_media/tree-hierarchy-state.gif">
+      <img alt="View components as a tree gif" src="docs/_media/tree-hierarchy-state.gif" width="800px">
     </picture>
 
 <p align="right"><a href="#readme-top">back to top</a></p>
@@ -127,9 +127,9 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
     <br>
     
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="gifs/export-readme.gif">
-      <source media="(prefers-color-scheme: light)" srcset="gifs/export-readme.gif">
-      <img alt="export app gif" src="gifs/export-readme.gif" width="800px">
+      <source media="(prefers-color-scheme: dark)" srcset="docs/_media/export-readme.gif">
+      <source media="(prefers-color-scheme: light)" srcset="docs/_media/export-readme.gif">
+      <img alt="export app gif" src="docs/_media/export-readme.gif" width="800px">
     </picture>
 
 2. Install dependencies and make any changes to your app as you see fit in a code editor of your choosing.
@@ -138,9 +138,9 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
     <br>
     
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="gifs/Start-expo-app.gif">
-      <source media="(prefers-color-scheme: light)" srcset="gifs/Start-expo-app.gif">
-      <img alt="Run Expo Go app gif" src="gifs/Start-expo-app.gif" width="800px">
+      <source media="(prefers-color-scheme: dark)" srcset="docs/_media/Start-expo-app.gif">
+      <source media="(prefers-color-scheme: light)" srcset="docs/_media/Start-expo-app.gif">
+      <img alt="Run Expo Go app gif" src="docs/_media/Start-expo-app.gif" width="800px">
     </picture>
 
 <p align="right"><a href="#readme-top">back to top</a></p>
@@ -168,7 +168,7 @@ Contributions are an incredibly important part of the open source community. Any
 5. Open a Pull Request (from `feature/AmazingFeature` to `dev`)
 6. Create a new issue on GitHub
 
-**Read about how to spin up ProtoNative for development [here](CONTRIBUTING.md).**
+**Read about how to spin up ProtoNative for development [here](docs/CONTRIBUTING.md).**
 
 **We look forward to your exciting contributions!**
 
