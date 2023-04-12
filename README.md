@@ -15,7 +15,7 @@
 
 [![Website](https://img.shields.io/badge/-our_website-black.svg?style=for-the-badge&logo=React&logoColor=b39ecd&colorB=17001f)](https://protonative.com/)
 [![Linkedin](https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=%230077B5)](https://www.linkedin.com/company/protonative)
-[![Medium](https://img.shields.io/badge/-Medium-black.svg?style=for-the-badge&logo=medium&logoColor=black&colorB=white)](https://medium.com/)
+[![Medium](https://img.shields.io/badge/-Medium-black.svg?style=for-the-badge&logo=medium&logoColor=black&colorB=white)](https://medium.com/@patriciagood415/protonative-a-dynamic-react-native-prototyping-tool-fb205ea93615)
 
 </p>
 
@@ -185,10 +185,10 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 | Developed By|                                                                                                                                                         |                                                                                                                                                             |
 | :-------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------: |
 | Jonathan Klibansky | [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/jon19200) |         [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/jonathanklibansky) |
-| Matthew Kymn | [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/mkymn10) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mkymn10/) |
+| Matthew Kymn | [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/mkymn10) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/matthew-kymn/) |
 | Michelle Leong | [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/michelle-leong) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/michelle-w-leong) |
-| Patricia Good | [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/pkg415) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/patricia-g415) |
-| Raymond Ferrer | [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/rnferrer) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/rnferrer) |
+| Patricia Good | [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/pkg415) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/patricia-good/) |
+| Raymond Ferrer | [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/rnferrer) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/raymond-ferrer/) |
 
 <br>
 
