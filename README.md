@@ -101,6 +101,8 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
       <img alt="Add custom components gif" src="gifs/Adding-custom-components.gif" width="800px">
     </picture>
 
+<br>
+
 4. Creating a custom component will also add it to your "Add Child" bin, highlighted in purple. Drag and drop the component onto the app canvas or another component's details to add it.
 
 5. Navigate between components by clicking on the component name in the "Components" section on the left side or add state variables. Remove state variables by clicking on their names.
@@ -109,6 +111,8 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
       <source media="(prefers-color-scheme: light)" srcset="gifs/Add-state-to-components.gif">
       <img alt="Add state to components gif" src="gifs/Add-state-to-components.gif" width="800px">
     </picture>
+
+<br>
 
 6. Switch to the "Tree" tab above your "App" canvas to see a visual representation of your app's structure.
     <picture>
@@ -119,6 +123,7 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 
 <p align="right"><a href="#readme-top">back to top</a></p>
 
+<br>
 
 ## Running your mobile app
 
@@ -128,6 +133,8 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
       <source media="(prefers-color-scheme: light)" srcset="gifs/Export.gif">
       <img alt="Export app gif" src="gifs/Export.gif" width="800px">
     </picture>
+    
+<br>
 
 2. Install dependencies and make any changes to your app as you see fit in a code editor of your choosing.
 3. Run your app with "npm start" and scan the QR code using the Expo Go mobile app to view your application in real time.
@@ -138,6 +145,8 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
     </picture>
 
 <p align="right"><a href="#readme-top">back to top</a></p>
+
+<br>
 
 ## Contributing
 
