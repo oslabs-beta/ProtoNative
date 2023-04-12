@@ -89,7 +89,8 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
       <source media="(prefers-color-scheme: light)" srcset="gifs/Adding-elements-to-App-Canvas.gif">
       <img alt="Adding elements to canvas gif" src="gifs/Adding-elements-to-App-Canvas.gif" width="800px">
     </picture>
-    <br>
+    
+<br>
 
 2. When you feel like your app needs more depth, click the "Add Custom Component" button in the top-left corner and enter a name.
 
