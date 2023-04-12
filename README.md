@@ -130,9 +130,9 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
     <br>
     
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="gifs/Export.gif">
-      <source media="(prefers-color-scheme: light)" srcset="gifs/Export.gif">
-      <img alt="Export app gif" src="gifs/Export.gif" width="800px">
+      <source media="(prefers-color-scheme: dark)" srcset="gifs/export-readme.gif">
+      <source media="(prefers-color-scheme: light)" srcset="gifs/export-readme.gif">
+      <img alt="export app gif" src="gifs/export-readme.gif" width="800px">
     </picture>
 
 2. Install dependencies and make any changes to your app as you see fit in a code editor of your choosing.
@@ -143,7 +143,7 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="gifs/Start-expo-app.gif">
       <source media="(prefers-color-scheme: light)" srcset="gifs/Start-expo-app.gif">
-      <img alt="Export app gif" src="gifs/Start-expo-app.gif" width="800px">
+      <img alt="Run Expo Go app gif" src="gifs/Start-expo-app.gif" width="800px">
     </picture>
 
 <p align="right"><a href="#readme-top">back to top</a></p>
