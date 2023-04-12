@@ -137,7 +137,7 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 
 2. Install dependencies and make any changes to your app as you see fit in a code editor of your choosing.
 
-3. Run your app with "npm start" and scan the QR code using the Expo Go mobile app to view your application in real time.
+3. Run with "npm start" and scan the QR code using the Expo Go mobile app to view your brand new application on your own device!
     <br>
     
     <picture>
