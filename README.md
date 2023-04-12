@@ -124,6 +124,8 @@ ProtoNative is a <b>React Native Prototyping Tool</b> for mobile developers. Wit
 
 <p align="right"><a href="#readme-top">back to top</a></p>
 
+<br>
+
 ## Running your mobile app
 
 1. When you're ready to export your app, click the "Export" button in the top-right corner.
