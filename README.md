@@ -6,7 +6,7 @@
   
   
 [![Contributors](https://img.shields.io/github/contributors/oslabs-beta/ProtoNative?color=green&logo=Github%20Sponsors&logoColor=white&style=for-the-badge)](https://github.com/oslabs-beta/ProtoNative/graphs/contributors)
-[![Downloads](https://img.shields.io/github/downloads/oslabs-beta/protonative/total?style=for-the-badge)](https://protonative.com/)
+[![Downloads](https://img.shields.io/github/downloads/oslabs-beta/protonative/total?color=neon&style=for-the-badge)](https://protonative.com/)
 [![Release](https://img.shields.io/github/v/release/oslabs-beta/ProtoNative?&style=for-the-badge)](https://github.com/oslabs-beta/ProtoNative/releases)
 [![License](https://img.shields.io/github/license/oslabs-beta/ProtoNative?color=lightgrey&style=for-the-badge)](#license)
 [![Stars](https://img.shields.io/github/stars/oslabs-beta/ProtoNative?color=teal&logo=GitHub&style=for-the-badge)](https://github.com/oslabs-beta/ProtoNative/stargazers)
