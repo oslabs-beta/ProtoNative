@@ -57,6 +57,7 @@ export const trashCan = (compToDelete: CopyNativeEl | CopyCustomComp, copyOrigin
       return;
     }
     
+    if (compToDelete.type !== 'custom') {
       // make copy of children array since splicing elements from it while looping over it causes errors 
       const copyOfCompToDeleteChildren = [...compToDeleteChildren];
       for (const child of copyOfCompToDeleteChildren) {
@@ -90,6 +91,7 @@ export const trashCan = (compToDelete: CopyNativeEl | CopyCustomComp, copyOrigin
           deleteCompInCopies(copyCopies[child]);
         }
       }
+    }
 
     // delete the copy from the original's copies array (in originals context) if it is a copy of a custom component
     if (isCopyCustomComp(compToDelete)) {
