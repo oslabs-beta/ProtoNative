@@ -23,4 +23,6 @@
     2. The `dist/` folder contains the bundled distributable built using Electron-builder on the Vite build files.
 5. The `dist/` folder contains an installer in its root directory that can be distributed to users. (ProtoNative Setup 1.0.0.exe or ProtoNative-1.0.0.dmg)
 6. Please only distribute the installer and not the whole `dist/` file structure.
-7. After distribution, you may delete the `build/` and `dist/` folders.
+7. After distribution, you may delete the `dist/` folder.
+8. Finally, extract all of the files within `build/` and place them into the `docs/` folder.
+    1. This will allow GitHub Pages to serve the app once it is pushed to the `main` branch.
