@@ -24,10 +24,7 @@ const App = () => {
     FlatList: { type: 'FlatList', index: 0 } as OrigNativeEl,
     SectionList: { type: 'SectionList', index: 0 } as OrigNativeEl,
     Switch: { type: 'Switch', index: 0 } as OrigNativeEl,
-    TouchableHighlight: {
-      type: 'TouchableHighlight',
-      index: 0,
-    } as OrigNativeEl,
+    TouchableHighlight: { type: 'TouchableHighlight', index: 0 } as OrigNativeEl,
     TouchableOpacity: { type: 'TouchableOpacity', index: 0 } as OrigNativeEl,
     StatusBar: { type: 'StatusBar', index: 0 } as OrigNativeEl,
     ActivityIndicator: { type: 'ActivityIndicator', index: 0 } as OrigNativeEl,

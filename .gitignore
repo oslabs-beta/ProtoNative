@@ -3,3 +3,4 @@ build
 package-lock.json
 dist
 process.exit(0)
+.public/DS_Store

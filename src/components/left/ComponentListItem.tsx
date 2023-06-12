@@ -79,6 +79,9 @@ const ComponentListItem = (props: ComponentListItemProps): JSX.Element => {
 			originalElement.copies.forEach((copyName: string) => {
 				trashCan(newCopies[copyName], newOriginals, newCopies)
 			});
+			originalElement.children.forEach((childName: string) => {
+				trashCan(newCopies[childName], newOriginals, newCopies);
+			});
 		}
 
 		// deletes from the copies and originals objects

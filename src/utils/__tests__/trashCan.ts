@@ -289,8 +289,8 @@ describe('trashCan tests', () => {
   })
 
   // Test delete custom component with deeply nested children
-  //    See if all children are deleted
-  it('deletes a custom component and its deeply nested children', () => {
+  //    See if all children aren't deleted
+  it('deletes a custom component and spare its deeply nested children', () => {
 
     const copyOriginals = deepCopy(originals) as Originals;
     copyOriginals['App'] = {
@@ -341,14 +341,32 @@ describe('trashCan tests', () => {
     const CoolBruh = copyOriginals['CoolBruh'] as OrigCustomComp;
     trashCan(copyCopies['CoolBruh0'], copyOriginals, copyCopies);
     expect(App.children).toEqual([]);
-    expect(CoolBruh.children).toEqual([]);
-    expect(copyCopies['CoolBruh0']).toBeUndefined();
-    expect(copyCopies['View0']).toBeUndefined();
-    expect(copyCopies['View1']).toBeUndefined();
-    expect(copyCopies['View2']).toBeUndefined();
-    expect(copyCopies['View3']).toBeUndefined();
+    expect(CoolBruh.children).toEqual(['View0']);
+    expect(copyCopies).toEqual({
+      View0: {
+        name: 'View0',
+        type: 'View',
+        parent: { origin: 'original', key: 'CoolBruh' },
+        children: ['View1'],
+      },
+      View1: {
+        name: 'View1',
+        type: 'View',
+        parent: { origin: 'copies', key: 'View0' },
+        children: ['View2'],
+      },
+      View2: {
+        name: 'View2',
+        type: 'View',
+        parent: { origin: 'copies', key: 'View1' },
+        children: ['View3'],
+      },
+      View3: {
+        name: 'View3',
+        type: 'View',
+        parent: { origin: 'copies', key: 'View2' },
+        children: [],
+      },
+    });
   })
-
 })
-
-  // TODO: later in other files, use React testing library to test if components are reading the context and rendering correctly
